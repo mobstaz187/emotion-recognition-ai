@@ -14,7 +14,7 @@ export const WebcamSection: React.FC<Props> = ({ isActive, onToggle }) => {
   const webcamRef = React.useRef<Webcam>(null);
   const { setDetections } = useEmotionContext();
   const { isWebcamOn } = useWebcam();
-  const { detections, isLoading, error } = useEmotionDetection(webcamRef, isActive && isWebcamOn, setDetections);
+  const { isLoading, error } = useEmotionDetection(webcamRef, isActive && isWebcamOn, setDetections);
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">

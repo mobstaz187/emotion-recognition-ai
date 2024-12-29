@@ -2,7 +2,7 @@ import * as faceapi from 'face-api.js';
 import { DetectedFace } from '../../types/emotion';
 import { validateImage } from '../imageValidation';
 import { normalizeEmotions } from '../emotionNormalization';
-import { loadModels, state, DEFAULT_CONFIG } from '../modelLoader';
+import { loadModels, modelState as state, DEFAULT_CONFIG } from '../modelLoader';
 
 export async function detectEmotions(
   image: HTMLImageElement | HTMLVideoElement,
@@ -17,15 +17,13 @@ export async function detectEmotions(
       await loadModels();
     }
 
-    // Create a canvas element for processing
     const canvas = document.createElement('canvas');
-    canvas.width = image.width || (image as HTMLVideoElement).videoWidth;
-    canvas.height = image.height || (image as HTMLVideoElement).videoHeight;
+    canvas.width = image instanceof HTMLVideoElement ? image.videoWidth : image.width;
+    canvas.height = image instanceof HTMLVideoElement ? image.videoHeight : image.height;
     
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Failed to get canvas context');
     
-    // Draw the image/video frame to canvas
     ctx.drawImage(image, 0, 0);
 
     const detections = await faceapi
@@ -49,7 +47,12 @@ export async function detectEmotions(
     return detections.map(detection => ({
       expressions: normalizeEmotions(detection.expressions),
       detection: {
-        box: detection.detection.box
+        box: {
+          x: detection.detection.box.x,
+          y: detection.detection.box.y,
+          width: detection.detection.box.width,
+          height: detection.detection.box.height
+        }
       }
     }));
   } catch (error) {

@@ -1,4 +1,4 @@
-import { FaceExpressions } from 'face-api.js';
+import type { FaceDetection, FaceExpressions } from 'face-api.js';
 
 export type EmotionType = 'angry' | 'disgusted' | 'fearful' | 'happy' | 'neutral' | 'sad' | 'surprised';
 
@@ -23,4 +23,9 @@ export interface DetectedFace {
       height: number;
     };
   };
+}
+
+export interface ProcessedDetection {
+  expressions: FaceExpressions;
+  detection: FaceDetection;
 }
