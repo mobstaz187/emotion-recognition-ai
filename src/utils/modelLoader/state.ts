@@ -1,4 +1,4 @@
-import { ModelLoaderState } from './types';
+import type { ModelLoaderState } from './types';
 
 export const modelState: ModelLoaderState = {
   modelsLoaded: false,

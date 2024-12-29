@@ -1,4 +1,3 @@
-import React from 'react';
 import { Header } from './components/layout/Header';
 import { MainContent } from './components/layout/MainContent';
 import { ThemeProvider, createTheme } from '@mui/material';

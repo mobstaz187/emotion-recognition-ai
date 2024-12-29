@@ -1,4 +1,4 @@
-import * as faceapi from 'face-api.js';
+import type * as faceapi from 'face-api.js';
 import { DetectedFace, ProcessedDetection } from '../../types/emotion';
 import { loadModels } from '../modelLoader/loader';
 import { modelState } from '../modelLoader/state';
