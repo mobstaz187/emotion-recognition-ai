@@ -1,0 +1,1 @@
+export { detectEmotions } from './detector';
