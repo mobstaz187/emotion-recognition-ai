@@ -1,8 +1,8 @@
-import * as faceapi from 'face-api.js';
+import type { FaceDetection, FaceExpressions } from 'face-api.js';
 import { DetectedFace } from '../../types/emotion';
 import { validateImage } from '../imageValidation';
 import { normalizeEmotions } from '../emotionNormalization';
-import { loadModels, modelState as state, DEFAULT_CONFIG } from '../modelLoader';
+import { loadModels, modelState, DEFAULT_CONFIG } from '../modelLoader';
 
 export async function detectEmotions(
   image: HTMLImageElement | HTMLVideoElement,
@@ -13,7 +13,7 @@ export async function detectEmotions(
       throw new Error('Invalid image input');
     }
 
-    if (!state.modelsLoaded) {
+    if (!modelState.modelsLoaded) {
       await loadModels();
     }
 

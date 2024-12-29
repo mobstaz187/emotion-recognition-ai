@@ -1,4 +1,4 @@
-import type * as faceapi from 'face-api.js';
+import type { FaceDetection, FaceExpressions } from 'face-api.js';
 import { DetectedFace, ProcessedDetection } from '../../types/emotion';
 import { loadModels } from '../modelLoader/loader';
 import { modelState } from '../modelLoader/state';
@@ -25,7 +25,7 @@ export async function detectEmotions(
       return [];
     }
 
-    return detections.map((detection: ProcessedDetection) => ({
+    return detections.map((detection) => ({
       expressions: normalizeEmotions(detection.expressions),
       detection: {
         box: {
