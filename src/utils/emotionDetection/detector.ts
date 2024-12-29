@@ -1,8 +1,10 @@
-import type { FaceDetection, FaceExpressions } from 'face-api.js';
+import * as faceapi from 'face-api.js';
 import { DetectedFace } from '../../types/emotion';
 import { validateImage } from '../imageValidation';
 import { normalizeEmotions } from '../emotionNormalization';
-import { loadModels, modelState, DEFAULT_CONFIG } from '../modelLoader';
+import { loadModels } from '../modelLoader/loader';
+import { modelState } from '../modelLoader/state';
+import { DEFAULT_CONFIG } from '../modelLoader/config';
 
 export async function detectEmotions(
   image: HTMLImageElement | HTMLVideoElement,

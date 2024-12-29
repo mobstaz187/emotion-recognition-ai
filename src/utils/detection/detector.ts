@@ -1,5 +1,4 @@
-import type { FaceDetection, FaceExpressions } from 'face-api.js';
-import { DetectedFace, ProcessedDetection } from '../../types/emotion';
+import { DetectedFace } from '../../types/emotion';
 import { loadModels } from '../modelLoader/loader';
 import { modelState } from '../modelLoader/state';
 import { DETECTION_CONFIG } from '../modelLoader/constants';
