@@ -30,7 +30,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center space-x-6">
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600 dark:text-gray-400">Contract Address:</span>
-              <CopyButton text="CasdaAJHasdjas" />
+              <CopyButton text="ASDASDASDA" />
             </div>
             <ThemeToggle />
             {currentProfile && (
