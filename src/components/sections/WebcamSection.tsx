@@ -17,10 +17,10 @@ export const WebcamSection: React.FC<Props> = ({ isActive, onToggle }) => {
   const { isLoading, error } = useEmotionDetection(webcamRef, isActive && isWebcamOn, setDetections);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="bg-black/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+      <div className="p-4 border-b border-white/10">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Live Analysis</h2>
+          <h2 className="text-lg font-semibold text-gray-200">Live Analysis</h2>
           <WebcamControls 
             isAnalyzing={isActive}
             onToggleAnalysis={onToggle}
@@ -42,21 +42,21 @@ export const WebcamSection: React.FC<Props> = ({ isActive, onToggle }) => {
               }}
             />
             {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                <div className="text-white text-lg">Loading models...</div>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                <div className="text-blue-400 text-lg animate-pulse">Initializing AI Models...</div>
               </div>
             )}
             {error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                <div className="text-white text-lg bg-red-500 p-4 rounded-lg">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                <div className="text-red-400 bg-red-500/20 p-4 rounded-xl border border-red-500/30">
                   {error}
                 </div>
               </div>
             )}
           </>
         ) : (
-          <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-            <p className="text-white text-lg">Click "Turn On Camera" to start</p>
+          <div className="w-full h-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+            <p className="text-gray-400 text-lg">Click "Turn On Camera" to begin analysis</p>
           </div>
         )}
       </div>

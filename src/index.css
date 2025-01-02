@@ -4,7 +4,7 @@
 
 @layer base {
   * {
-    @apply transition-colors duration-200 ease-smooth;
+    @apply transition-colors duration-200 ease-in-out;
   }
 
   body {
@@ -14,6 +14,6 @@
 
 @layer utilities {
   .transition-smooth {
-    @apply transition-all duration-200 ease-smooth;
+    @apply transition-all duration-200 ease-in-out;
   }
 }

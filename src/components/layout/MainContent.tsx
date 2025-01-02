@@ -3,6 +3,9 @@ import { WebcamSection } from '../sections/WebcamSection';
 import { ResultsPanel } from '../sections/ResultsPanel';
 import { ImageUploadSection } from '../upload/ImageUploadSection';
 import { AlgorithmDocumentation } from '../docs/AlgorithmDocumentation';
+import { SurprisedChat } from '../chat/SurprisedChat';
+import { TwitterTickers } from '../tickers/TwitterTickers';
+import { TokenMonitor } from '../monitor/TokenMonitor';
 import { useTab } from '../../contexts/TabContext';
 
 export const MainContent: React.FC = () => {
@@ -15,6 +18,12 @@ export const MainContent: React.FC = () => {
         return <ImageUploadSection />;
       case 'docs':
         return <AlgorithmDocumentation />;
+      case 'tickers':
+        return <TwitterTickers />;
+      case 'monitor':
+        return <TokenMonitor />;
+      case 'surprised-chat':
+        return <SurprisedChat />;
       default:
         return (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

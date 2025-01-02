@@ -14,16 +14,16 @@ interface Props {
 
 export const TabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }) => {
   return (
-    <div className="flex space-x-1 p-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
+    <div className="flex space-x-1 p-1 bg-black/20 dark:bg-gray-800/30 rounded-2xl backdrop-blur-lg border border-white/10">
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
           className={`
-            flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200
+            flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300
             ${activeTab === tab.id
-              ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-white/50 dark:hover:bg-gray-800/50'
+              ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)] border border-blue-500/30'
+              : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
             }
           `}
         >

@@ -8,14 +8,15 @@ import { ProfileProvider } from './contexts/ProfileContext';
 import { TabProvider } from './contexts/TabContext';
 import { ProfileSelection } from './components/profile/ProfileSelection';
 import { useProfile } from './contexts/ProfileContext';
+import { DisgustedLayout } from './components/layout/DisgustedLayout';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2563eb',
+      main: '#50fa7b',
     },
     secondary: {
-      main: '#3b82f6',
+      main: '#45E066',
     },
   },
 });
@@ -27,10 +28,18 @@ const AppContent = () => {
     return <ProfileSelection />;
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
+  const content = (
+    <>
       <Header />
       <MainContent />
+    </>
+  );
+
+  return currentProfile.name === 'Disgusted' ? (
+    <DisgustedLayout>{content}</DisgustedLayout>
+  ) : (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
+      {content}
     </div>
   );
 };
