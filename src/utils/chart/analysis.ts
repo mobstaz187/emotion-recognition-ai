@@ -1,6 +1,9 @@
 import type { ChartAnalysisResult } from '../../types/chart';
 import { CHART_PATTERNS } from './patterns';
 
+// Simulate AI processing time with a deliberate delay
+const ANALYSIS_DELAY = 3000; // 3 seconds
+
 export async function analyzeChart(file: File): Promise<ChartAnalysisResult> {
   const imageUrl = URL.createObjectURL(file);
 
@@ -31,6 +34,8 @@ export async function analyzeChart(file: File): Promise<ChartAnalysisResult> {
     imageUrl
   };
 
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  // Add deliberate delay to simulate AI processing
+  await new Promise(resolve => setTimeout(resolve, ANALYSIS_DELAY));
+  
   return mockAnalysis;
 }

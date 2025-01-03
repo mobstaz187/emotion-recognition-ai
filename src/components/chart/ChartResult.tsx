@@ -12,7 +12,28 @@ export const ChartResult: React.FC<Props> = ({ analysis }) => {
   
   return (
     <div className="mt-8 space-y-6">
-      {imageUrl && <ChartCanvas imageUrl={imageUrl} analysis={analysis} />}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Original Image */}
+        {imageUrl && (
+          <div className="w-full overflow-hidden rounded-xl border border-white/10">
+            <img 
+              src={imageUrl} 
+              alt="Original chart"
+              className="w-full h-auto"
+            />
+          </div>
+        )}
+        
+        {/* Annotated Image */}
+        {imageUrl && (
+          <ChartCanvas 
+            imageUrl={imageUrl} 
+            analysis={analysis} 
+            hideDownload 
+            showAnnotations
+          />
+        )}
+      </div>
       
       <div className="flex items-center gap-4">
         <div className={`text-4xl ${

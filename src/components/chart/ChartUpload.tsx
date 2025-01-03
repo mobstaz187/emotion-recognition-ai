@@ -33,7 +33,7 @@ export const ChartUpload: React.FC<Props> = ({ onUpload, isAnalyzing }) => {
         {isAnalyzing ? 'Analyzing...' : 'Upload Chart'}
       </button>
       <p className="text-sm text-gray-400">
-        Upload a chart image to analyze market sentiment
+        Upload a chart image to analyze. (Use the analysis at your own risk. AI is still dumb and needs more datasets for training as there will be times that it will recognize other part of the chart)
       </p>
     </div>
   );
