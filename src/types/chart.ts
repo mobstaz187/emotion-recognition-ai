@@ -1,3 +1,8 @@
+export interface Point {
+  x: number;
+  y: number;
+}
+
 export interface Candle {
   x: number;
   open: number;
@@ -7,12 +12,33 @@ export interface Candle {
   isBullish: boolean;
 }
 
-export interface CandlePattern {
-  type: 'bullish' | 'bearish' | 'neutral';
+export interface ChartPattern {
   name: string;
-  startIndex: number;
-  endIndex: number;
+  type: 'bullish' | 'bearish';
+  description: string;
   reliability: number;
 }
 
-// ... rest of existing types ...
+export interface PriceLevel {
+  price: number;
+  strength: number;
+  type: 'support' | 'resistance';
+}
+
+export interface ChartAnalysisResult {
+  sentiment: 'bullish' | 'bearish';
+  confidence: number;
+  signals: Array<{
+    type: 'bullish' | 'bearish';
+    message: string;
+  }>;
+  pattern: ChartPattern;
+  imageUrl: string;
+}
+
+export interface PricePrediction {
+  direction: 'up' | 'down' | 'sideways';
+  targetPrice: number;
+  confidence: number;
+  reason: string;
+}

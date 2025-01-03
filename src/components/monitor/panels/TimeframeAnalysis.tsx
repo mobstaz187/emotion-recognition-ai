@@ -6,10 +6,9 @@ import { SignalIcon } from '../icons/SignalIcon';
 
 interface Props {
   address: string;
-  currentPrice: number;
 }
 
-export const TimeframeAnalysis: React.FC<Props> = ({ address, currentPrice }) => {
+export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
   const { analysis, isLoading } = useTimeframeAnalysis(address);
 
   if (isLoading) {
