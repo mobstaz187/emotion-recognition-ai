@@ -1,5 +1,8 @@
 import { Candle } from '../../../types/chart';
 import { detectStructureShift } from '../analysis/structureAnalysis';
+import { calculateVolatility } from './volatility';
+import { getPredictionFromStructure } from './structurePrediction';
+import { analyzeMarketContext } from './marketContext';
 
 export interface PricePrediction {
   direction: 'up' | 'down' | 'sideways';
@@ -22,5 +25,3 @@ export function predictNextMove(candles: Candle[]): PricePrediction {
   // Fallback to momentum and pattern analysis
   return analyzeMarketContext(candles, volatility);
 }
-
-// ... rest of the file remains the same ...
