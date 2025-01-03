@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { drawAnnotations } from '../../utils/chart/drawing';
-import type { ChartPattern, ChartAnalysisResult } from '../../types/chart';
+import type { ChartAnalysisResult } from '../../types/chart';
 
 interface Props {
   imageUrl: string;
@@ -15,7 +15,6 @@ export const ChartCanvas: React.FC<Props> = ({ imageUrl, analysis }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Create a temporary link element
     const link = document.createElement('a');
     link.download = `chart-analysis-${Date.now()}.png`;
     link.href = canvas.toDataURL('image/png');
@@ -36,14 +35,11 @@ export const ChartCanvas: React.FC<Props> = ({ imageUrl, analysis }) => {
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      // Set canvas size to match image
       canvas.width = img.width;
       canvas.height = img.height;
 
-      // Draw image
       ctx.drawImage(img, 0, 0);
 
-      // Draw pattern annotations
       if (analysis.pattern) {
         drawAnnotations(ctx, analysis.pattern, img.width, img.height);
       }

@@ -1,10 +1,10 @@
-import { findSupportResistanceLevels } from '../analysis/levels';
-import { drawSupportResistance } from './levels';
-import { drawPattern } from './patterns';
-import { drawPrediction } from './prediction';
-import { predictNextMove } from '../prediction/pricePredictor';
 import { ChartPattern } from '../../../types/chart';
+import { drawPattern } from './patterns';
+import { drawSupportResistance } from './levels';
+import { drawPrediction } from './prediction';
+import { findKeyLevels } from '../analysis/levels';
 import { detectCandles } from '../recognition/candleDetection';
+import { predictNextMove } from '../prediction/pricePredictor';
 
 export function drawAnnotations(
   ctx: CanvasRenderingContext2D,
@@ -18,7 +18,7 @@ export function drawAnnotations(
   // Find and draw support/resistance levels
   const candles = detectCandles(ctx.getImageData(0, 0, width, height));
   if (candles.length > 0) {
-    const levels = findSupportResistanceLevels(candles);
+    const levels = findKeyLevels(candles);
     drawSupportResistance(ctx, levels, width);
 
     // Add price prediction
