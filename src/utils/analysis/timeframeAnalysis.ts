@@ -1,5 +1,3 @@
-import { TokenData } from '../../types/token';
-
 interface TimeframeData {
   change: number;
   volume: number;

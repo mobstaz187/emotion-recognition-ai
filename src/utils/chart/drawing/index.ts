@@ -3,7 +3,8 @@ import { drawSupportResistance } from './levels';
 import { drawPattern } from './patterns';
 import { drawPrediction } from './prediction';
 import { predictNextMove } from '../prediction/pricePredictor';
-import { Candle, ChartPattern } from '../../../types/chart';
+import { ChartPattern } from '../../../types/chart';
+import { detectCandles } from '../recognition/candleDetection';
 
 export function drawAnnotations(
   ctx: CanvasRenderingContext2D,
