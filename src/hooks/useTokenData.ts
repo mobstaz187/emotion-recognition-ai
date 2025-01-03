@@ -3,7 +3,7 @@ import { TokenData } from '../types/token';
 import { analyzeFundamentals } from '../utils/analysis/fundamentalAnalysis';
 import { calculateRSI, calculateMACD, calculateBollingerBands } from '../utils/analysis/technicalAnalysis';
 
-const MOCK_PRICE_HISTORY = Array.from({ length: 30 }, (_, i) => 100 + Math.random() * 20 - 10);
+const MOCK_PRICE_HISTORY = Array.from({ length: 30 }, () => 100 + Math.random() * 20 - 10);
 
 export function useTokenData(address: string) {
   const [tokenData, setTokenData] = useState<TokenData | null>(null);
@@ -76,6 +76,8 @@ export function useTokenData(address: string) {
           name: pair.baseToken.name,
           symbol: pair.baseToken.symbol,
           website: pair.baseToken.website,
+          twitter: pair.baseToken.twitter,
+          telegram: pair.baseToken.telegram,
           ...metrics,
           technicalIndicators,
           sentiment

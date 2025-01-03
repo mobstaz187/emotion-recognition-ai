@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { features } from '../data/features';
 
-export const FeatureSection = () => {
+export const FeatureSection: React.FC = () => {
   return (
     <section className="py-32">
       <div className="max-w-6xl mx-auto">
@@ -37,7 +37,7 @@ export const FeatureSection = () => {
               >
                 <div className="aspect-video rounded-xl bg-black/30 backdrop-blur-xl border border-white/10 
                   flex items-center justify-center">
-                  <feature.icon className="w-16 h-16" style={{ color: feature.color }} />
+                  <feature.icon className="w-16 h-16" />
                 </div>
               </div>
             </div>

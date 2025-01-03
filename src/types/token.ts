@@ -27,10 +27,16 @@ export interface TechnicalIndicators {
   };
 }
 
+export interface SocialMetrics {
+  twitterFollowers: number;
+  twitterEngagement: number;
+}
+
 export interface TokenData extends TokenMetrics {
   name: string;
   symbol: string;
   twitter?: string;
+  telegram?: string;
   website?: string;
   technicalIndicators: TechnicalIndicators;
   sentiment: {
