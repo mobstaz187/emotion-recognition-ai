@@ -1,50 +1,24 @@
 import React from 'react';
-import { ThemeToggle } from '../ThemeToggle';
 import { CopyButton } from '../common/CopyButton';
 import { EmotionLogo } from '../logo/EmotionLogo';
 import { ProfileAvatar } from '../profile/ProfileAvatar';
 import { useProfile } from '../../contexts/ProfileContext';
 import { useTab } from '../../contexts/TabContext';
-import { TabBar } from '../tabs/TabBar';
-
-const BASE_TABS = [
-  { id: 'live', label: 'Realtime Emotion Analysis', icon: '📹' },
-  { id: 'upload', label: 'Upload Image', icon: '🖼️' },
-  { id: 'monitor', label: 'Token Analysis', icon: '📊' },
-  { id: 'tickers', label: 'Popular Tokens Tickers', icon: '𝕏' },
-  { id: 'docs', label: 'Documentation', icon: '📚' },
-];
-
-const SURPRISED_TAB = { 
-  id: 'surprised-chat', 
-  label: 'Talk to me I\'m surprised', 
-  icon: '😮' 
-};
 
 export const Header: React.FC = () => {
   const { currentProfile, setCurrentProfile } = useProfile();
   const { activeTab, setActiveTab } = useTab();
 
-  // Get tabs based on current profile
-  const tabs = React.useMemo(() => {
-    if (currentProfile?.name === 'Surprised') {
-      return [...BASE_TABS, SURPRISED_TAB];
-    }
-    return BASE_TABS;
-  }, [currentProfile]);
-
-  // If current tab is surprised-chat but profile is not surprised,
-  // switch to live tab
   React.useEffect(() => {
     if (activeTab === 'surprised-chat' && currentProfile?.name !== 'Surprised') {
-      setActiveTab('live');
+      setActiveTab('landing');
     }
   }, [activeTab, currentProfile, setActiveTab]);
 
   return (
-    <header className="bg-black/30 dark:bg-gray-900/30 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+    <header className="bg-black/30 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center">
           <div className="flex items-center">
             <EmotionLogo />
             <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 border border-blue-500/30">
@@ -52,11 +26,21 @@ export const Header: React.FC = () => {
             </span>
           </div>
           <div className="flex items-center space-x-6">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-400">Contract Address:</span>
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-foreground/60">Contract Address:</span>
               <CopyButton text="ASDASDASDA" />
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg text-foreground/60 hover:text-primary hover:bg-primary/10 transition-colors"
+                aria-label="Follow on X (Twitter)"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
             </div>
-            <ThemeToggle />
             {currentProfile && (
               <ProfileAvatar
                 profile={currentProfile}
@@ -66,11 +50,6 @@ export const Header: React.FC = () => {
             )}
           </div>
         </div>
-        <TabBar
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
       </div>
     </header>
   );

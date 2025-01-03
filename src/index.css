@@ -3,17 +3,41 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    @apply transition-colors duration-200 ease-in-out;
+  :root {
+    --background: 15 23 42;
+    --foreground: 241 245 249;
+    --card: 30 41 59;
+    --card-foreground: 241 245 249;
+    --popover: 30 41 59;
+    --popover-foreground: 241 245 249;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --secondary: 51 65 85;
+    --secondary-foreground: 241 245 249;
+    --border: 51 65 85;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+    @apply bg-background text-foreground;
   }
 }
 
-@layer utilities {
-  .transition-smooth {
-    @apply transition-all duration-200 ease-in-out;
+@layer components {
+  .card {
+    @apply bg-card text-card-foreground border border-border rounded-lg shadow-sm;
+  }
+
+  .glass-panel {
+    @apply bg-background/80 backdrop-blur-xl border border-border rounded-2xl;
+  }
+
+  .button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 
+    transition-colors duration-200;
+  }
+
+  .button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg px-4 py-2 
+    transition-colors duration-200;
   }
 }

@@ -13,9 +13,9 @@ export const TwitterTickers: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-black/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
+      <div className="glass-panel p-6">
         <TickerHeader 
-          onRefresh={refresh}
+          onRefresh={refresh} 
           lastUpdated={lastUpdated}
           isLoading={isLoading}
         />

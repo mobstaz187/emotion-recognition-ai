@@ -7,13 +7,18 @@ import { SurprisedChat } from '../chat/SurprisedChat';
 import { TwitterTickers } from '../tickers/TwitterTickers';
 import { TokenMonitor } from '../monitor/TokenMonitor';
 import { useTab } from '../../contexts/TabContext';
+import { FloatingTabBar } from '../tabs/FloatingTabBar';
+import { BASE_TABS } from '../../constants/tabs';
+import { LandingPage } from '../landing/LandingPage';
 
 export const MainContent: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
-  const { activeTab } = useTab();
+  const { activeTab, setActiveTab } = useTab();
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'landing':
+        return <LandingPage />;
       case 'upload':
         return <ImageUploadSection />;
       case 'docs':
@@ -42,8 +47,15 @@ export const MainContent: React.FC = () => {
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {renderContent()}
-    </main>
+    <>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24">
+        {renderContent()}
+      </main>
+      <FloatingTabBar
+        tabs={BASE_TABS}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+    </>
   );
 };

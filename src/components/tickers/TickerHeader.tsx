@@ -18,12 +18,12 @@ export const TickerHeader: React.FC<Props> = ({ onRefresh, lastUpdated, isLoadin
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-200">Top Tickers</h2>
-        <p className="text-sm text-gray-400 mt-1">Last 2 hours</p>
+        <h2 className="text-2xl font-bold">Top Tickers</h2>
+        <p className="text-sm text-foreground/60 mt-1">Last 2 hours</p>
       </div>
       <div className="flex items-center gap-4">
         {lastUpdated && (
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-foreground/60">
             Last updated: {formatTime(lastUpdated)}
           </span>
         )}
@@ -31,7 +31,7 @@ export const TickerHeader: React.FC<Props> = ({ onRefresh, lastUpdated, isLoadin
           onClick={onRefresh}
           disabled={isLoading}
           className={`
-            p-2 rounded-lg text-blue-400 hover:bg-blue-500/10 
+            p-2 rounded-lg text-primary hover:bg-primary/10 
             transition-colors disabled:opacity-50
             ${isLoading ? 'animate-spin' : ''}
           `}

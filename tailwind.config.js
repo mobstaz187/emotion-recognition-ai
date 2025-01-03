@@ -4,14 +4,20 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        slime: {
-          primary: '#50fa7b',
-          secondary: '#45E066',
-        }
+        background: 'rgb(var(--background) / <alpha-value>)',
+        foreground: 'rgb(var(--foreground) / <alpha-value>)',
+        card: 'rgb(var(--card) / <alpha-value>)',
+        'card-foreground': 'rgb(var(--card-foreground) / <alpha-value>)',
+        popover: 'rgb(var(--popover) / <alpha-value>)',
+        'popover-foreground': 'rgb(var(--popover-foreground) / <alpha-value>)',
+        primary: 'rgb(var(--primary) / <alpha-value>)',
+        'primary-foreground': 'rgb(var(--primary-foreground) / <alpha-value>)',
+        secondary: 'rgb(var(--secondary) / <alpha-value>)',
+        'secondary-foreground': 'rgb(var(--secondary-foreground) / <alpha-value>)',
+        border: 'rgb(var(--border) / <alpha-value>)',
       },
       animation: {
         'drip-1': 'drip 3s ease-in-out infinite',
@@ -24,9 +30,6 @@ export default {
           '50%': { transform: 'translateY(50%) scale(1.1)', opacity: 1 },
           '100%': { transform: 'translateY(200%) scale(1)', opacity: 0 },
         }
-      },
-      transitionTimingFunction: {
-        'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
       }
     },
   },
