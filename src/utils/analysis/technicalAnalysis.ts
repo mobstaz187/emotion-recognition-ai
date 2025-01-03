@@ -1,4 +1,4 @@
-import { TechnicalIndicators } from '../../types/token';
+import type { TechnicalIndicators } from '../../types/token';
 
 export function calculateRSI(prices: number[], period = 14): number {
   if (prices.length < period + 1) return 50;
@@ -21,11 +21,7 @@ export function calculateRSI(prices: number[], period = 14): number {
   return 100 - (100 / (1 + rs));
 }
 
-export function calculateMACD(prices: number[]): {
-  value: number;
-  signal: number;
-  histogram: number;
-} {
+export function calculateMACD(prices: number[]): TechnicalIndicators['macd'] {
   const shortEMA = calculateEMA(prices, 12);
   const longEMA = calculateEMA(prices, 26);
   const macdValue = shortEMA - longEMA;
@@ -49,11 +45,7 @@ export function calculateEMA(prices: number[], period: number): number {
   return ema;
 }
 
-export function calculateBollingerBands(prices: number[], period = 20): {
-  upper: number;
-  middle: number;
-  lower: number;
-} {
+export function calculateBollingerBands(prices: number[], period = 20): TechnicalIndicators['bollingerBands'] {
   const sma = prices.slice(-period).reduce((a, b) => a + b) / period;
   const standardDeviation = Math.sqrt(
     prices.slice(-period).reduce((sum, price) => sum + Math.pow(price - sma, 2), 0) / period
