@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Button } from '@mui/material';
 import { detectEmotions } from '../../utils/emotionDetection';
 import { EmotionResults } from '../EmotionResults';
 import { DetectedFace } from '../../types/emotion';
@@ -57,7 +56,7 @@ export const ImageUploadSection: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+      <div className="bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 p-8">
         <div className="flex flex-col items-center gap-8">
           <div className="w-full">
             <input
@@ -68,14 +67,13 @@ export const ImageUploadSection: React.FC = () => {
               className="hidden"
             />
             <div className="flex flex-col items-center gap-4">
-              <Button
-                variant="contained"
+              <button
                 onClick={() => fileInputRef.current?.click()}
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 shadow-md hover:shadow-lg transition-all duration-200"
+                className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-all duration-200 text-lg font-medium"
               >
-                Choose Image
-              </Button>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+                CHOOSE IMAGE
+              </button>
+              <p className="text-sm text-gray-400">
                 Supported formats: JPG, PNG, GIF (max 5MB)
               </p>
             </div>
@@ -87,7 +85,7 @@ export const ImageUploadSection: React.FC = () => {
                 ref={imageRef}
                 src={image}
                 alt="Uploaded"
-                className="w-full rounded-lg shadow-md"
+                className="w-full rounded-lg"
                 onLoad={handleImageLoad}
                 crossOrigin="anonymous"
               />
@@ -100,7 +98,7 @@ export const ImageUploadSection: React.FC = () => {
           )}
 
           {error && (
-            <div className="px-4 py-2 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg">
+            <div className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg border border-red-500/20">
               {error}
             </div>
           )}

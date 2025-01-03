@@ -6,6 +6,7 @@ import { AlgorithmDocumentation } from '../docs/AlgorithmDocumentation';
 import { SurprisedChat } from '../chat/SurprisedChat';
 import { TwitterTickers } from '../tickers/TwitterTickers';
 import { TokenMonitor } from '../monitor/TokenMonitor';
+import { ChartAnalysis } from '../chart/ChartAnalysis';
 import { useTab } from '../../contexts/TabContext';
 import { FloatingTabBar } from '../tabs/FloatingTabBar';
 import { BASE_TABS } from '../../constants/tabs';
@@ -29,6 +30,8 @@ export const MainContent: React.FC = () => {
         return <TokenMonitor />;
       case 'surprised-chat':
         return <SurprisedChat />;
+      case 'chart':
+        return <ChartAnalysis />;
       default:
         return (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

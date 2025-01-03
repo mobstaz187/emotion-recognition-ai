@@ -16,15 +16,20 @@ export const FundamentalAnalysisPanel: React.FC<Props> = ({ metrics }) => {
     >
       <h3 className="text-xl font-semibold mb-4">Fundamental Analysis</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <div className="bg-white/5 rounded-lg p-4">
           <div className="text-sm text-gray-400 mb-1">Market Cap</div>
           <div className="text-lg font-semibold">${formatNumber(metrics.marketCap)}</div>
         </div>
 
         <div className="bg-white/5 rounded-lg p-4">
-          <div className="text-sm text-gray-400 mb-1">Volatility</div>
+          <div className="text-sm text-gray-400 mb-1">Volatility (24h)</div>
           <div className="text-lg font-semibold">{(metrics.volatility * 100).toFixed(2)}%</div>
+        </div>
+
+        <div className="bg-white/5 rounded-lg p-4">
+          <div className="text-sm text-gray-400 mb-1">Liquidity</div>
+          <div className="text-lg font-semibold">${formatNumber(metrics.liquidity)}</div>
         </div>
       </div>
     </motion.div>

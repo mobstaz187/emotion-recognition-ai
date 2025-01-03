@@ -31,11 +31,11 @@ export const TokenMonitor: React.FC = () => {
           <div className="text-primary animate-pulse">Loading token data...</div>
         )}
         
-        {tokenData && (
+        {tokenData && address && (
           <div className="space-y-8">
             <TokenSocials data={tokenData} />
-            <TokenInfo data={tokenData} />
-            <TokenAnalysisPanel data={tokenData} />
+            <TokenInfo data={tokenData} address={address} />
+            <TokenAnalysisPanel data={tokenData} address={address} />
           </div>
         )}
       </div>

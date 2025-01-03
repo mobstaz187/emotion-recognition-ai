@@ -32,7 +32,6 @@ export function useTokenData(address: string) {
           throw new Error('No data found for this token');
         }
         
-        // Use the first pair's data
         const pair = data.pairs[0];
         
         // Calculate technical indicators
@@ -47,8 +46,13 @@ export function useTokenData(address: string) {
           }
         };
 
-        // Parse holders count correctly
-        const holdersCount = pair.holders ? parseInt(pair.holders.replace(/,/g, '')) : 0;
+        // Parse holders count, handling different formats
+        let holdersCount = 0;
+        if (pair.holders) {
+          // Remove commas and any non-numeric characters except decimal points
+          const cleanedHolders = pair.holders.replace(/[^0-9.]/g, '');
+          holdersCount = parseInt(cleanedHolders, 10);
+        }
 
         // Basic metrics using actual data from DexScreener
         const metrics = {

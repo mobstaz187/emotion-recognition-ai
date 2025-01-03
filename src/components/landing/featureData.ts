@@ -9,7 +9,8 @@ export const features = [
     title: 'Image Upload Analysis',
     description: 'Upload and analyze emotions in photos with our powerful image processing capabilities.',
     icon: '🖼️',
-    color: '#10B981'
+    color: '#10B981',
+    image: '/demo-happy.jpg'
   },
   {
     title: 'Token Sentiment Analysis',

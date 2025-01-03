@@ -8,8 +8,10 @@ export const HeroSection = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-          Emotion Recognition AI
+        <h1 className="text-6xl font-bold mb-6">
+          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            Emotion Recognition AI
+          </span>
         </h1>
         <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12">
           Advanced emotion detection powered by machine learning, providing real-time analysis for images and live video.

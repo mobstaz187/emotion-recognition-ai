@@ -1,66 +1,114 @@
 import { TokenData } from '../../types/token';
 import { EmotionType } from '../emotionTypes';
+import { 
+  analyzeTechnicalSignals, 
+  analyzeVolumeSignals,
+  analyzePriceSignals,
+  analyzeHolderSignals,
+  analyzeMarketStructure,
+  analyzeMomentum
+} from '../analysis/signals';
 
 interface SentimentResult {
   emotion: EmotionType;
   confidence: number;
   reason: string;
+  prediction: {
+    direction: 'up' | 'down' | 'sideways';
+  };
+  signals: {
+    bullish: string[];
+    bearish: string[];
+    neutral: string[];
+  };
 }
 
 export function analyzeSentiment(data: TokenData): SentimentResult {
-  // Volume analysis
-  const volumeToMarketCapRatio = data.volume24h / data.marketCap;
-  const isHighVolume = volumeToMarketCapRatio > 0.2; // 20% volume/mcap ratio threshold
+  // Collect signals from all analysis modules
+  const technicalSignals = analyzeTechnicalSignals(data.technicalIndicators);
+  const volumeSignals = analyzeVolumeSignals(data);
+  const priceSignals = analyzePriceSignals(data);
+  const holderSignals = analyzeHolderSignals(data);
+  const structureSignals = analyzeMarketStructure(data, data.technicalIndicators);
+  const momentumSignals = analyzeMomentum(data, data.technicalIndicators);
+
+  // Combine all signals
+  const signals = {
+    bullish: [
+      ...technicalSignals.bullish,
+      ...volumeSignals.bullish,
+      ...priceSignals.bullish,
+      ...holderSignals.bullish,
+      ...structureSignals.bullish,
+      ...momentumSignals.bullish
+    ],
+    bearish: [
+      ...technicalSignals.bearish,
+      ...volumeSignals.bearish,
+      ...priceSignals.bearish,
+      ...holderSignals.bearish,
+      ...structureSignals.bearish,
+      ...momentumSignals.bearish
+    ],
+    neutral: [
+      ...technicalSignals.neutral,
+      ...volumeSignals.neutral,
+      ...priceSignals.neutral,
+      ...holderSignals.neutral,
+      ...structureSignals.neutral,
+      ...momentumSignals.neutral
+    ]
+  };
+
+  // Calculate sentiment scores
+  const bullishScore = signals.bullish.length * 20;
+  const bearishScore = signals.bearish.length * 20;
+  const totalSignals = signals.bullish.length + signals.bearish.length + signals.neutral.length;
   
-  // Price movement analysis
-  const isStrongPositive = data.priceChange24h > 10;
-  const isPositive = data.priceChange24h > 0;
-  const isStrongNegative = data.priceChange24h < -10;
-  
-  // Sentiment logic
-  if (isStrongPositive && isHighVolume) {
-    return {
-      emotion: 'happy',
-      confidence: 0.9,
-      reason: 'Strong price increase with high trading volume'
-    };
+  // Calculate weighted score (0-100)
+  const score = Math.min(100, Math.max(0, (bullishScore - bearishScore) / totalSignals + 50));
+
+  // Determine direction based on score and signals
+  let direction: 'up' | 'down' | 'sideways';
+  if (score >= 60 && signals.bullish.length > signals.bearish.length) {
+    direction = 'up';
+  } else if (score <= 40 && signals.bearish.length > signals.bullish.length) {
+    direction = 'down';
+  } else {
+    direction = 'sideways';
   }
-  
-  if (isStrongNegative && isHighVolume) {
-    return {
-      emotion: 'fearful',
-      confidence: 0.8,
-      reason: 'Sharp price decline with high trading volume'
-    };
+
+  // Determine emotion and confidence
+  let emotion: EmotionType;
+  let confidence: number;
+
+  if (score >= 70) {
+    emotion = 'happy';
+    confidence = 0.8 + (score - 70) / 100;
+  } else if (score >= 55) {
+    emotion = 'surprised';
+    confidence = 0.7 + (score - 55) / 50;
+  } else if (score >= 45) {
+    emotion = 'neutral';
+    confidence = 0.6 + Math.abs(50 - score) / 50;
+  } else if (score >= 30) {
+    emotion = 'sad';
+    confidence = 0.7 + (45 - score) / 50;
+  } else {
+    emotion = 'fearful';
+    confidence = 0.8 + (30 - score) / 100;
   }
-  
-  if (isHighVolume && !isStrongPositive && !isStrongNegative) {
-    return {
-      emotion: 'surprised',
-      confidence: 0.7,
-      reason: 'High trading activity with moderate price movement'
-    };
-  }
-  
-  if (isPositive && !isHighVolume) {
-    return {
-      emotion: 'neutral',
-      confidence: 0.6,
-      reason: 'Positive price movement but low trading activity'
-    };
-  }
-  
-  if (!isPositive && !isHighVolume) {
-    return {
-      emotion: 'sad',
-      confidence: 0.7,
-      reason: 'Price decline with low trading activity'
-    };
-  }
-  
+
+  // Generate summary reason
+  const reason = `Market sentiment is ${emotion} with a ${score.toFixed(1)}% bullish bias. 
+    Found ${signals.bullish.length} bullish, ${signals.bearish.length} bearish, and 
+    ${signals.neutral.length} neutral signals.`;
+
   return {
-    emotion: 'neutral',
-    confidence: 0.5,
-    reason: 'No significant market activity'
+    emotion,
+    confidence: Math.min(confidence, 0.95),
+    reason,
+    prediction: { direction },
+    signals
   };
 }

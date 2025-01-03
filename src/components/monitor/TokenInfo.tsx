@@ -2,15 +2,16 @@ import React from 'react';
 import { TokenData } from '../../types/token';
 import { formatNumber } from '../../utils/formatNumber';
 import { TokenSentiment } from './TokenSentiment';
+import { TradingButtons } from './TradingButtons';
 
 interface Props {
   data: TokenData;
+  address: string;
 }
 
-export const TokenInfo: React.FC<Props> = ({ data }) => {
-  // Format price separately to ensure full display
+export const TokenInfo: React.FC<Props> = ({ data, address }) => {
   const formattedPrice = data.price < 0.0001 
-    ? data.price.toFixed(12)  // Show more decimals for very small prices
+    ? data.price.toFixed(12)
     : formatNumber(data.price);
 
   return (
@@ -45,6 +46,11 @@ export const TokenInfo: React.FC<Props> = ({ data }) => {
             {data.priceChange24h > 0 ? '+' : ''}{data.priceChange24h.toFixed(2)}%
           </p>
         </div>
+      </div>
+
+      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+        <h3 className="text-sm text-gray-400 mb-3">Trading Platforms</h3>
+        <TradingButtons address={address} />
       </div>
 
       <TokenSentiment data={data} />

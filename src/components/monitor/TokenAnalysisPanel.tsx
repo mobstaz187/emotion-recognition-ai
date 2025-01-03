@@ -3,13 +3,15 @@ import { TokenData } from '../../types/token';
 import { TechnicalIndicatorsPanel } from './panels/TechnicalIndicatorsPanel';
 import { FundamentalAnalysisPanel } from './panels/FundamentalAnalysisPanel';
 import { SentimentSummary } from './panels/SentimentSummary';
-import { analyzeSentiment } from '../../utils/analysis/sentimentAnalysis';
+import { TimeframeAnalysis } from './panels/TimeframeAnalysis';
+import { analyzeSentiment } from '../../utils/sentiment/analysis';
 
 interface Props {
   data: TokenData;
+  address: string;
 }
 
-export const TokenAnalysisPanel: React.FC<Props> = ({ data }) => {
+export const TokenAnalysisPanel: React.FC<Props> = ({ data, address }) => {
   const sentimentAnalysis = analyzeSentiment(data);
 
   return (
@@ -17,6 +19,11 @@ export const TokenAnalysisPanel: React.FC<Props> = ({ data }) => {
       <SentimentSummary 
         sentiment={data.sentiment} 
         analysis={sentimentAnalysis}
+      />
+      
+      <TimeframeAnalysis 
+        address={address}
+        currentPrice={data.price}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

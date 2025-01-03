@@ -19,6 +19,9 @@ export default {
         'secondary-foreground': 'rgb(var(--secondary-foreground) / <alpha-value>)',
         border: 'rgb(var(--border) / <alpha-value>)',
       },
+      fontFamily: {
+        mono: ['JetBrains Mono', 'monospace'],
+      },
       animation: {
         'drip-1': 'drip 3s ease-in-out infinite',
         'drip-2': 'drip 4s ease-in-out infinite 1s',
