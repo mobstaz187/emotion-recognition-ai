@@ -1,31 +1,21 @@
-import { Candle } from '../../../types/chart';
+import { Candle, PriceLevel } from '../../../types/chart';
 
-interface PriceLevel {
-  price: number;
-  strength: number;
-  type: 'support' | 'resistance';
-}
-
-export function findSupportResistanceLevels(candles: Candle[]): PriceLevel[] {
+export function findKeyLevels(candles: Candle[]): PriceLevel[] {
   const levels: PriceLevel[] = [];
-  const touchThreshold = 0.001; // 0.1% price difference
+  const priceThreshold = 0.001; // 0.1% price difference
 
-  // Find potential levels from highs and lows
   for (let i = 2; i < candles.length - 2; i++) {
     const current = candles[i];
 
-    // Check for swing highs (resistance)
+    // Check for potential support/resistance levels
     if (isSwingHigh(candles, i)) {
-      addOrUpdateLevel(levels, current.high, 'resistance', touchThreshold);
+      addOrUpdateLevel(levels, current.high, 'resistance', priceThreshold);
     }
-
-    // Check for swing lows (support)
     if (isSwingLow(candles, i)) {
-      addOrUpdateLevel(levels, current.low, 'support', touchThreshold);
+      addOrUpdateLevel(levels, current.low, 'support', priceThreshold);
     }
   }
 
-  // Filter out weak levels
   return levels.filter(level => level.strength >= 2);
 }
 
