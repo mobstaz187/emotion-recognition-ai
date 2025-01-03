@@ -29,8 +29,18 @@ function calculateMomentum(candles: Candle[]): number {
 }
 
 function calculateVolumeProfile(candles: Candle[]): number {
-  // Mock volume calculation for demo
-  return Math.random();
+  // Calculate relative volume strength
+  const recentCandles = candles.slice(-5);
+  const avgBodySize = recentCandles.reduce((sum, candle) => 
+    sum + Math.abs(candle.close - candle.open), 0
+  ) / recentCandles.length;
+
+  const latestBodySize = Math.abs(
+    candles[candles.length - 1].close - candles[candles.length - 1].open
+  );
+
+  // Return volume strength as a ratio (0-1)
+  return Math.min(latestBodySize / (avgBodySize || 1), 1);
 }
 
 function analyzeTrend(candles: Candle[]): 'up' | 'down' | 'sideways' {
