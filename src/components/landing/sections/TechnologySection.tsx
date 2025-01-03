@@ -28,9 +28,9 @@ export const TechnologySection = () => {
               </p>
             </div>
             <div className="backdrop-blur-xl border border-white/10 rounded-2xl p-8">
-              <h3 className="text-2xl font-semibold mb-4 text-purple-400">React + Vite</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-purple-400">Modern Stack</h3>
               <p className="text-gray-400 text-lg">
-                Modern web technologies ensuring smooth and responsive user experience.
+                Built with cutting-edge web technologies for optimal performance and reliability.
               </p>
             </div>
           </div>
