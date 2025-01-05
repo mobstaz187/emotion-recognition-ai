@@ -34,7 +34,8 @@ export const ProfileSelection: React.FC = () => {
           <h1 className="text-6xl font-bold font-display bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             PELIOS
           </h1>
-          <p className="text-xl text-muted-foreground font-display mt-2">Choose Your Avatar</p>
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent my-3" />
+          <p className="text-xl text-muted-foreground font-display">Choose Your Avatar</p>
         </div>
       </div>
 
