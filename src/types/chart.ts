@@ -1,10 +1,8 @@
-// Basic geometry types
 export interface Point {
   x: number;
   y: number;
 }
 
-// Chart analysis types
 export interface Level {
   type: 'support' | 'resistance';
   price: number;
@@ -55,4 +53,6 @@ export interface CandlePattern {
   name: string;
   description: string;
   reliability: number;
+  points: Point[];
+  confidence: number;
 }
