@@ -24,9 +24,9 @@ export const TokenSearch: React.FC<Props> = ({ onSearch }) => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Paste the Contract Address"
-        className="flex-1 px-4 py-2 bg-black/20 border border-white/10 rounded-lg 
+        className="flex-1 px-4 py-2 bg-card border border-border rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-primary/40 
-          text-gray-200 placeholder-gray-400"
+          text-foreground placeholder:text-muted-foreground"
       />
       <button
         type="submit"

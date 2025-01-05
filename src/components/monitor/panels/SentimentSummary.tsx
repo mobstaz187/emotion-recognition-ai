@@ -28,7 +28,7 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
   const color = getEmotionColor(analysis.emotion as any);
 
   return (
-    <div className="bg-black/20 backdrop-blur-xl rounded-xl border border-white/10 p-6">
+    <div className="bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
       <div className="flex flex-col space-y-6">
         <div className="flex items-center gap-4">
           <SentimentIcon emotion={analysis.emotion as any} className="w-8 h-8" color={color} />
@@ -36,7 +36,7 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
             <h3 className="text-xl font-semibold capitalize" style={{ color }}>
               {analysis.emotion}
             </h3>
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               {Math.round(analysis.confidence * 100)}% confidence
             </p>
           </div>
@@ -48,9 +48,9 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
               key={key}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white/5 rounded-lg p-4 text-center"
+              className="bg-card rounded-lg p-4 text-center border border-border"
             >
-              <div className="text-sm text-gray-400 mb-2 capitalize">
+              <div className="text-sm text-muted-foreground mb-2 capitalize">
                 {key} Score
               </div>
               <div className={`text-2xl font-bold ${
@@ -71,7 +71,7 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
               <h4 className="text-red-400 font-medium mb-2">Bearish Signals</h4>
               <ul className="space-y-2">
                 {analysis.signals.bearish.map((signal, index) => (
-                  <li key={index} className="text-sm text-gray-300 flex items-center gap-2">
+                  <li key={index} className="text-sm text-foreground flex items-center gap-2">
                     <SignalIcon type="bearish" className="w-4 h-4 text-red-400" />
                     {signal}
                   </li>
@@ -85,7 +85,7 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
               <h4 className="text-blue-400 font-medium mb-2">Neutral Signals</h4>
               <ul className="space-y-2">
                 {analysis.signals.neutral.map((signal, index) => (
-                  <li key={index} className="text-sm text-gray-300 flex items-center gap-2">
+                  <li key={index} className="text-sm text-foreground flex items-center gap-2">
                     <SignalIcon type="neutral" className="w-4 h-4 text-blue-400" />
                     {signal}
                   </li>
@@ -99,7 +99,7 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
               <h4 className="text-green-400 font-medium mb-2">Bullish Signals</h4>
               <ul className="space-y-2">
                 {analysis.signals.bullish.map((signal, index) => (
-                  <li key={index} className="text-sm text-gray-300 flex items-center gap-2">
+                  <li key={index} className="text-sm text-foreground flex items-center gap-2">
                     <SignalIcon type="bullish" className="w-4 h-4 text-green-400" />
                     {signal}
                   </li>

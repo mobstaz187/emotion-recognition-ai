@@ -1,23 +1,28 @@
 import React from 'react';
 import { ProfileAvatar } from './ProfileAvatar';
 import { useProfile } from '../../contexts/ProfileContext';
+import { ThemeToggle } from '../theme/ThemeToggle';
 import type { Profile } from '../../contexts/ProfileContext';
 import { SocialLinks } from '../common/SocialLinks';
 
 const PROFILES: Profile[] = [
-  { id: '1', name: 'Happy', color: '#D97706', emoji: '😊' },     // Darker Yellow
-  { id: '2', name: 'Sad', color: '#3B82F6', emoji: '😢' },       // Blue
-  { id: '3', name: 'Angry', color: '#EF4444', emoji: '😠' },     // Red
-  { id: '4', name: 'Fearful', color: '#8B5CF6', emoji: '😨' },   // Purple
-  { id: '5', name: 'Disgusted', color: '#10B981', emoji: '🤢' }, // Green
-  { id: '6', name: 'Surprised', color: '#EC4899', emoji: '😮' }, // Pink
+  { id: '1', name: 'Happy', color: '#D97706', emoji: '😊' },
+  { id: '2', name: 'Sad', color: '#3B82F6', emoji: '😢' },
+  { id: '3', name: 'Angry', color: '#EF4444', emoji: '😠' },
+  { id: '4', name: 'Fearful', color: '#8B5CF6', emoji: '😨' },
+  { id: '5', name: 'Disgusted', color: '#10B981', emoji: '🤢' },
+  { id: '6', name: 'Surprised', color: '#EC4899', emoji: '😮' },
 ];
 
 export const ProfileSelection: React.FC = () => {
   const { setCurrentProfile } = useProfile();
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+      <div className="absolute top-6 right-6">
+        <ThemeToggle />
+      </div>
+      
       <div className="flex items-center gap-8 mb-12">
         <img 
           src="/pill-icon.png" 
@@ -29,7 +34,7 @@ export const ProfileSelection: React.FC = () => {
           <h1 className="text-6xl font-bold font-display bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             PELIOS
           </h1>
-          <p className="text-xl text-gray-400 font-display mt-2">Choose Your Avatar</p>
+          <p className="text-xl text-muted-foreground font-display mt-2">Choose Your Avatar</p>
         </div>
       </div>
 
@@ -41,7 +46,7 @@ export const ProfileSelection: React.FC = () => {
               size="lg"
               onClick={() => setCurrentProfile(profile)}
             />
-            <span className="text-gray-400 text-lg">{profile.name}</span>
+            <span className="text-muted-foreground text-lg">{profile.name}</span>
           </div>
         ))}
       </div>

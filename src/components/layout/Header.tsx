@@ -2,6 +2,7 @@ import React from 'react';
 import { CopyButton } from '../common/CopyButton';
 import { EmotionLogo } from '../logo/EmotionLogo';
 import { ProfileAvatar } from '../profile/ProfileAvatar';
+import { ThemeToggle } from '../theme/ThemeToggle';
 import { useProfile } from '../../contexts/ProfileContext';
 import { useTab } from '../../contexts/TabContext';
 
@@ -16,7 +17,7 @@ export const Header: React.FC = () => {
   }, [activeTab, currentProfile, setActiveTab]);
 
   return (
-    <header className="bg-black/30 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+    <header className="bg-card/80 backdrop-blur-xl border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -27,13 +28,13 @@ export const Header: React.FC = () => {
           </div>
           <div className="flex items-center space-x-6">
             <div className="flex items-center gap-4">
-              <span className="text-sm text-foreground/60">Contract Address:</span>
+              <span className="text-sm text-muted-foreground font-medium">Contract Address:</span>
               <CopyButton text="ASDASDASDA" />
               <a
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg text-foreground/60 hover:text-primary hover:bg-primary/10 transition-colors"
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Follow on X (Twitter)"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -41,6 +42,7 @@ export const Header: React.FC = () => {
                 </svg>
               </a>
             </div>
+            <ThemeToggle />
             {currentProfile && (
               <ProfileAvatar
                 profile={currentProfile}

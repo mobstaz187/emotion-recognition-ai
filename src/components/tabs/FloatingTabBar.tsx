@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useProfile } from '../../contexts/ProfileContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 interface Tab {
   id: string;
@@ -16,16 +17,17 @@ interface Props {
 
 export const FloatingTabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }) => {
   const { currentProfile } = useProfile();
+  const { isDark } = useTheme();
   const activeColor = currentProfile?.color || '#3B82F6';
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+      <div className={`${isDark ? 'bg-card' : 'bg-card'} border border-border rounded-2xl p-2 shadow-lg`}>
         <div className="flex gap-2">
           {tabs.map((tab, index) => (
             <React.Fragment key={tab.id}>
               {index > 0 && (
-                <div className="w-px h-8 my-auto bg-white/10" />
+                <div className="w-px h-8 my-auto bg-border" />
               )}
               <button
                 onClick={() => onTabChange(tab.id)}
@@ -47,7 +49,7 @@ export const FloatingTabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }
                   transition-colors duration-200
                   ${activeTab === tab.id 
                     ? 'text-primary' 
-                    : 'text-gray-400 hover:text-gray-300'
+                    : 'text-muted-foreground hover:text-foreground'
                   }
                 `}
                 style={activeTab === tab.id ? { color: activeColor } : undefined}>

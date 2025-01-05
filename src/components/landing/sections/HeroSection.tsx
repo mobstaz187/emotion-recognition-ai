@@ -20,10 +20,10 @@ export const HeroSection = () => {
                 PELIOS
               </span>
             </h1>
-            <p className="text-lg text-gray-400">Powered by $PELIOS</p>
+            <p className="text-muted-foreground">Powered by $PELIOS</p>
           </div>
           
-          <div className="h-16 w-px bg-gradient-to-b from-transparent via-gray-500/20 to-transparent" />
+          <div className="h-16 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
           
           <div className="text-left">
             <h2 className="text-4xl font-bold font-display mb-2">
@@ -31,7 +31,7 @@ export const HeroSection = () => {
                 AI-Powered Analysis
               </span>
             </h2>
-            <p className="text-lg text-gray-400">Advanced emotion detection & market sentiment</p>
+            <p className="text-muted-foreground">Advanced emotion detection & market sentiment</p>
           </div>
         </div>
 
@@ -40,7 +40,7 @@ export const HeroSection = () => {
           {/* Live Analysis Card */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="group relative bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-8 cursor-pointer"
+            className="group relative bg-card border border-border rounded-2xl p-8 cursor-pointer"
             onClick={() => setActiveTab('live')}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -48,7 +48,7 @@ export const HeroSection = () => {
               <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
                 Live Analysis
               </h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Real-time emotion detection through your webcam with advanced AI technology.
               </p>
               <div className="flex items-center text-blue-400 font-medium">
@@ -63,7 +63,7 @@ export const HeroSection = () => {
           {/* Token Analysis Card */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="group relative bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-8 cursor-pointer"
+            className="group relative bg-card border border-border rounded-2xl p-8 cursor-pointer"
             onClick={() => setActiveTab('monitor')}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -71,7 +71,7 @@ export const HeroSection = () => {
               <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
                 Token Analysis
               </h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Advanced market sentiment analysis using AI to detect trading signals.
               </p>
               <div className="flex items-center text-purple-400 font-medium">
@@ -109,12 +109,12 @@ export const HeroSection = () => {
             <motion.div
               key={feature.title}
               whileHover={{ scale: 1.02 }}
-              className="group relative bg-black/20 backdrop-blur-xl border border-white/10 rounded-xl p-6 cursor-pointer"
+              className="group relative bg-card border border-border rounded-xl p-6 cursor-pointer"
               onClick={() => setActiveTab(feature.tab)}
             >
               <div className="text-2xl mb-3">{feature.icon}</div>
               <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-              <p className="text-sm text-gray-400">{feature.description}</p>
+              <p className="text-muted-foreground text-sm">{feature.description}</p>
             </motion.div>
           ))}
         </div>

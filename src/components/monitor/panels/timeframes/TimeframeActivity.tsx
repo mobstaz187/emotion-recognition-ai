@@ -7,8 +7,8 @@ interface Props {
 }
 
 export const TimeframeActivity: React.FC<Props> = ({ signals }) => (
-  <div className="bg-white/5 rounded-lg p-4">
-    <h4 className="text-sm font-medium text-gray-400 mb-3">Market Activity</h4>
+  <div className="bg-background rounded-lg p-4 border border-border">
+    <h4 className="text-sm font-medium text-muted-foreground mb-3">Market Activity</h4>
     <div className="space-y-2">
       {signals.map((signal, index) => (
         <div key={index} className="flex items-center gap-2 text-sm">
@@ -20,7 +20,7 @@ export const TimeframeActivity: React.FC<Props> = ({ signals }) => (
               'text-blue-400'
             }`}
           />
-          <span className="text-gray-300">{signal.message}</span>
+          <span className="text-foreground">{signal.message}</span>
         </div>
       ))}
     </div>

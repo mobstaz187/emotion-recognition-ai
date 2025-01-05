@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -17,6 +18,8 @@ export default {
         'primary-foreground': 'rgb(var(--primary-foreground) / <alpha-value>)',
         secondary: 'rgb(var(--secondary) / <alpha-value>)',
         'secondary-foreground': 'rgb(var(--secondary-foreground) / <alpha-value>)',
+        muted: 'rgb(var(--muted) / <alpha-value>)',
+        'muted-foreground': 'rgb(var(--muted-foreground) / <alpha-value>)',
         border: 'rgb(var(--border) / <alpha-value>)',
       },
       fontFamily: {

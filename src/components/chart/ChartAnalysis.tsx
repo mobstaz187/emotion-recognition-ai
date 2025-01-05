@@ -41,8 +41,8 @@ export const ChartAnalysis: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Chart Analysis</h2>
-            <p className="text-gray-400">Upload a chart to detect support and resistance levels</p>
+            <h2 className="text-2xl font-bold text-foreground mb-2">Chart Analysis</h2>
+            <p className="text-muted-foreground">Upload a chart to detect support and resistance levels</p>
           </div>
           <ChartUpload onImageSelect={handleImageSelect} />
         </div>
@@ -51,11 +51,11 @@ export const ChartAnalysis: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Left Sidebar - Controls */}
             <div className="lg:col-span-1 space-y-8">
-              <div className="bg-white/5 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-6">Analysis Settings</h3>
+              <div className="bg-card rounded-lg border border-border p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-6">Analysis Settings</h3>
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-base font-medium text-gray-300 mb-3">Scenario</h4>
+                    <h4 className="text-base font-medium text-foreground mb-3">Scenario</h4>
                     <ScenarioSelector 
                       scenario={scenario} 
                       onScenarioChange={setScenario} 
@@ -84,10 +84,10 @@ export const ChartAnalysis: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-center h-[400px] bg-white/5 rounded-lg border-2 border-dashed border-white/10">
+          <div className="flex items-center justify-center h-[400px] bg-card rounded-lg border-2 border-dashed border-border">
             <div className="text-center">
-              <p className="text-xl text-gray-400 mb-4">No chart uploaded</p>
-              <p className="text-sm text-gray-500">Upload a chart to begin analysis</p>
+              <p className="text-xl text-muted-foreground mb-4">No chart uploaded</p>
+              <p className="text-sm text-muted-foreground">Upload a chart to begin analysis</p>
             </div>
           </div>
         )}

@@ -10,7 +10,6 @@ export const ImageUploadSection: React.FC = () => {
   const [detections, setDetections] = useState<DetectedFace[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const buttonColor = currentProfile?.color || '#3B82F6';
 
   const handleImageUpload = async (file: File) => {
     setIsLoading(true);
@@ -33,11 +32,11 @@ export const ImageUploadSection: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 p-8">
+      <div className="glass-panel p-8">
         <div className="flex flex-col items-center gap-8">
           <div className="text-center max-w-xl">
             <h2 className="text-2xl font-bold mb-3">Upload Image for Analysis</h2>
-            <p className="text-gray-400 mb-6">
+            <p className="text-muted-foreground mb-6">
               Upload a photo to analyze facial expressions and detect emotions.
             </p>
             
@@ -51,9 +50,8 @@ export const ImageUploadSection: React.FC = () => {
             
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="px-8 py-3 text-white rounded-xl transition-all duration-200 
-                text-lg font-medium flex items-center gap-2 mx-auto hover:opacity-90"
-              style={{ backgroundColor: buttonColor }}
+              className="inline-flex items-center gap-2 px-8 py-3 bg-[#4D9CFF] text-white rounded-xl 
+                transition-all duration-200 text-lg font-medium hover:opacity-90"
               disabled={isLoading}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,18 +61,18 @@ export const ImageUploadSection: React.FC = () => {
               {isLoading ? 'Analyzing...' : 'Upload Image'}
             </button>
             
-            <p className="text-sm text-gray-400 mt-4">
+            <p className="text-sm text-muted-foreground mt-4">
               Supported formats: JPG, PNG, GIF (max 5MB)
             </p>
           </div>
 
           {imageUrl && (
             <div className="w-full max-w-2xl">
-              <div className="relative aspect-video rounded-lg overflow-hidden border border-white/10">
+              <div className="relative aspect-video rounded-lg overflow-hidden border border-border">
                 <img 
                   src={imageUrl} 
                   alt="Uploaded" 
-                  className="w-full h-full object-contain bg-black/50"
+                  className="w-full h-full object-contain bg-card"
                 />
                 {isLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">

@@ -1,17 +1,10 @@
-import { motion } from 'framer-motion';
 import { features } from '../data/features';
 
 export const FeatureSection = () => {
   return (
     <section className="py-32">
       <div className="max-w-6xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="space-y-24"
-        >
+        <div className="space-y-24">
           {features.map((feature, index) => (
             <div 
               key={index}
@@ -26,7 +19,7 @@ export const FeatureSection = () => {
                 >
                   {feature.title}
                 </h3>
-                <p className="text-lg text-gray-400 leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -34,14 +27,14 @@ export const FeatureSection = () => {
                 className="flex-1 p-8 rounded-2xl"
                 style={{ backgroundColor: `${feature.color}10` }}
               >
-                <div className="aspect-video rounded-xl bg-black/30 backdrop-blur-xl border border-white/10 
+                <div className="aspect-video rounded-xl bg-card border border-border 
                   flex items-center justify-center">
-                  <feature.icon className="w-16 h-16 text-gray-300" />
+                  <feature.icon className="w-16 h-16 text-muted-foreground" />
                 </div>
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

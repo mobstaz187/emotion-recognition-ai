@@ -1,42 +1,61 @@
+import * as faceapi from 'face-api.js';
 import { DetectedFace } from '../../types/emotion';
+import { validateDetectionInput } from './validation';
+import { ModelLoadError, DetectionError } from './errors';
 import { loadModels } from '../modelLoader/loader';
 import { modelState } from '../modelLoader/state';
-import { DETECTION_CONFIG } from '../modelLoader/constants';
-import { processImage, normalizeDetection } from './processor';
-import { normalizeEmotions } from '../emotionNormalization';
+import { DEFAULT_CONFIG } from '../modelLoader/config';
+import { normalizeDetections } from './normalizer';
 
 export async function detectEmotions(
   image: HTMLImageElement | HTMLVideoElement,
   retryCount = 0
 ): Promise<DetectedFace[]> {
   try {
+    // Validate input
+    validateDetectionInput(image);
+
+    // Ensure models are loaded
     if (!modelState.modelsLoaded) {
-      await loadModels();
+      try {
+        await loadModels();
+      } catch (error) {
+        throw new ModelLoadError();
+      }
     }
 
-    const detections = await processImage(image);
+    // Perform detection
+    const detections = await faceapi
+      .detectAllFaces(
+        image,
+        new faceapi.TinyFaceDetectorOptions({
+          inputSize: DEFAULT_CONFIG.inputSize,
+          scoreThreshold: DEFAULT_CONFIG.scoreThreshold
+        })
+      )
+      .withFaceExpressions();
 
+    // Handle no detections case
     if (!detections || detections.length === 0) {
-      if (retryCount < DETECTION_CONFIG.maxRetries) {
-        await new Promise(resolve => setTimeout(resolve, DETECTION_CONFIG.retryDelay));
+      if (retryCount < DEFAULT_CONFIG.maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, DEFAULT_CONFIG.retryDelay));
         return detectEmotions(image, retryCount + 1);
       }
       return [];
     }
 
-    return detections.map(detection => {
-      const normalized = normalizeDetection(detection);
-      return {
-        expressions: normalizeEmotions(normalized.expressions),
-        detection: normalized.detection
-      };
-    });
+    // Normalize and return results
+    return normalizeDetections(detections);
   } catch (error) {
-    console.error('Face detection error:', error);
-    if (retryCount < DETECTION_CONFIG.maxRetries) {
-      await new Promise(resolve => setTimeout(resolve, DETECTION_CONFIG.retryDelay));
+    if (error instanceof ModelLoadError || error instanceof DetectionError) {
+      throw error;
+    }
+    
+    if (retryCount < DEFAULT_CONFIG.maxRetries) {
+      await new Promise(resolve => setTimeout(resolve, DEFAULT_CONFIG.retryDelay));
       return detectEmotions(image, retryCount + 1);
     }
-    throw new Error('Face detection failed after multiple retries');
+    
+    throw new DetectionError(error instanceof Error ? error.message : 'Unknown detection error');
   }
 }

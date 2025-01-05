@@ -5,6 +5,7 @@ import { TokenInfo } from './TokenInfo';
 import { TokenAnalysisPanel } from './TokenAnalysisPanel';
 import { useTokenData } from '../../hooks/useTokenData';
 import { useProfile } from '../../contexts/ProfileContext';
+import { motion } from 'framer-motion';
 
 export const TokenMonitor: React.FC = () => {
   const [address, setAddress] = useState('');
@@ -14,9 +15,9 @@ export const TokenMonitor: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="glass-panel p-6 space-y-8">
+      <div className="glass-panel p-6 space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Token Sentiment Analysis</h2>
+          <h2 className="text-2xl font-bold text-foreground">Token Sentiment Analysis</h2>
           <div 
             className="px-4 py-1.5 rounded-full"
             style={{
@@ -26,16 +27,20 @@ export const TokenMonitor: React.FC = () => {
               color: profileColor
             }}
           >
-            <span className="text-sm">Solana Tokens Only and Tokens Migrated to Raydium</span>
+            <span className="text-sm">Solana Tokens Only</span>
           </div>
         </div>
         
         <TokenSearch onSearch={setAddress} />
         
         {error && (
-          <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500"
+          >
             {error}
-          </div>
+          </motion.div>
         )}
         
         {isLoading && (
@@ -43,11 +48,17 @@ export const TokenMonitor: React.FC = () => {
         )}
         
         {tokenData && address && (
-          <div className="space-y-8">
-            <TokenSocials data={tokenData} />
-            <TokenInfo data={tokenData} address={address} />
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-4"
+          >
+            <div className="bg-card/80 rounded-xl border border-border p-6">
+              <TokenSocials data={tokenData} />
+              <TokenInfo data={tokenData} address={address} />
+            </div>
             <TokenAnalysisPanel data={tokenData} address={address} />
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

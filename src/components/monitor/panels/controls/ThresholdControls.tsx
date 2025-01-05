@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColorThresholds } from '../../../types/chart';
+import { ColorThresholds } from '../../../../types/chart';
 
 interface Props {
   thresholds: ColorThresholds;
