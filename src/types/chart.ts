@@ -1,14 +1,22 @@
-export interface Level {
+// Update ChartPattern interface to include additional properties
+export interface ChartPattern {
+  type: string;
+  name: string;
+  description: string;
+  reliability: number;
+  points: Point[];
+  confidence: number;
+}
+
+// Update PriceLevel interface to include type
+export interface PriceLevel {
   type: 'support' | 'resistance';
   price: number;
   strength: number;
+  touches: number;
 }
 
-export interface ColorThresholds {
-  red: number;
-  green: number;
-}
-
+// Update Candle interface with additional properties
 export interface Candle {
   open: number;
   high: number;
@@ -16,31 +24,11 @@ export interface Candle {
   close: number;
   volume: number;
   timestamp: number;
-}
-
-export interface PriceLevel {
-  price: number;
-  strength: number;
-  touches: number;
-}
-
-export interface Point {
   x: number;
-  y: number;
+  isBullish: boolean;
 }
 
-export interface ChartPattern {
-  type: string;
-  points: Point[];
-  confidence: number;
-}
-
-export interface CandlePattern {
-  type: string;
-  candles: Candle[];
-  significance: number;
-}
-
+// Update ChartAnalysisResult interface
 export interface ChartAnalysisResult {
   levels: Level[];
   patterns: ChartPattern[];
@@ -48,4 +36,10 @@ export interface ChartAnalysisResult {
     direction: 'up' | 'down' | 'sideways';
     confidence: number;
   };
+  sentiment: string;
+  signals: Array<{
+    type: 'bullish' | 'bearish' | 'neutral';
+    message: string;
+  }>;
+  imageUrl?: string;
 }

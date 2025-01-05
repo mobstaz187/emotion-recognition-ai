@@ -8,9 +8,6 @@ interface Props {
 }
 
 export const AnalysisResults: React.FC<Props> = ({ levels, scenario }) => {
-  const supports = levels.filter(l => l.type === 'support');
-  const resistances = levels.filter(l => l.type === 'resistance');
-
   const scenarioDescription = {
     bullish: 'Price likely to break above resistance levels',
     bearish: 'Price likely to break below support levels',

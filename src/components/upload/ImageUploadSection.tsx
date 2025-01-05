@@ -1,13 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useProfile } from '../../contexts/ProfileContext';
-import { detectEmotions } from '../../utils/emotionDetection';
-import { EmotionResults } from '../EmotionResults';
-import { DetectedFace } from '../../types/emotion';
 
 export const ImageUploadSection: React.FC = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { currentProfile } = useProfile();
   const buttonColor = currentProfile?.color || '#3B82F6';
-  // ... rest of the component code ...
+
+  const handleFileSelect = () => {
+    fileInputRef.current?.click();
+  };
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -19,8 +20,15 @@ export const ImageUploadSection: React.FC = () => {
               Upload a photo to analyze facial expressions and detect emotions.
             </p>
             
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+            />
+            
             <button
-              onClick={() => fileInputRef.current?.click()}
+              onClick={handleFileSelect}
               className="px-8 py-3 text-white rounded-xl transition-all duration-200 
                 text-lg font-medium flex items-center gap-2 mx-auto hover:opacity-90"
               style={{ backgroundColor: buttonColor }}
@@ -36,8 +44,6 @@ export const ImageUploadSection: React.FC = () => {
               Supported formats: JPG, PNG, GIF (max 5MB)
             </p>
           </div>
-          
-          {/* ... rest of the component JSX ... */}
         </div>
       </div>
     </div>
