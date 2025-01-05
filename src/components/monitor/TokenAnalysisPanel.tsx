@@ -21,10 +21,7 @@ export const TokenAnalysisPanel: React.FC<Props> = ({ data, address }) => {
         analysis={sentimentAnalysis}
       />
       
-      <TimeframeAnalysis 
-        address={address}
-        currentPrice={data.price}
-      />
+      <TimeframeAnalysis address={address} />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <TechnicalIndicatorsPanel indicators={data.technicalIndicators} />

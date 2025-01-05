@@ -1,3 +1,3 @@
-export { detectStructureShift } from './structureAnalysis';
-export { recognizePatterns } from '../recognition/patternRecognition';
-export { detectCandles } from '../recognition/candleDetection';
+export { analyzeStructure as detectStructureShift } from './structureAnalysis';
+export { analyzeLevels } from './levels';
+export { analyzePatterns } from './patterns';
