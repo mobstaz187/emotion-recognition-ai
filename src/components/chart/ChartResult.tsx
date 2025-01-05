@@ -1,25 +1,34 @@
-```typescript
 import React from 'react';
-import { ChartAnalysisResult } from '../../types/chart';
+import { Level } from '../../types/chart';
 
 interface Props {
-  result: ChartAnalysisResult;
+  levels: Level[];
+  scenario: 'bullish' | 'bearish' | 'neutral';
 }
 
-export const ChartResult: React.FC<Props> = ({ result }) => {
+export const ChartResult: React.FC<Props> = ({ levels, scenario }) => {
+  const supportLevels = levels.filter(l => l.type === 'support');
+  const resistanceLevels = levels.filter(l => l.type === 'resistance');
+
   return (
-    <div className="space-y-6">
-      {result.signals.map((signal, index) => (
-        <div key={index} className={`
-          p-4 rounded-lg border
-          ${signal.type === 'bullish' ? 'bg-green-500/10 border-green-500/20' :
-            signal.type === 'bearish' ? 'bg-red-500/10 border-red-500/20' :
-            'bg-blue-500/10 border-blue-500/20'}
-        `}>
-          <p className="text-gray-300">{signal.message}</p>
-        </div>
-      ))}
+    <div className="bg-white/5 rounded-lg p-4">
+      <h3 className={`text-lg font-semibold mb-2 ${
+        scenario === 'bullish' ? 'text-green-400' :
+        scenario === 'bearish' ? 'text-red-400' :
+        'text-blue-400'
+      }`}>
+        Analysis Results
+      </h3>
+      <div className="space-y-2">
+        <p className="text-gray-400">
+          Found {supportLevels.length} support and {resistanceLevels.length} resistance levels
+        </p>
+        <p className="text-gray-400">
+          {scenario === 'bullish' && 'Price likely to break above resistance levels'}
+          {scenario === 'bearish' && 'Price likely to break below support levels'}
+          {scenario === 'neutral' && 'Price likely to stay within the range'}
+        </p>
+      </div>
     </div>
   );
 };
-```

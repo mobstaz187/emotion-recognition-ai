@@ -1,15 +1,13 @@
-```typescript
 import React from 'react';
+import { TimeframeSignal } from '../../../../types/timeframe';
 import { SignalIcon } from '../../icons/SignalIcon';
-import type { TimeframeSignal } from '../../../../types/timeframe';
 
 interface Props {
   signals: TimeframeSignal[];
 }
 
-export const SignalList: React.FC<Props> = ({ signals }) => (
-  <div className="bg-white/5 rounded-lg p-4">
-    <h4 className="text-sm font-medium text-gray-400 mb-3">Market Activity</h4>
+export const SignalList: React.FC<Props> = ({ signals }) => {
+  return (
     <div className="space-y-2">
       {signals.map((signal, index) => (
         <div key={index} className="flex items-center gap-2 text-sm">
@@ -25,6 +23,5 @@ export const SignalList: React.FC<Props> = ({ signals }) => (
         </div>
       ))}
     </div>
-  </div>
-);
-```
+  );
+};

@@ -1,28 +1,32 @@
-```typescript
 import React from 'react';
+import { TimeframeData } from '../../../../types/timeframe';
 import { formatNumber } from '../../../../utils/formatNumber';
+import { SignalList } from './SignalList';
 
 interface Props {
-  change: number;
-  volume: number;
+  data: TimeframeData;
+  timeframe: string;
 }
 
-export const TimeframeDisplay: React.FC<Props> = ({ change, volume }) => (
-  <div className="bg-white/5 rounded-lg p-4">
-    <div className="flex justify-between text-center">
-      <div className="flex-1 border-r border-white/10">
-        <div className="text-sm text-gray-400 mb-1">Price Change</div>
-        <div className={`text-lg font-semibold ${
-          change >= 0 ? 'text-green-400' : 'text-red-400'
-        }`}>
-          {change >= 0 ? '+' : ''}{change.toFixed(3)}%
+export const TimeframeDisplay: React.FC<Props> = ({ data, timeframe }) => {
+  return (
+    <div className="bg-white/5 rounded-lg p-4">
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <div className="text-sm text-gray-400">Price Change ({timeframe})</div>
+          <div className={`text-lg font-semibold ${
+            data.change >= 0 ? 'text-green-400' : 'text-red-400'
+          }`}>
+            {data.change >= 0 ? '+' : ''}{data.change.toFixed(3)}%
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-sm text-gray-400">Volume</div>
+          <div className="text-lg font-semibold">${formatNumber(data.volume)}</div>
         </div>
       </div>
-      <div className="flex-1">
-        <div className="text-sm text-gray-400 mb-1">Volume</div>
-        <div className="text-lg font-semibold">${formatNumber(volume)}</div>
-      </div>
+
+      <SignalList signals={data.signals} />
     </div>
-  </div>
-);
-```
+  );
+};
