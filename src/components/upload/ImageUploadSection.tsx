@@ -9,14 +9,17 @@ export const ImageUploadSection: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [detections, setDetections] = useState<DetectedFace[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const buttonColor = currentProfile?.color || '#3B82F6';
 
   const handleImageUpload = async (file: File) => {
     setIsLoading(true);
     try {
-      const imageUrl = URL.createObjectURL(file);
+      const url = URL.createObjectURL(file);
+      setImageUrl(url);
+      
       const img = new Image();
-      img.src = imageUrl;
+      img.src = url;
       await new Promise((resolve) => (img.onload = resolve));
       
       const results = await detectEmotions(img);
@@ -64,6 +67,23 @@ export const ImageUploadSection: React.FC = () => {
               Supported formats: JPG, PNG, GIF (max 5MB)
             </p>
           </div>
+
+          {imageUrl && (
+            <div className="w-full max-w-2xl">
+              <div className="relative aspect-video rounded-lg overflow-hidden border border-white/10">
+                <img 
+                  src={imageUrl} 
+                  alt="Uploaded" 
+                  className="w-full h-full object-contain bg-black/50"
+                />
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="text-primary animate-pulse">Analyzing image...</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {detections.length > 0 && (
             <div className="w-full">
