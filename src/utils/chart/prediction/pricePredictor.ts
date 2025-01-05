@@ -1,3 +1,4 @@
+```typescript
 import { Candle } from '../../../types/chart';
 
 export interface PricePrediction {
@@ -7,7 +8,7 @@ export interface PricePrediction {
   reason: string;
 }
 
-export function predictPrice(candles: Candle[]): PricePrediction {
+export function predictPrice(_candles: Candle[]): PricePrediction {
   return {
     direction: 'sideways',
     targetPrice: 0,
@@ -15,3 +16,4 @@ export function predictPrice(candles: Candle[]): PricePrediction {
     reason: ''
   };
 }
+```

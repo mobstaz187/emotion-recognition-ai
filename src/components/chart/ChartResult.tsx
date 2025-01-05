@@ -1,3 +1,4 @@
+```typescript
 import React from 'react';
 import { ChartAnalysisResult } from '../../types/chart';
 
@@ -6,11 +7,9 @@ interface Props {
 }
 
 export const ChartResult: React.FC<Props> = ({ result }) => {
-  const { levels, patterns, prediction, signals } = result;
-
   return (
     <div className="space-y-6">
-      {signals.map((signal, index) => (
+      {result.signals.map((signal, index) => (
         <div key={index} className={`
           p-4 rounded-lg border
           ${signal.type === 'bullish' ? 'bg-green-500/10 border-green-500/20' :
@@ -23,3 +22,4 @@ export const ChartResult: React.FC<Props> = ({ result }) => {
     </div>
   );
 };
+```

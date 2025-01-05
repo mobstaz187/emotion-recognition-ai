@@ -1,5 +1,8 @@
+```typescript
 import { ChartPattern, Candle } from '../../../types/chart';
 
-export function analyzePatterns(candles: Candle[]): ChartPattern[] {
-  return []; // Implement pattern analysis logic
+export function analyzePatterns(_candles: Candle[]): ChartPattern[] {
+  // Implement pattern analysis logic
+  return [];
 }
+```

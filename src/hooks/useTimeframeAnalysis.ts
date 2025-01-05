@@ -1,8 +1,8 @@
+```typescript
 import { useState, useEffect } from 'react';
-import { TimeframeAnalysis, TimeframeData } from '../types/timeframe';
-import { analyzeTimeframe } from '../utils/analysis/timeframeAnalysis';
+import { TimeframeAnalysis } from '../types/timeframe';
 
-const createEmptyTimeframe = (): TimeframeData => ({
+const createEmptyTimeframe = () => ({
   change: 0,
   volume: 0,
   trades: 0,
@@ -18,8 +18,25 @@ export function useTimeframeAnalysis(address: string) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // ... rest of the implementation
+    if (!address) return;
+
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch and process data
+        const response = await fetch(`/api/timeframe/${address}`);
+        const data = await response.json();
+        setAnalysis(data);
+      } catch (error) {
+        console.error('Error fetching timeframe data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [address]);
 
   return { analysis, isLoading };
 }
+```

@@ -1,3 +1,4 @@
+```typescript
 import { Candle } from '../../../types/chart';
 
 interface MarketContext {
@@ -6,7 +7,7 @@ interface MarketContext {
   volume: number;
 }
 
-export function analyzeMarketContext(candles: Candle[]): MarketContext {
+export function analyzeMarketContext(_candles: Candle[]): MarketContext {
   return {
     trend: determineTrend(),
     volatility: calculateVolatility(),
@@ -25,3 +26,4 @@ function calculateVolatility(): number {
 function analyzeVolume(): number {
   return 0;
 }
+```

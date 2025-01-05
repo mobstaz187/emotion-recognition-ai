@@ -1,31 +1,17 @@
+```typescript
 import { TimeframeData } from '../../types/timeframe';
-
-interface Signal {
-  type: 'bullish' | 'bearish' | 'neutral';
-  message: string;
-}
 
 interface TimeframeAnalysisResult {
   sentiment: 'bullish' | 'bearish' | 'neutral';
-  signals: Signal[];
+  signals: Array<{
+    type: 'bullish' | 'bearish' | 'neutral';
+    message: string;
+  }>;
 }
 
-export function analyzeTimeframe(
-  data: TimeframeData
-): TimeframeAnalysisResult {
-  const signals: Signal[] = [];
-  const sentiment: 'bullish' | 'bearish' | 'neutral' = 'neutral';
-
-  // Analyze volume
-  if (data.volume > 0) {
-    const volumePerTrade = data.volume / (data.trades || 1);
-    if (volumePerTrade > 1000) {
-      signals.push({
-        type: 'bullish',
-        message: `High volume per trade: $${volumePerTrade.toFixed(2)}`
-      });
-    }
-  }
+export function analyzeTimeframe(data: TimeframeData): TimeframeAnalysisResult {
+  const signals: Array<{type: 'bullish' | 'bearish' | 'neutral', message: string}> = [];
+  let sentiment: 'bullish' | 'bearish' | 'neutral' = 'neutral';
 
   // Analyze price change
   if (data.change > 0) {
@@ -33,12 +19,15 @@ export function analyzeTimeframe(
       type: 'bullish',
       message: `Price increased by ${data.change.toFixed(2)}%`
     });
+    sentiment = 'bullish';
   } else if (data.change < 0) {
     signals.push({
       type: 'bearish',
       message: `Price decreased by ${Math.abs(data.change).toFixed(2)}%`
     });
+    sentiment = 'bearish';
   }
 
   return { sentiment, signals };
 }
+```

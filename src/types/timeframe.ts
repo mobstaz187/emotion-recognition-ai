@@ -1,11 +1,14 @@
+```typescript
+export interface TimeframeSignal {
+  type: 'bullish' | 'bearish' | 'neutral';
+  message: string;
+}
+
 export interface TimeframeData {
   change: number;
   volume: number;
   trades: number;
-  signals: Array<{
-    type: 'bullish' | 'bearish' | 'neutral';
-    message: string;
-  }>;
+  signals: TimeframeSignal[];
 }
 
 export interface TimeframeAnalysis {
@@ -13,3 +16,4 @@ export interface TimeframeAnalysis {
   m30: TimeframeData;
   m15: TimeframeData;
 }
+```
