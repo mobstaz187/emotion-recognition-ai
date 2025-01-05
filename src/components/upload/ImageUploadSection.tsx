@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { useProfile } from '../../contexts/ProfileContext';
 import { DetectedFace } from '../../types/emotion';
 import { EmotionResults } from '../EmotionResults';
 import { detectEmotions } from '../../utils/emotionDetection';
 
 export const ImageUploadSection: React.FC = () => {
-  const { currentProfile } = useProfile();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [detections, setDetections] = useState<DetectedFace[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +48,7 @@ export const ImageUploadSection: React.FC = () => {
             
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-[#4D9CFF] text-white rounded-xl 
+              className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl 
                 transition-all duration-200 text-lg font-medium hover:opacity-90"
               disabled={isLoading}
             >

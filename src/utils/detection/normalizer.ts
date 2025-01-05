@@ -1,4 +1,4 @@
-import { DetectedFace } from '../../types/emotion';
+import { DetectedFace, EmotionMap } from '../../types/emotion';
 import { FaceDetection, FaceExpressions } from 'face-api.js';
 
 export function normalizeDetections(
@@ -20,12 +20,16 @@ export function normalizeDetections(
   }));
 }
 
-function normalizeExpressions(expressions: FaceExpressions): Record<string, number> {
+function normalizeExpressions(expressions: FaceExpressions): EmotionMap {
   const total = Object.values(expressions).reduce((sum, val) => sum + val, 0);
-  if (total === 0) return { neutral: 1 };
-
-  return Object.entries(expressions).reduce((acc, [key, value]) => {
-    acc[key] = value / total;
-    return acc;
-  }, {} as Record<string, number>);
+  
+  return {
+    angry: expressions.angry / total,
+    disgusted: expressions.disgusted / total,
+    fearful: expressions.fearful / total,
+    happy: expressions.happy / total,
+    neutral: expressions.neutral / total,
+    sad: expressions.sad / total,
+    surprised: expressions.surprised / total
+  };
 }
