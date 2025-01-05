@@ -1,100 +1,24 @@
 import { Candle } from '../../../types/chart';
-import { PricePrediction } from './pricePredictor';
 
-export function analyzeMarketContext(
-  candles: Candle[],
-  volatility: number
-): PricePrediction {
-  const momentum = calculateMomentum(candles);
-  const volume = calculateVolumeProfile(candles);
-  const trend = analyzeTrend(candles);
-
-  const direction = determineDirection(momentum, volume, trend);
-  const confidence = calculateConfidence(momentum, volume, trend);
-  const targetPrice = calculateTarget(candles[candles.length - 1].close, direction, volatility);
-
+export function analyzeMarketContext(candles: Candle[]) {
   return {
-    direction,
-    targetPrice,
-    confidence,
-    reason: generateReason(direction, momentum, volume, trend)
+    trend: determineTrend(candles),
+    volatility: calculateVolatility(candles),
+    volume: analyzeVolume(candles)
   };
 }
 
-function calculateMomentum(candles: Candle[]): number {
-  const period = Math.min(14, candles.length);
-  const recentCandles = candles.slice(-period);
-  return (recentCandles[recentCandles.length - 1].close - recentCandles[0].close) / 
-         recentCandles[0].close;
+function determineTrend(candles: Candle[]): 'up' | 'down' | 'sideways' {
+  // Trend analysis logic
+  return 'sideways';
 }
 
-function calculateVolumeProfile(candles: Candle[]): number {
-  // Calculate relative volume strength
-  const recentCandles = candles.slice(-5);
-  const avgBodySize = recentCandles.reduce((sum, candle) => 
-    sum + Math.abs(candle.close - candle.open), 0
-  ) / recentCandles.length;
-
-  const latestBodySize = Math.abs(
-    candles[candles.length - 1].close - candles[candles.length - 1].open
-  );
-
-  // Return volume strength as a ratio (0-1)
-  return Math.min(latestBodySize / (avgBodySize || 1), 1);
+function calculateVolatility(candles: Candle[]): number {
+  // Volatility calculation
+  return 0;
 }
 
-function analyzeTrend(candles: Candle[]): 'up' | 'down' | 'sideways' {
-  const momentum = calculateMomentum(candles);
-  if (Math.abs(momentum) < 0.01) return 'sideways';
-  return momentum > 0 ? 'up' : 'down';
-}
-
-function determineDirection(
-  momentum: number,
-  volume: number,
-  trend: 'up' | 'down' | 'sideways'
-): 'up' | 'down' | 'sideways' {
-  if (Math.abs(momentum) < 0.01) return 'sideways';
-  if (volume > 0.7) return trend;
-  return momentum > 0 ? 'up' : 'down';
-}
-
-function calculateConfidence(
-  momentum: number,
-  volume: number,
-  trend: 'up' | 'down' | 'sideways'
-): number {
-  const momentumStrength = Math.min(Math.abs(momentum) * 10, 1);
-  const volumeStrength = Math.min(volume, 1);
-  const trendStrength = trend === 'sideways' ? 0.5 : 0.8;
-  
-  return (momentumStrength + volumeStrength + trendStrength) / 3;
-}
-
-function calculateTarget(
-  currentPrice: number,
-  direction: 'up' | 'down' | 'sideways',
-  volatility: number
-): number {
-  const moveSize = volatility * 2;
-  switch (direction) {
-    case 'up':
-      return currentPrice * (1 + moveSize);
-    case 'down':
-      return currentPrice * (1 - moveSize);
-    default:
-      return currentPrice;
-  }
-}
-
-function generateReason(
-  direction: 'up' | 'down' | 'sideways',
-  momentum: number,
-  volume: number,
-  trend: 'up' | 'down' | 'sideways'
-): string {
-  const momentumStr = Math.abs(momentum) > 0.02 ? 'strong' : 'weak';
-  const volumeStr = volume > 0.7 ? 'high' : 'low';
-  
-  return `${direction.toUpperCase()} prediction based on ${momentumStr} momentum, ${volumeStr} volume, and ${trend} trend`;
+function analyzeVolume(candles: Candle[]): number {
+  // Volume analysis
+  return 0;
 }
