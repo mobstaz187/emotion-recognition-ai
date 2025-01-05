@@ -1,24 +1,27 @@
 import { Candle } from '../../../types/chart';
 
-export function analyzeMarketContext(candles: Candle[]) {
+interface MarketContext {
+  trend: 'up' | 'down' | 'sideways';
+  volatility: number;
+  volume: number;
+}
+
+export function analyzeMarketContext(candles: Candle[]): MarketContext {
   return {
-    trend: determineTrend(candles),
-    volatility: calculateVolatility(candles),
-    volume: analyzeVolume(candles)
+    trend: determineTrend(),
+    volatility: calculateVolatility(),
+    volume: analyzeVolume()
   };
 }
 
-function determineTrend(candles: Candle[]): 'up' | 'down' | 'sideways' {
-  // Trend analysis logic
+function determineTrend(): 'up' | 'down' | 'sideways' {
   return 'sideways';
 }
 
-function calculateVolatility(candles: Candle[]): number {
-  // Volatility calculation
+function calculateVolatility(): number {
   return 0;
 }
 
-function analyzeVolume(candles: Candle[]): number {
-  // Volume analysis
+function analyzeVolume(): number {
   return 0;
 }

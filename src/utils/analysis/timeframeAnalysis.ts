@@ -11,8 +11,7 @@ interface TimeframeAnalysisResult {
 }
 
 export function analyzeTimeframe(
-  data: TimeframeData,
-  timeframe: '30m'
+  data: TimeframeData
 ): TimeframeAnalysisResult {
   const signals: Signal[] = [];
   const sentiment: 'bullish' | 'bearish' | 'neutral' = 'neutral';
