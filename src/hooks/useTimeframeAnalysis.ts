@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
-import { TimeframeAnalysis } from '../types/timeframe';
+import { TimeframeAnalysis, TimeframeData } from '../types/timeframe';
 import { analyzeTimeframe } from '../utils/analysis/timeframeAnalysis';
 
-const EMPTY_TIMEFRAME = { change: 0, volume: 0, trades: 0, signals: [] };
+const EMPTY_TIMEFRAME: TimeframeData = {
+  change: 0,
+  volume: 0,
+  trades: 0,
+  signals: []
+};
 
 export function useTimeframeAnalysis(address: string) {
   const [analysis, setAnalysis] = useState<TimeframeAnalysis>({
@@ -34,22 +39,25 @@ export function useTimeframeAnalysis(address: string) {
         }
 
         // Calculate metrics for each timeframe
-        const h1Data = {
+        const h1Data: TimeframeData = {
           change: pair.priceChange?.h1 || 0,
           volume: pair.volume?.h1 || 0,
-          trades: Math.round(pair.txns?.h1?.buys || 0 + pair.txns?.h1?.sells || 0)
+          trades: Math.round(pair.txns?.h1?.buys || 0 + pair.txns?.h1?.sells || 0),
+          signals: []
         };
 
-        const m30Data = {
+        const m30Data: TimeframeData = {
           change: h1Data.change / 2,
           volume: h1Data.volume / 2,
-          trades: Math.round(h1Data.trades / 2)
+          trades: Math.round(h1Data.trades / 2),
+          signals: []
         };
 
-        const m15Data = {
+        const m15Data: TimeframeData = {
           change: h1Data.change / 4,
           volume: h1Data.volume / 4,
-          trades: Math.round(h1Data.trades / 4)
+          trades: Math.round(h1Data.trades / 4),
+          signals: []
         };
 
         // Analyze each timeframe

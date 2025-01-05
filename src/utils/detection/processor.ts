@@ -1,6 +1,6 @@
 import * as faceapi from 'face-api.js';
 import { DETECTION_CONFIG } from '../modelLoader/constants';
-import { ProcessedDetection } from '../../types/emotion';
+import type { ProcessedDetection, NormalizedDetection } from '../../types/detection';
 
 export async function processImage(
   image: HTMLImageElement | HTMLVideoElement
@@ -28,30 +28,32 @@ export async function processImage(
       .withFaceExpressions();
 
     // Filter out any detections with invalid boxes
-    return detections
-      .filter(detection => {
-        const box = detection.detection.box;
-        return (
-          box &&
-          typeof box.x === 'number' &&
-          typeof box.y === 'number' &&
-          typeof box.width === 'number' &&
-          typeof box.height === 'number'
-        );
-      })
-      .map(detection => ({
-        expressions: detection.expressions,
-        detection: {
-          box: {
-            x: Math.max(0, detection.detection.box.x),
-            y: Math.max(0, detection.detection.box.y),
-            width: Math.min(width - detection.detection.box.x, detection.detection.box.width),
-            height: Math.min(height - detection.detection.box.y, detection.detection.box.height)
-          }
-        }
-      }));
+    return detections.filter(detection => {
+      const box = detection.detection.box;
+      return (
+        box &&
+        typeof box.x === 'number' &&
+        typeof box.y === 'number' &&
+        typeof box.width === 'number' &&
+        typeof box.height === 'number'
+      );
+    });
   } catch (error) {
     console.error('Face detection processing error:', error);
     throw error;
   }
+}
+
+export function normalizeDetection(detection: ProcessedDetection): NormalizedDetection {
+  return {
+    expressions: detection.expressions,
+    detection: {
+      box: {
+        x: Math.max(0, detection.detection.box.x),
+        y: Math.max(0, detection.detection.box.y),
+        width: detection.detection.box.width,
+        height: detection.detection.box.height
+      }
+    }
+  };
 }

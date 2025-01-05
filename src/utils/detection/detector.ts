@@ -2,7 +2,7 @@ import { DetectedFace } from '../../types/emotion';
 import { loadModels } from '../modelLoader/loader';
 import { modelState } from '../modelLoader/state';
 import { DETECTION_CONFIG } from '../modelLoader/constants';
-import { processImage } from './processor';
+import { processImage, normalizeDetection } from './processor';
 import { normalizeEmotions } from '../emotionNormalization';
 
 export async function detectEmotions(
@@ -24,17 +24,13 @@ export async function detectEmotions(
       return [];
     }
 
-    return detections.map((detection) => ({
-      expressions: normalizeEmotions(detection.expressions),
-      detection: {
-        box: {
-          x: detection.detection.box.x,
-          y: detection.detection.box.y,
-          width: detection.detection.box.width,
-          height: detection.detection.box.height
-        }
-      }
-    }));
+    return detections.map(detection => {
+      const normalized = normalizeDetection(detection);
+      return {
+        expressions: normalizeEmotions(normalized.expressions),
+        detection: normalized.detection
+      };
+    });
   } catch (error) {
     console.error('Face detection error:', error);
     if (retryCount < DETECTION_CONFIG.maxRetries) {
