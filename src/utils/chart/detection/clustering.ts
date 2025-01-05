@@ -1,4 +1,5 @@
-// Handles price clustering analysis
+import { DETECTION_CONFIG } from './config';
+
 export interface PriceCluster {
   price: number;
   density: number;
@@ -8,17 +9,15 @@ export interface PriceCluster {
 export function findPriceClusters(
   points: number[],
   height: number,
-  clusterSize: number = 5
+  clusterSize = DETECTION_CONFIG.CLUSTER_SIZE
 ): PriceCluster[] {
   const clusters: Map<number, { count: number, touches: number }> = new Map();
   
-  // Group prices into clusters
   points.forEach(price => {
     const clusterPrice = Math.round(price / clusterSize) * clusterSize;
     const existing = clusters.get(clusterPrice) || { count: 0, touches: 0 };
     
     existing.count++;
-    // Count as new touch if no nearby prices were recently processed
     if (!clusters.has(clusterPrice - 1) && !clusters.has(clusterPrice + 1)) {
       existing.touches++;
     }
@@ -28,9 +27,9 @@ export function findPriceClusters(
 
   return Array.from(clusters.entries())
     .map(([price, data]) => ({
-      price: (price / height) * 100, // Convert to percentage
+      price: (price / height) * 100,
       density: data.count,
       touches: data.touches
     }))
-    .filter(cluster => cluster.touches >= 2); // Require minimum touches
+    .filter(cluster => cluster.touches >= DETECTION_CONFIG.MIN_TOUCHES);
 }

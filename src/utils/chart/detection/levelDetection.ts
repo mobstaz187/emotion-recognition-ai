@@ -4,6 +4,7 @@ import { calculateThresholds } from './thresholds';
 import { mergeSimilarLevels } from './merger';
 import { findPriceClusters } from './clustering';
 import { collectPricePoints } from './priceCollection';
+import { DETECTION_CONFIG } from './config';
 
 export function detectLevels(
   points: PricePoint[],
@@ -25,7 +26,7 @@ export function detectLevels(
     }
   });
 
-  // Detect support levels using price clustering
+  // Detect support levels with increased sensitivity
   const pricePoints = collectPricePoints(colorMatrix, height);
   const clusters = findPriceClusters(pricePoints, height);
   
@@ -33,7 +34,7 @@ export function detectLevels(
     levels.push({
       type: 'support',
       price: cluster.price,
-      strength: (cluster.density * cluster.touches) / (width * height)
+      strength: (cluster.density * cluster.touches * DETECTION_CONFIG.SUPPORT_SENSITIVITY_MULTIPLIER) / (width * height)
     });
   });
 

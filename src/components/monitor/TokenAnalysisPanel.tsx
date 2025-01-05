@@ -1,4 +1,3 @@
-```typescript
 import React from 'react';
 import { TokenData } from '../../types/token';
 import { TechnicalIndicatorsPanel } from './panels/TechnicalIndicatorsPanel';
@@ -31,4 +30,3 @@ export const TokenAnalysisPanel: React.FC<Props> = ({ data, address }) => {
     </div>
   );
 };
-```

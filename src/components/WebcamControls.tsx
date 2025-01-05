@@ -40,7 +40,11 @@ export const WebcamControls: React.FC<Props> = ({
         disabled={isProcessing}
         sx={{
           borderColor: `${buttonColor}80`,
-          color: buttonColor
+          color: buttonColor,
+          '&:hover': {
+            borderColor: buttonColor,
+            backgroundColor: `${buttonColor}10`
+          }
         }}
         className="border-2 hover:bg-white/5 font-medium px-6 py-2 rounded-xl
           disabled:opacity-50 disabled:cursor-not-allowed"

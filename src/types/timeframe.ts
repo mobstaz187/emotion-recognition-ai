@@ -1,4 +1,3 @@
-```typescript
 export interface TimeframeSignal {
   type: 'bullish' | 'bearish' | 'neutral';
   message: string;
@@ -16,4 +15,3 @@ export interface TimeframeAnalysis {
   m30: TimeframeData;
   m15: TimeframeData;
 }
-```

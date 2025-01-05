@@ -1,24 +1,38 @@
-```typescript
 import React, { useState } from 'react';
 import { useTimeframeAnalysis } from '../../../hooks/useTimeframeAnalysis';
 import { TimeframeSelector } from './timeframes/TimeframeSelector';
-import { TimeframeDisplay } from './timeframes/TimeframeDisplay';
-import { SignalList } from './timeframes/SignalList';
-import { LoadingPanel } from '../../common/LoadingPanel';
+import { TimeframeMetrics } from './timeframes/TimeframeMetrics';
+import { TimeframeActivity } from './timeframes/TimeframeActivity';
+import { TimeframeTrades } from './timeframes/TimeframeTrades';
 
 interface Props {
   address: string;
 }
 
+type TimeframeOption = '15m' | '30m' | '1h';
+
 export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<'15m' | '30m' | '1h'>('15m');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('15m');
   const { analysis, isLoading } = useTimeframeAnalysis(address);
 
   if (isLoading) {
-    return <LoadingPanel message="Loading timeframe analysis..." />;
+    return (
+      <div className="bg-black/20 backdrop-blur-xl rounded-xl border border-white/10 p-6">
+        <div className="h-[140px] flex items-center justify-center">
+          <div className="text-primary animate-pulse">Loading timeframe analysis...</div>
+        </div>
+      </div>
+    );
   }
 
-  const timeframeData = analysis[selectedTimeframe === '1h' ? 'h1' : selectedTimeframe === '30m' ? 'm30' : 'm15'];
+  const timeframeData = {
+    '15m': analysis.m15,
+    '30m': analysis.m30,
+    '1h': analysis.h1
+  };
+
+  const currentData = timeframeData[selectedTimeframe];
+  const minutes = parseInt(selectedTimeframe);
 
   return (
     <div className="bg-black/20 backdrop-blur-xl rounded-xl border border-white/10 p-6">
@@ -31,13 +45,10 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
       </div>
       
       <div className="space-y-4">
-        <TimeframeDisplay 
-          change={timeframeData.change}
-          volume={timeframeData.volume}
-        />
-        <SignalList signals={timeframeData.signals} />
+        <TimeframeMetrics data={currentData} />
+        <TimeframeTrades data={currentData} minutes={minutes} />
+        <TimeframeActivity signals={currentData.signals} />
       </div>
     </div>
   );
 };
-```
