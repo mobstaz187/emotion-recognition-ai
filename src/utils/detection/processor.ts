@@ -9,7 +9,6 @@ export async function processImage(
     throw new Error('Invalid image input');
   }
 
-  const canvas = document.createElement('canvas');
   const width = image instanceof HTMLVideoElement ? image.videoWidth : image.width;
   const height = image instanceof HTMLVideoElement ? image.videoHeight : image.height;
   
@@ -17,18 +16,10 @@ export async function processImage(
     throw new Error('Image dimensions not available');
   }
 
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Failed to get canvas context');
-  
   try {
-    ctx.drawImage(image, 0, 0);
-
     const detections = await faceapi
       .detectAllFaces(
-        canvas,
+        image,
         new faceapi.TinyFaceDetectorOptions({
           inputSize: DETECTION_CONFIG.inputSize,
           scoreThreshold: DETECTION_CONFIG.scoreThreshold
@@ -36,12 +27,31 @@ export async function processImage(
       )
       .withFaceExpressions();
 
-    return detections || [];
+    // Filter out any detections with invalid boxes
+    return detections
+      .filter(detection => {
+        const box = detection.detection.box;
+        return (
+          box &&
+          typeof box.x === 'number' &&
+          typeof box.y === 'number' &&
+          typeof box.width === 'number' &&
+          typeof box.height === 'number'
+        );
+      })
+      .map(detection => ({
+        expressions: detection.expressions,
+        detection: {
+          box: {
+            x: Math.max(0, detection.detection.box.x),
+            y: Math.max(0, detection.detection.box.y),
+            width: Math.min(width - detection.detection.box.x, detection.detection.box.width),
+            height: Math.min(height - detection.detection.box.y, detection.detection.box.height)
+          }
+        }
+      }));
   } catch (error) {
     console.error('Face detection processing error:', error);
     throw error;
-  } finally {
-    // Clean up
-    ctx.clearRect(0, 0, width, height);
   }
 }

@@ -1,41 +1,48 @@
-import type { ChartAnalysisResult } from '../../types/chart';
-import { CHART_PATTERNS } from './patterns';
+import { Level, ColorThresholds } from '../../types/chart';
+import { detectColors } from './detection/colorDetection';
+import { mapPriceLevels } from './detection/priceMapping';
+import { detectLevels } from './detection/levelDetection';
+import { ColorCounts } from './detection/colorDetection';
 
-// Simulate AI processing time with a deliberate delay
-const ANALYSIS_DELAY = 3000; // 3 seconds
-
-export async function analyzeChart(file: File): Promise<ChartAnalysisResult> {
-  const imageUrl = URL.createObjectURL(file);
-
-  // Select a random pattern excluding previously used ones
-  const usedPatterns = new Set<string>();
-  let pattern;
-  do {
-    pattern = CHART_PATTERNS[Math.floor(Math.random() * CHART_PATTERNS.length)];
-  } while (usedPatterns.has(pattern.name));
-  usedPatterns.add(pattern.name);
-
-  const mockAnalysis: ChartAnalysisResult = {
-    sentiment: pattern.type,
-    confidence: pattern.reliability,
-    signals: [
-      {
-        type: pattern.type,
-        message: `${pattern.name} pattern identified with ${Math.round(pattern.reliability * 100)}% confidence`
-      },
-      {
-        type: pattern.type,
-        message: pattern.type === 'bullish' 
-          ? 'Volume increasing, supporting the bullish scenario'
-          : 'Declining volume suggests continued bearish pressure'
-      }
-    ],
-    pattern,
-    imageUrl
-  };
-
-  // Add deliberate delay to simulate AI processing
-  await new Promise(resolve => setTimeout(resolve, ANALYSIS_DELAY));
+export async function analyzeChart(
+  imageUrl: string, 
+  thresholds: ColorThresholds
+): Promise<Level[]> {
+  const img = new Image();
+  img.src = imageUrl;
   
-  return mockAnalysis;
+  return new Promise((resolve) => {
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return resolve([]);
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const { width, height, data } = imageData;
+
+      // Create color detection matrix
+      const colorMatrix: ColorCounts[][] = Array(height).fill(0).map(() => 
+        Array(width).fill(0).map(() => ({ red: 0, green: 0 }))
+      );
+      
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const idx = (y * width + x) * 4;
+          colorMatrix[y][x] = detectColors(data, idx, thresholds);
+        }
+      }
+
+      // Map price levels
+      const pricePoints = mapPriceLevels(width, height, colorMatrix);
+
+      // Detect levels
+      const levels = detectLevels(pricePoints, width, height, colorMatrix);
+      
+      resolve(levels);
+    };
+  });
 }

@@ -1,28 +1,122 @@
 import { motion } from 'framer-motion';
+import { useTab } from '../../../contexts/TabContext';
 
 export const HeroSection = () => {
+  const { setActiveTab } = useTab();
+
   return (
-    <section className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
+    <section className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 py-16">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
+        className="max-w-6xl mx-auto"
       >
-        <h1 className="text-6xl font-bold mb-6">
-          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-            Emotion Recognition AI
-          </span>
-        </h1>
-        <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12">
-          Advanced emotion detection powered by machine learning, providing real-time analysis for images and live video.
-        </p>
-        <div className="flex gap-4 justify-center">
-          <button className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors">
-            Get Started
-          </button>
-          <button className="px-8 py-3 bg-white/5 text-gray-300 rounded-xl hover:bg-white/10 transition-colors">
-            View Demo
-          </button>
+        {/* Header with Separator */}
+        <div className="flex items-center justify-center gap-8 mb-12">
+          <div className="text-left">
+            <h1 className="text-6xl font-bold font-display mb-2">
+              <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                PELIOS
+              </span>
+            </h1>
+            <p className="text-lg text-gray-400">Powered by $PELIOS</p>
+          </div>
+          
+          <div className="h-16 w-px bg-gradient-to-b from-transparent via-gray-500/20 to-transparent" />
+          
+          <div className="text-left">
+            <h2 className="text-4xl font-bold font-display mb-2">
+              <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                AI-Powered Analysis
+              </span>
+            </h2>
+            <p className="text-lg text-gray-400">Advanced emotion detection & market sentiment</p>
+          </div>
+        </div>
+
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {/* Live Analysis Card */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="group relative bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-8 cursor-pointer"
+            onClick={() => setActiveTab('live')}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
+                Live Analysis
+              </h3>
+              <p className="text-gray-400 mb-6">
+                Real-time emotion detection through your webcam with advanced AI technology.
+              </p>
+              <div className="flex items-center text-blue-400 font-medium">
+                Try Now
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Token Analysis Card */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="group relative bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-8 cursor-pointer"
+            onClick={() => setActiveTab('monitor')}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                Token Analysis
+              </h3>
+              <p className="text-gray-400 mb-6">
+                Advanced market sentiment analysis using AI to detect trading signals.
+              </p>
+              <div className="flex items-center text-purple-400 font-medium">
+                Analyze Now
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Additional Features */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            {
+              title: 'Image Upload',
+              description: 'Upload and analyze emotions in photos',
+              icon: '📸',
+              tab: 'upload'
+            },
+            {
+              title: 'Chart Analysis',
+              description: 'Detect support and resistance levels',
+              icon: '📊',
+              tab: 'chart'
+            },
+            {
+              title: 'Documentation',
+              description: 'Learn about our AI algorithms',
+              icon: '📚',
+              tab: 'docs'
+            }
+          ].map((feature) => (
+            <motion.div
+              key={feature.title}
+              whileHover={{ scale: 1.02 }}
+              className="group relative bg-black/20 backdrop-blur-xl border border-white/10 rounded-xl p-6 cursor-pointer"
+              onClick={() => setActiveTab(feature.tab)}
+            >
+              <div className="text-2xl mb-3">{feature.icon}</div>
+              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+              <p className="text-sm text-gray-400">{feature.description}</p>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
     </section>

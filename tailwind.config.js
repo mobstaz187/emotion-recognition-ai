@@ -20,7 +20,9 @@ export default {
         border: 'rgb(var(--border) / <alpha-value>)',
       },
       fontFamily: {
+        sans: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        display: ['Chakra Petch', 'Space Grotesk', 'sans-serif'],
       },
       animation: {
         'drip-1': 'drip 3s ease-in-out infinite',

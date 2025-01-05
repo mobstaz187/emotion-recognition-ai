@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useProfile } from '../../contexts/ProfileContext';
 
 interface Tab {
   id: string;
@@ -14,6 +15,9 @@ interface Props {
 }
 
 export const FloatingTabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }) => {
+  const { currentProfile } = useProfile();
+  const activeColor = currentProfile?.color || '#3B82F6';
+
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
       <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
@@ -30,7 +34,11 @@ export const FloatingTabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-blue-500/20 border border-blue-500/30 rounded-xl"
+                    className="absolute inset-0 rounded-xl"
+                    style={{
+                      backgroundColor: `${activeColor}20`,
+                      border: `1px solid ${activeColor}30`
+                    }}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -38,10 +46,11 @@ export const FloatingTabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }
                   relative z-10 px-4 py-2 rounded-xl flex items-center gap-2
                   transition-colors duration-200
                   ${activeTab === tab.id 
-                    ? 'text-blue-400' 
+                    ? 'text-primary' 
                     : 'text-gray-400 hover:text-gray-300'
                   }
-                `}>
+                `}
+                style={activeTab === tab.id ? { color: activeColor } : undefined}>
                   {typeof tab.icon === 'string' ? (
                     <span className="text-lg">{tab.icon}</span>
                   ) : (

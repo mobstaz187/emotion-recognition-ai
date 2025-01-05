@@ -1,5 +1,4 @@
 import React from 'react';
-import { SlimeDrops, SlimeBorder } from '../../services/theme/slimeEffects';
 
 interface Props {
   children: React.ReactNode;
@@ -7,12 +6,9 @@ interface Props {
 
 export const DisgustedLayout: React.FC<Props> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-[#1a1b1c] text-gray-100">
-      <SlimeDrops />
+    <div className="min-h-screen bg-background text-foreground">
       <div className="relative z-50">
-        <SlimeBorder>
-          {children}
-        </SlimeBorder>
+        {children}
       </div>
     </div>
   );

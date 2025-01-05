@@ -28,10 +28,10 @@ export const MainContent: React.FC = () => {
         return <TwitterTickers />;
       case 'monitor':
         return <TokenMonitor />;
-      case 'surprised-chat':
-        return <SurprisedChat />;
       case 'chart':
         return <ChartAnalysis />;
+      case 'surprised-chat':
+        return <SurprisedChat />;
       default:
         return (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -4,18 +4,29 @@ import { TokenSocials } from './TokenSocials';
 import { TokenInfo } from './TokenInfo';
 import { TokenAnalysisPanel } from './TokenAnalysisPanel';
 import { useTokenData } from '../../hooks/useTokenData';
+import { useProfile } from '../../contexts/ProfileContext';
 
 export const TokenMonitor: React.FC = () => {
   const [address, setAddress] = useState('');
   const { tokenData, isLoading, error } = useTokenData(address);
+  const { currentProfile } = useProfile();
+  const profileColor = currentProfile?.color || '#3B82F6';
 
   return (
     <div className="max-w-6xl mx-auto">
       <div className="glass-panel p-6 space-y-8">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Token Sentiment Analysis</h2>
-          <div className="px-3 py-1 bg-primary/20 border border-primary/30 rounded-full">
-            <span className="text-sm text-primary">Solana Tokens Only</span>
+          <div 
+            className="px-4 py-1.5 rounded-full"
+            style={{
+              backgroundColor: `${profileColor}20`,
+              borderColor: `${profileColor}30`,
+              borderWidth: '1px',
+              color: profileColor
+            }}
+          >
+            <span className="text-sm">Solana Tokens Only and Tokens Migrated to Raydium</span>
           </div>
         </div>
         

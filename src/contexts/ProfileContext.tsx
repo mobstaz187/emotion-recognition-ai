@@ -4,7 +4,7 @@ export interface Profile {
   id: string;
   name: string;
   color: string;
-  avatar: string;
+  emoji: string;
 }
 
 interface ProfileContextType {

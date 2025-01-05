@@ -1,4 +1,4 @@
-import { LiveIcon, UploadIcon, AnalysisIcon, DocsIcon } from '../../icons/TabIcons';
+import { LiveIcon, UploadIcon, AnalysisIcon, DocsIcon, ChartIcon } from '../../icons/TabIcons';
 
 export const features = [
   {
@@ -15,9 +15,15 @@ export const features = [
   },
   {
     title: 'Token Sentiment',
-    description: 'Track and analyze market sentiment for cryptocurrency tokens in real-time.',
+    description: 'Advanced market sentiment analysis using AI to detect bullish and bearish signals.',
     icon: AnalysisIcon,
     color: '#8B5CF6'
+  },
+  {
+    title: 'Chart Analysis',
+    description: 'Detect support and resistance levels with our intelligent chart pattern recognition.',
+    icon: ChartIcon,
+    color: '#EC4899'
   },
   {
     title: 'Documentation',
