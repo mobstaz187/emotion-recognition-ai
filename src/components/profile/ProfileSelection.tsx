@@ -25,7 +25,7 @@ export const ProfileSelection: React.FC = () => {
       
       <div className="flex items-center gap-8 mb-12">
         <img 
-          src="/pill-icon.png" 
+          src="./public/pill-icon.png" 
           alt="Pill Icon" 
           className="w-16 h-16"
           style={{ imageRendering: 'pixelated' }}
