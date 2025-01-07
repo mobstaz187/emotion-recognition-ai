@@ -58,9 +58,8 @@ export function analyzeSentiment(data: TokenData): SentimentResult {
   };
 
   // Calculate signal-based scores
-  const bullishScore = signals.bullish.length * 25; // Increased weight
-  const bearishScore = signals.bearish.length * 25; // Increased weight
-  const neutralScore = signals.neutral.length * 10; // Lower weight for neutral signals
+  const bullishScore = signals.bullish.length * 25;
+  const bearishScore = signals.bearish.length * 25;
   const totalSignals = signals.bullish.length + signals.bearish.length + signals.neutral.length;
 
   // Calculate weighted score (0-100) with signal influence

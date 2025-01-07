@@ -9,8 +9,6 @@ const EMPTY_TIMEFRAME: TimeframeData = {
   signals: []
 };
 
-type TimeframeKey = keyof TimeframeAnalysis;
-
 interface TimeframeMetrics {
   [key: string]: {
     change: number;
