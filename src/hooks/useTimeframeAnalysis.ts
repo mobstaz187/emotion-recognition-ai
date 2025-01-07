@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { TimeframeAnalysis, TimeframeData } from '../types/timeframe';
-import { analyzeTimeframe } from '../utils/analysis/timeframeAnalysis';
 
 const EMPTY_TIMEFRAME: TimeframeData = {
   change: 0,
@@ -9,15 +8,17 @@ const EMPTY_TIMEFRAME: TimeframeData = {
   signals: []
 };
 
+const INITIAL_ANALYSIS: TimeframeAnalysis = {
+  m1: EMPTY_TIMEFRAME,
+  m15: EMPTY_TIMEFRAME,
+  m30: EMPTY_TIMEFRAME,
+  h1: EMPTY_TIMEFRAME,
+  h4: EMPTY_TIMEFRAME,
+  h24: EMPTY_TIMEFRAME
+};
+
 export function useTimeframeAnalysis(address: string) {
-  const [analysis, setAnalysis] = useState<TimeframeAnalysis>({
-    m1: EMPTY_TIMEFRAME,
-    m15: EMPTY_TIMEFRAME,
-    m30: EMPTY_TIMEFRAME,
-    h1: EMPTY_TIMEFRAME,
-    h4: EMPTY_TIMEFRAME,
-    h24: EMPTY_TIMEFRAME
-  });
+  const [analysis, setAnalysis] = useState<TimeframeAnalysis>(INITIAL_ANALYSIS);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = useCallback(async () => {
@@ -40,91 +41,43 @@ export function useTimeframeAnalysis(address: string) {
         throw new Error('No pair data found');
       }
 
-      // Calculate trades for each timeframe
-      const m1Trades = Math.round((pair.txns?.m5?.buys || 0) + (pair.txns?.m5?.sells || 0)) / 5;
-      const m15Trades = Math.round((pair.txns?.h1?.buys || 0) + (pair.txns?.h1?.sells || 0)) / 4;
-      const m30Trades = Math.round((pair.txns?.h1?.buys || 0) + (pair.txns?.h1?.sells || 0)) / 2;
-      const h1Trades = Math.round((pair.txns?.h1?.buys || 0) + (pair.txns?.h1?.sells || 0));
-      const h4Trades = Math.round((pair.txns?.h24?.buys || 0) + (pair.txns?.h24?.sells || 0)) / 6;
-      const h24Trades = Math.round((pair.txns?.h24?.buys || 0) + (pair.txns?.h24?.sells || 0));
-
-      // Create timeframe data objects
-      const m1Data: TimeframeData = {
-        change: pair.priceChange?.m5 / 5 || 0,
-        volume: (pair.volume?.h1 || 0) / 60,
-        trades: m1Trades,
-        signals: []
+      // Calculate metrics for each timeframe
+      const timeframes = {
+        m1: { minutes: 1, divider: 60 },
+        m15: { minutes: 15, divider: 4 },
+        m30: { minutes: 30, divider: 2 },
+        h1: { minutes: 60, divider: 1 },
+        h4: { minutes: 240, divider: 0.25 },
+        h24: { minutes: 1440, divider: 0.0417 }
       };
 
-      const m15Data: TimeframeData = {
-        change: pair.priceChange?.m15 || pair.priceChange?.h1 / 4 || 0,
-        volume: pair.volume?.m15 || (pair.volume?.h1 || 0) / 4,
-        trades: m15Trades,
-        signals: []
-      };
+      const newAnalysis = Object.entries(timeframes).reduce((acc, [key, { divider }]) => {
+        const baseData = {
+          change: (pair.priceChange?.h24 || 0) * divider,
+          volume: (pair.volume?.h24 || 0) * divider,
+          trades: Math.round((pair.txns?.h24?.buys || 0 + pair.txns?.h24?.sells || 0) * divider),
+          signals: []
+        };
 
-      const m30Data: TimeframeData = {
-        change: pair.priceChange?.m30 || pair.priceChange?.h1 / 2 || 0,
-        volume: pair.volume?.m30 || (pair.volume?.h1 || 0) / 2,
-        trades: m30Trades,
-        signals: []
-      };
+        return {
+          ...acc,
+          [key]: baseData
+        };
+      }, {} as TimeframeAnalysis);
 
-      const h1Data: TimeframeData = {
-        change: pair.priceChange?.h1 || 0,
-        volume: pair.volume?.h1 || 0,
-        trades: h1Trades,
-        signals: []
-      };
-
-      const h4Data: TimeframeData = {
-        change: pair.priceChange?.h24 / 6 || 0,
-        volume: (pair.volume?.h24 || 0) / 6,
-        trades: h4Trades,
-        signals: []
-      };
-
-      const h24Data: TimeframeData = {
-        change: pair.priceChange?.h24 || 0,
-        volume: pair.volume?.h24 || 0,
-        trades: h24Trades,
-        signals: []
-      };
-
-      // Analyze each timeframe
-      const m1Analysis = analyzeTimeframe(m1Data, '1m');
-      const m15Analysis = analyzeTimeframe(m15Data, '15m');
-      const m30Analysis = analyzeTimeframe(m30Data, '30m');
-      const h1Analysis = analyzeTimeframe(h1Data, '1h');
-      const h4Analysis = analyzeTimeframe(h4Data, '4h');
-      const h24Analysis = analyzeTimeframe(h24Data, '24h');
-
-      setAnalysis({
-        m1: { ...m1Data, signals: m1Analysis.signals },
-        m15: { ...m15Data, signals: m15Analysis.signals },
-        m30: { ...m30Data, signals: m30Analysis.signals },
-        h1: { ...h1Data, signals: h1Analysis.signals },
-        h4: { ...h4Data, signals: h4Analysis.signals },
-        h24: { ...h24Data, signals: h24Analysis.signals }
-      });
+      setAnalysis(newAnalysis);
     } catch (error) {
       console.error('Error fetching timeframe data:', error);
-      setAnalysis({
-        m1: EMPTY_TIMEFRAME,
-        m15: EMPTY_TIMEFRAME,
-        m30: EMPTY_TIMEFRAME,
-        h1: EMPTY_TIMEFRAME,
-        h4: EMPTY_TIMEFRAME,
-        h24: EMPTY_TIMEFRAME
-      });
+      setAnalysis(INITIAL_ANALYSIS);
     } finally {
       setIsLoading(false);
     }
   }, [address]);
 
-  // Initial data fetch
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 60000);
+    return () => clearInterval(interval);
   }, [fetchData]);
 
   return { analysis, isLoading, fetchData };
