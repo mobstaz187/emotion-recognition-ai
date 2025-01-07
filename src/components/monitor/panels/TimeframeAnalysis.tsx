@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTimeframeAnalysis } from '../../../hooks/useTimeframeAnalysis';
-import { TimeframeSelector } from './timeframes/TimeframeSelector';
 import { TimeframeMetrics } from './timeframes/TimeframeMetrics';
 import { TimeframeActivity } from './timeframes/TimeframeActivity';
 import { TimeframeTrades } from './timeframes/TimeframeTrades';
@@ -9,10 +8,7 @@ interface Props {
   address: string;
 }
 
-export type TimeframeOption = '1m' | '15m' | '30m' | '1h' | '4h' | '24h';
-
 export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('1m');
   const { analysis, isLoading } = useTimeframeAnalysis(address);
 
   if (isLoading) {
@@ -25,32 +21,30 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
     );
   }
 
-  const timeframeData = {
-    '1m': analysis?.m1 || { change: 0, volume: 0, trades: 0, signals: [] },
-    '15m': analysis?.m15 || { change: 0, volume: 0, trades: 0, signals: [] },
-    '30m': analysis?.m30 || { change: 0, volume: 0, trades: 0, signals: [] },
-    '1h': analysis?.h1 || { change: 0, volume: 0, trades: 0, signals: [] },
-    '4h': analysis?.h4 || { change: 0, volume: 0, trades: 0, signals: [] },
-    '24h': analysis?.h24 || { change: 0, volume: 0, trades: 0, signals: [] }
-  };
-
-  const currentData = timeframeData[selectedTimeframe];
-  const minutes = parseInt(selectedTimeframe);
+  const timeframes = [
+    { key: 'm1', label: '1 Minute', data: analysis.m1 },
+    { key: 'm15', label: '15 Minutes', data: analysis.m15 },
+    { key: 'm30', label: '30 Minutes', data: analysis.m30 },
+    { key: 'h1', label: '1 Hour', data: analysis.h1 },
+    { key: 'h4', label: '4 Hours', data: analysis.h4 },
+    { key: 'h24', label: '24 Hours', data: analysis.h24 }
+  ];
 
   return (
     <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold text-foreground">Market Analysis</h3>
-        <TimeframeSelector 
-          selected={selectedTimeframe}
-          onChange={setSelectedTimeframe}
-        />
-      </div>
+      <h3 className="text-xl font-semibold text-foreground mb-6">Market Analysis</h3>
       
-      <div className="space-y-4">
-        <TimeframeMetrics data={currentData} />
-        <TimeframeTrades data={currentData} minutes={minutes} />
-        <TimeframeActivity signals={currentData.signals} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {timeframes.map(({ key, label, data }) => (
+          <div key={key} className="bg-background rounded-lg border border-border p-4">
+            <h4 className="text-lg font-medium text-foreground mb-4">{label}</h4>
+            <div className="space-y-4">
+              <TimeframeMetrics data={data} />
+              <TimeframeTrades data={data} minutes={parseInt(key.replace(/[mh]/, ''))} />
+              <TimeframeActivity signals={data.signals} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
