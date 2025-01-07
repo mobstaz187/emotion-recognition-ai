@@ -3,6 +3,7 @@ import { TokenData } from '../../types/token';
 import { TechnicalIndicatorsPanel } from './panels/TechnicalIndicatorsPanel';
 import { FundamentalAnalysisPanel } from './panels/FundamentalAnalysisPanel';
 import { SentimentSummary } from './panels/SentimentSummary';
+import { TimeframeAnalysis } from './panels/TimeframeAnalysis';
 import { TimeframeSentiment } from './panels/TimeframeSentiment';
 import { analyzeSentiment } from '../../utils/sentiment/analysis';
 import { analyzeAllTimeframes } from '../../utils/sentiment/timeAnalysis';
@@ -29,6 +30,9 @@ export const TokenAnalysisPanel: React.FC<Props> = ({ data, address }) => {
         sentiment={data.sentiment} 
         analysis={sentimentAnalysis}
       />
+
+      {/* Market Analysis */}
+      <TimeframeAnalysis address={address} />
       
       {/* Technical & Fundamental Analysis */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
