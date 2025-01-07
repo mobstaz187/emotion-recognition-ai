@@ -16,7 +16,7 @@ const PROFILES: Profile[] = [
 ];
 
 export const ProfileSelection: React.FC = () => {
-  const { setCurrentProfile } = useProfile();
+  const { currentProfile, setCurrentProfile } = useProfile();
 
   return (
     <AnimatePresence mode="wait">
@@ -61,18 +61,30 @@ export const ProfileSelection: React.FC = () => {
           />
           <div className="text-center">
             <motion.h1 
-              className="text-6xl font-bold font-display bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
+              className="text-6xl font-bold font-display"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5 }}
+              style={{
+                background: currentProfile 
+                  ? `-webkit-linear-gradient(${currentProfile.color}, ${currentProfile.color}80)`
+                  : '-webkit-linear-gradient(45deg, #3B82F6, #8B5CF6)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
             >
               PELIOS
             </motion.h1>
             <motion.div 
-              className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent my-3"
+              className="h-px w-full my-3"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ delay: 0.6 }}
+              style={{
+                background: currentProfile
+                  ? `linear-gradient(to right, transparent, ${currentProfile.color}40, transparent)`
+                  : 'linear-gradient(to right, transparent, rgb(var(--border)), transparent)'
+              }}
             />
             <motion.p 
               className="text-xl text-muted-foreground font-display"
@@ -100,13 +112,23 @@ export const ProfileSelection: React.FC = () => {
               transition={{ delay: 0.9 + index * 0.1 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setCurrentProfile(profile)}
             >
               <ProfileAvatar
                 profile={profile}
                 size="lg"
                 onClick={() => setCurrentProfile(profile)}
               />
-              <span className="text-muted-foreground text-lg">{profile.name}</span>
+              <span 
+                className="text-lg transition-colors duration-200"
+                style={{ 
+                  color: profile.id === currentProfile?.id 
+                    ? profile.color 
+                    : 'rgb(var(--muted-foreground))'
+                }}
+              >
+                {profile.name}
+              </span>
             </motion.div>
           ))}
         </motion.div>
