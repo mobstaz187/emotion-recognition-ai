@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import type { Profile } from '../../contexts/ProfileContext';
 
 interface Props {
@@ -15,17 +16,36 @@ export const ProfileAvatar: React.FC<Props> = ({ profile, size = 'md', onClick }
   };
 
   return (
-    <button
+    <motion.button
       onClick={onClick}
       className={`${sizeClasses[size]} rounded-xl overflow-hidden transition-all duration-200 
-        hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+        hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2
         bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/10
-        flex items-center justify-center`}
+        flex items-center justify-center relative group`}
       style={{ backgroundColor: profile.color }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
     >
-      <span className="transform hover:scale-110 transition-transform duration-200">
+      <motion.span 
+        className="relative z-10"
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ 
+          type: "spring",
+          stiffness: 260,
+          damping: 20
+        }}
+      >
         {profile.emoji}
-      </span>
-    </button>
+      </motion.span>
+      
+      {/* Glow effect */}
+      <motion.div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+        style={{
+          background: `radial-gradient(circle at center, ${profile.color}40 0%, transparent 70%)`
+        }}
+      />
+    </motion.button>
   );
 };

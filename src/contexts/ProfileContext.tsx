@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface Profile {
   id: string;
@@ -14,8 +14,23 @@ interface ProfileContextType {
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
+const STORAGE_KEY = 'selectedProfile';
+
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentProfile, setCurrentProfile] = useState<Profile | null>(null);
+  const [currentProfile, setCurrentProfile] = useState<Profile | null>(() => {
+    // Try to load saved profile from localStorage on initial render
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  // Save profile to localStorage whenever it changes
+  useEffect(() => {
+    if (currentProfile) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentProfile));
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }, [currentProfile]);
 
   return (
     <ProfileContext.Provider value={{ currentProfile, setCurrentProfile }}>

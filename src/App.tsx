@@ -1,3 +1,5 @@
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Header } from './components/layout/Header';
 import { MainContent } from './components/layout/MainContent';
 import { ThemeProvider, createTheme } from '@mui/material';
@@ -35,10 +37,37 @@ const AppContent = () => {
   }
 
   const content = (
-    <>
-      <Header />
-      <MainContent />
-    </>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2
+          }
+        }
+      }}
+    >
+      <motion.div
+        variants={{
+          hidden: { y: -20, opacity: 0 },
+          visible: { y: 0, opacity: 1 }
+        }}
+      >
+        <Header />
+      </motion.div>
+      <motion.div
+        variants={{
+          hidden: { y: 20, opacity: 0 },
+          visible: { y: 0, opacity: 1 }
+        }}
+      >
+        <MainContent />
+      </motion.div>
+    </motion.div>
   );
 
   return currentProfile.name === 'Disgusted' ? (
@@ -58,7 +87,9 @@ export default function App() {
           <TabProvider>
             <WebcamProvider>
               <EmotionProvider>
-                <AppContent />
+                <AnimatePresence mode="wait">
+                  <AppContent />
+                </AnimatePresence>
               </EmotionProvider>
             </WebcamProvider>
           </TabProvider>
