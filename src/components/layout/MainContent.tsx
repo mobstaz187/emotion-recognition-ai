@@ -14,7 +14,7 @@ import { LandingPage } from '../landing/LandingPage';
 
 export const MainContent: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing] = useState(false);
   const { activeTab, setActiveTab } = useTab();
 
   const renderContent = () => {
