@@ -67,16 +67,16 @@ export function analyzeSentiment(data: TokenData): SentimentResult {
   let emotion: EmotionType;
   let confidence: number;
 
-  if (score >= 70) {
+  if (score >= 60) {
     emotion = 'happy';
     confidence = 0.8 + (score - 70) / 100;
-  } else if (score >= 55) {
+  } else if (score >= 45) {
     emotion = 'surprised';
     confidence = 0.7 + (score - 55) / 50;
-  } else if (score >= 45) {
+  } else if (score >= 35) {
     emotion = 'neutral';
     confidence = 0.6 + Math.abs(50 - score) / 50;
-  } else if (score >= 30) {
+  } else if (score >= 20) {
     emotion = 'sad';
     confidence = 0.7 + (45 - score) / 50;
   } else {

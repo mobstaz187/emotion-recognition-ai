@@ -1,64 +1,59 @@
 import { TokenData } from '../../types/token';
 import { TimeSentimentAnalysis, TimeBasedSentiment } from '../../types/timeframe';
 
-type TimeframeWeights = {
-  [key: string]: {
-    [timeframe: string]: number;
-  };
-};
-
-const TECHNICAL_WEIGHTS: TimeframeWeights = {
+const TECHNICAL_WEIGHTS = {
   rsi: {
-    '1m': 0.2,
-    '15m': 0.25,
-    '30m': 0.3,
-    '1h': 0.35,
-    '4h': 0.4,
-    '24h': 0.45
+    '1m': 0.2, '15m': 0.25, '30m': 0.3,
+    '1h': 0.35, '4h': 0.4, '24h': 0.45
   },
   macd: {
-    '1m': 0.3,
-    '15m': 0.35,
-    '30m': 0.4,
-    '1h': 0.45,
-    '4h': 0.5,
-    '24h': 0.55
+    '1m': 0.3, '15m': 0.35, '30m': 0.4,
+    '1h': 0.45, '4h': 0.5, '24h': 0.55
   },
   bollinger: {
-    '1m': 0.5,
-    '15m': 0.4,
-    '30m': 0.3,
-    '1h': 0.2,
-    '4h': 0.1,
-    '24h': 0.0
+    '1m': 0.5, '15m': 0.4, '30m': 0.3,
+    '1h': 0.2, '4h': 0.1, '24h': 0.0
   }
 };
 
 export function analyzeAllTimeframes(data: TokenData): TimeSentimentAnalysis {
   const timeframes = ['1m', '15m', '30m', '1h', '4h', '24h'] as const;
   
-  const result = {} as TimeSentimentAnalysis;
-
-  timeframes.forEach(timeframe => {
-    const sentiment = analyzeTimeframeSentiment(data, timeframe);
-    result[timeframe] = sentiment;
-  });
-
-  return result;
+  return timeframes.reduce((acc, timeframe) => ({
+    ...acc,
+    [timeframe]: analyzeTimeframeSentiment(data, timeframe)
+  }), {} as TimeSentimentAnalysis);
 }
 
 function analyzeTimeframeSentiment(data: TokenData, timeframe: string): TimeBasedSentiment {
-  // Calculate technical score based on weighted indicators
   const technicalScore = calculateTechnicalScore(data, timeframe);
-  
-  // Map score to emotion and confidence
-  const { emotion, confidence } = mapScoreToEmotion(technicalScore);
+  const priceChangeImpact = calculatePriceChangeImpact(data, timeframe);
+  const totalScore = (technicalScore * 0.7 + priceChangeImpact * 0.3) * 100;
 
-  return {
-    emotion,
-    confidence,
-    timeframe
-  };
+  let emotion: string;
+  let confidence: number;
+
+  if (totalScore >= 70) {
+    emotion = priceChangeImpact >= 0 ? 'happy' : 'surprised';
+    confidence = 0.95;
+  } else if (totalScore >= 65) {
+    emotion = priceChangeImpact >= 0 ? 'happy' : 'surprised';
+    confidence = 0.85;
+  } else if (totalScore >= 60) {
+    emotion = 'neutral';
+    confidence = 0.75;
+  } else if (totalScore >= 55) {
+    emotion = priceChangeImpact < 0 ? 'sad' : 'fearful';
+    confidence = 0.85;
+  } else if (totalScore >= 35) {
+    emotion = priceChangeImpact < 0 ? 'angry' : 'fearful';
+    confidence = 0.9;
+  } else {
+    emotion = 'disgusted';
+    confidence = 0.95;
+  }
+
+  return { emotion, confidence, timeframe };
 }
 
 function calculateTechnicalScore(data: TokenData, timeframe: string): number {
@@ -93,18 +88,12 @@ function calculateTechnicalScore(data: TokenData, timeframe: string): number {
   return score / totalWeight;
 }
 
-function mapScoreToEmotion(score: number): { emotion: string; confidence: number } {
-  if (score >= 0.8) {
-    return { emotion: 'happy', confidence: 0.9 };
-  } else if (score >= 0.6) {
-    return { emotion: 'surprised', confidence: 0.8 };
-  } else if (score >= 0.4) {
-    return { emotion: 'neutral', confidence: 0.7 };
-  } else if (score >= 0.3) {
-    return { emotion: 'sad', confidence: 0.8 };
-  } else if (score >= 0.2) {
-    return { emotion: 'fearful', confidence: 0.85 };
-  } else {
-    return { emotion: 'disgusted', confidence: 0.9 };
-  }
+function calculatePriceChangeImpact(data: TokenData, timeframe: string): number {
+  const change = data.priceChange24h;
+  const timeframeMultiplier = {
+    '1m': 0.2, '15m': 0.4, '30m': 0.6,
+    '1h': 0.8, '4h': 0.9, '24h': 1.0
+  }[timeframe] || 1;
+
+  return Math.tanh(change * timeframeMultiplier * 0.1);
 }

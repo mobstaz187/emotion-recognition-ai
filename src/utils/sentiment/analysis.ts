@@ -57,31 +57,36 @@ export function analyzeSentiment(data: TokenData): SentimentResult {
     ]
   };
 
-  // Calculate sentiment scores
-  const bullishScore = signals.bullish.length * 20;
-  const bearishScore = signals.bearish.length * 20;
+  // Calculate signal-based scores
+  const bullishScore = signals.bullish.length * 25; // Increased weight
+  const bearishScore = signals.bearish.length * 25; // Increased weight
+  const neutralScore = signals.neutral.length * 10; // Lower weight for neutral signals
   const totalSignals = signals.bullish.length + signals.bearish.length + signals.neutral.length;
-  
-  // Calculate weighted score (0-100)
-  const score = Math.min(100, Math.max(0, (bullishScore - bearishScore) / totalSignals + 50));
 
-  // Determine emotion and confidence based on score and market conditions
+  // Calculate weighted score (0-100) with signal influence
+  const signalScore = Math.min(100, Math.max(0, (bullishScore - bearishScore) / (totalSignals * 25) * 100 + 50));
+  const technicalScore = (data.technicalIndicators.rsi / 100) * 100;
+  
+  // Combine scores with higher weight on signals
+  const score = (signalScore * 0.7) + (technicalScore * 0.3);
+
+  // Determine emotion and confidence with adjusted thresholds
   let emotion: EmotionType;
   let confidence: number;
 
-  if (score >= 80) {
+  if (score >= 75) {
     emotion = 'happy';
     confidence = 0.9;
-  } else if (score >= 65) {
+  } else if (score >= 60) {
     emotion = 'surprised';
-    confidence = 0.8;
+    confidence = 0.85;
   } else if (score >= 45) {
     emotion = 'neutral';
     confidence = 0.7;
-  } else if (score >= 35) {
+  } else if (score >= 40) {
     emotion = 'sad';
     confidence = 0.8;
-  } else if (score >= 25) {
+  } else if (score >= 35) {
     emotion = 'fearful';
     confidence = 0.85;
   } else if (score >= 15) {

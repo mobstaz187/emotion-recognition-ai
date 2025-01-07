@@ -1,17 +1,14 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { CopyButton } from '../common/CopyButton';
 import { EmotionLogo } from '../logo/EmotionLogo';
-import { ProfileDropdown } from '../profile/ProfileDropdown';
+import { ProfileAvatar } from '../profile/ProfileAvatar';
 import { ThemeToggle } from '../theme/ThemeToggle';
 import { useProfile } from '../../contexts/ProfileContext';
 import { useTab } from '../../contexts/TabContext';
-import { useTheme } from '../../contexts/ThemeContext';
 
 export const Header: React.FC = () => {
-  const { currentProfile } = useProfile();
+  const { currentProfile, setCurrentProfile } = useProfile();
   const { activeTab, setActiveTab } = useTab();
-  const { isDark } = useTheme();
 
   React.useEffect(() => {
     if (activeTab === 'surprised-chat' && currentProfile?.name !== 'Surprised') {
@@ -20,72 +17,42 @@ export const Header: React.FC = () => {
   }, [activeTab, currentProfile, setActiveTab]);
 
   return (
-    <motion.header
-      className="bg-white/80 dark:bg-card/80 backdrop-blur-xl border-b border-border sticky top-0 z-50"
-      initial={false}
-      animate={{ height: 'auto' }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <motion.div 
-          className="flex justify-end items-center gap-4"
-          layout
-          transition={{
-            layout: { duration: 0.3 }
-          }}
-        >
-          {/* Logo - Now on the left */}
-          <motion.div 
-            className="flex items-center gap-2 mr-auto"
-            layout
-          >
+    <header className="bg-card/80 backdrop-blur-xl border-b border-border sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
             <EmotionLogo />
-          </motion.div>
-
-          {/* Contract Address - Compact version */}
-          <motion.div 
-            className="flex items-center gap-2"
-            layout
-          >
-            <motion.span 
-              className="text-sm text-muted-foreground font-medium whitespace-nowrap"
-              layout
-            >
-              Contract:
-            </motion.span>
-            <motion.div layout>
+            <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 border border-blue-500/30">
+              Beta
+            </span>
+          </div>
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-muted-foreground font-medium">Contract Address:</span>
               <CopyButton text="ASDASDASDA" />
-            </motion.div>
-          </motion.div>
-
-          {/* X Logo */}
-          <motion.a
-            layout
-            href="https://x.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`flex items-center justify-center w-8 h-8 rounded-lg border border-border
-              ${isDark 
-                ? 'hover:bg-white/10' 
-                : 'hover:bg-black/10'
-              } transition-colors`}
-            aria-label="Follow on X (Twitter)"
-          >
-            <svg className="w-4 h-4 text-foreground" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
-          </motion.a>
-          
-          {/* Theme toggle and profile */}
-          <motion.div 
-            className="flex items-center gap-4"
-            layout
-          >
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Follow on X (Twitter)"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+            </div>
             <ThemeToggle />
-            <ProfileDropdown />
-          </motion.div>
-        </motion.div>
+            {currentProfile && (
+              <ProfileAvatar
+                profile={currentProfile}
+                size="sm"
+                onClick={() => setCurrentProfile(null)}
+              />
+            )}
+          </div>
+        </div>
       </div>
-    </motion.header>
+    </header>
   );
 };

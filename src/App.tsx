@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Header } from './components/layout/Header';
 import { MainContent } from './components/layout/MainContent';
 import { ThemeProvider, createTheme } from '@mui/material';
@@ -11,7 +10,6 @@ import { ProfileSelection } from './components/profile/ProfileSelection';
 import { LandingPage } from './components/landing/LandingPage';
 import { useProfile } from './contexts/ProfileContext';
 import { DisgustedLayout } from './components/layout/DisgustedLayout';
-import { SplashScreen } from './components/splash/SplashScreen';
 
 const theme = createTheme({
   palette: {
@@ -26,14 +24,8 @@ const theme = createTheme({
 });
 
 const AppContent = () => {
-  const { currentProfile, hasSeenSplash } = useProfile();
+  const { currentProfile } = useProfile();
 
-  // Show splash screen first
-  if (!hasSeenSplash) {
-    return <SplashScreen />;
-  }
-
-  // Then show profile selection
   if (!currentProfile) {
     return <ProfileSelection />;
   }

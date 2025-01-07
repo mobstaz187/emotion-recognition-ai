@@ -19,17 +19,17 @@ export const TokenAnalysisPanel: React.FC<Props> = ({ data, address }) => {
 
   return (
     <div className="space-y-6">
-      {/* Timeframe Sentiment */}
-      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
-        <h3 className="text-xl font-semibold text-foreground mb-4">Timeframe Analysis</h3>
-        <TimeframeSentiment sentiments={timeframeSentiments} />
-      </div>
-
       {/* Overall Sentiment Summary */}
       <SentimentSummary 
         sentiment={data.sentiment} 
         analysis={sentimentAnalysis}
       />
+
+      {/* Timeframe Sentiment */}
+      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
+        <h3 className="text-xl font-semibold text-foreground mb-4">Timeframe Analysis</h3>
+        <TimeframeSentiment sentiments={timeframeSentiments} />
+      </div>
 
       {/* Market Analysis */}
       <TimeframeAnalysis address={address} />
