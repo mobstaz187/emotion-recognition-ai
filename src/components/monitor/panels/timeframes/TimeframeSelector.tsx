@@ -1,12 +1,13 @@
 import React from 'react';
+import { TimeframeOption } from '../TimeframeAnalysis';
 
 interface Props {
-  selected: string;
-  onChange: (timeframe: string) => void;
+  selected: TimeframeOption;
+  onChange: (timeframe: TimeframeOption) => void;
 }
 
 export const TimeframeSelector: React.FC<Props> = ({ selected, onChange }) => {
-  const timeframes = [
+  const timeframes: Array<{ value: TimeframeOption; label: string }> = [
     { value: '1m', label: '1M' },
     { value: '15m', label: '15M' },
     { value: '30m', label: '30M' },
