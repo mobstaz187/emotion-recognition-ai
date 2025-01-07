@@ -1,8 +1,13 @@
 import { TokenData } from '../../types/token';
 import { TimeSentimentAnalysis, TimeBasedSentiment } from '../../types/timeframe';
 
-// Technical indicator weights for different timeframes
-const TECHNICAL_WEIGHTS = {
+type TimeframeWeights = {
+  [key: string]: {
+    [timeframe: string]: number;
+  };
+};
+
+const TECHNICAL_WEIGHTS: TimeframeWeights = {
   rsi: {
     '1m': 0.2,
     '15m': 0.25,
@@ -29,73 +34,25 @@ const TECHNICAL_WEIGHTS = {
   }
 };
 
-// Market metrics weights adjusted for micro-caps
-const MARKET_WEIGHTS = {
-  marketCap: 0.2,
-  liquidity: 0.4,
-  volatility: 0.4
-};
+export function analyzeAllTimeframes(data: TokenData): TimeSentimentAnalysis {
+  const timeframes = ['1m', '15m', '30m', '1h', '4h', '24h'] as const;
+  
+  const result = {} as TimeSentimentAnalysis;
 
-function getTimeframeMultiplier(timeframe: string): number {
-  switch (timeframe) {
-    case '1m': return 1;
-    case '15m': return 15;
-    case '30m': return 30;
-    case '1h': return 60;
-    case '4h': return 240;
-    case '24h': return 1440;
-    default: return 1;
-  }
+  timeframes.forEach(timeframe => {
+    const sentiment = analyzeTimeframeSentiment(data, timeframe);
+    result[timeframe] = sentiment;
+  });
+
+  return result;
 }
 
-function analyzeSingleTimeframe(
-  data: TokenData, 
-  timeframe: string,
-  previousTimeframe?: string
-): TimeBasedSentiment {
-  const technicalScore = analyzeTechnicalIndicators(data, timeframe);
-  const marketScore = analyzeMarketMetrics(data);
+function analyzeTimeframeSentiment(data: TokenData, timeframe: string): TimeBasedSentiment {
+  // Calculate technical score based on weighted indicators
+  const technicalScore = calculateTechnicalScore(data, timeframe);
   
-  // Calculate price change impact
-  let priceChangeImpact = 0;
-  if (previousTimeframe) {
-    const currentMultiplier = getTimeframeMultiplier(timeframe);
-    const previousMultiplier = getTimeframeMultiplier(previousTimeframe);
-    const scaledChange = (data.priceChange24h / 1440) * (currentMultiplier - previousMultiplier);
-    priceChangeImpact = scaledChange * 2; // Double the impact for more emotional response
-  }
-  
-  // Calculate weighted score with price change impact
-  const totalScore = ((technicalScore + marketScore) / 2) + priceChangeImpact;
-  
-  // Determine emotion and confidence based on score and price change
-  let emotion: string;
-  let confidence: number;
-
-  if (totalScore >= 70) {
-    
-    emotion = priceChangeImpact <= 5 ? 'happy' : 'surprised';
-    confidence = 0.8;
-  } else if (totalScore >= 55) {
-    emotion = priceChangeImpact >= 10 ? 'surprised' : 'happy';
-    confidence = 0.9;
-  } else if (totalScore >= 35) {
-    emotion = priceChangeImpact <= -5 ? 'fearful' : 'sad';
-    confidence = 0.8;
-  } else if (totalScore >= 25) {
-    emotion = Math.abs(priceChangeImpact) < 3 ? 'neutral' : (priceChangeImpact >= 0 ? 'happy' : 'sad');
-    confidence = 0.7;
-  } else if (totalScore >= 15) {
-    emotion = priceChangeImpact <= -30 ? 'angry' : 'fearful';
-    confidence = 0.85;
-  } else if (totalScore >= 12) {
-        emotion = 'disgusted';
-    confidence = 0.95;
-  } else {
-    emotion = priceChangeImpact <= 0 ? 'disgusted' : 'angry';
-    confidence = 0.9;
-
-  }
+  // Map score to emotion and confidence
+  const { emotion, confidence } = mapScoreToEmotion(technicalScore);
 
   return {
     emotion,
@@ -104,55 +61,50 @@ function analyzeSingleTimeframe(
   };
 }
 
-function analyzeTechnicalIndicators(data: TokenData, timeframe: string): number {
-  const { rsi, macd, bollingerBands } = data.technicalIndicators;
+function calculateTechnicalScore(data: TokenData, timeframe: string): number {
+  let score = 0;
+  let totalWeight = 0;
 
   // RSI Analysis
-  const rsiScore = rsi > 70 ? 30 : rsi < 30 ? 70 : 50;
-  
+  const rsiWeight = TECHNICAL_WEIGHTS.rsi[timeframe];
+  const rsiScore = data.technicalIndicators.rsi > 70 ? 0.2 :
+                  data.technicalIndicators.rsi < 30 ? 0.8 :
+                  0.5;
+  score += rsiScore * rsiWeight;
+  totalWeight += rsiWeight;
+
   // MACD Analysis
-  const macdScore = macd.histogram > 0 ? 
-    70 + (macd.histogram * 10) : 
-    30 + (macd.histogram * 10);
+  const macdWeight = TECHNICAL_WEIGHTS.macd[timeframe];
+  const macdScore = data.technicalIndicators.macd.histogram > 0 ? 0.8 :
+                   data.technicalIndicators.macd.histogram < 0 ? 0.2 :
+                   0.5;
+  score += macdScore * macdWeight;
+  totalWeight += macdWeight;
 
   // Bollinger Bands Analysis
-  const bbScore = (data.price - bollingerBands.lower) / 
-    (bollingerBands.upper - bollingerBands.lower) * 100;
+  const bbWeight = TECHNICAL_WEIGHTS.bollinger[timeframe];
+  const price = data.price;
+  const bbScore = price > data.technicalIndicators.bollingerBands.upper ? 0.2 :
+                 price < data.technicalIndicators.bollingerBands.lower ? 0.8 :
+                 0.5;
+  score += bbScore * bbWeight;
+  totalWeight += bbWeight;
 
-  return (
-    rsiScore * TECHNICAL_WEIGHTS.rsi[timeframe] +
-    macdScore * TECHNICAL_WEIGHTS.macd[timeframe] +
-    bbScore * TECHNICAL_WEIGHTS.bollinger[timeframe]
-  );
+  return score / totalWeight;
 }
 
-function analyzeMarketMetrics(data: TokenData): number {
-  // Market cap score (adjusted for micro-caps)
-  const mcapScore = data.marketCap < 1000000 ? 100 : 
-                    data.marketCap < 10000000 ? 80 :
-                    data.marketCap < 100000000 ? 60 : 40;
-
-  // Liquidity score
-  const liquidityScore = (data.liquidity / data.marketCap) * 100;
-
-  // Volatility score (higher volatility = higher score for micro-caps)
-  const volatilityScore = Math.min(data.volatility * 200, 100);
-
-  return (
-    mcapScore * MARKET_WEIGHTS.marketCap +
-    liquidityScore * MARKET_WEIGHTS.liquidity +
-    volatilityScore * MARKET_WEIGHTS.volatility
-  );
-}
-
-export function analyzeAllTimeframes(data: TokenData): TimeSentimentAnalysis {
-  const timeframes = ['1m', '15m', '30m', '1h', '4h', '24h'];
-  const analysis = {} as TimeSentimentAnalysis;
-
-  timeframes.forEach((timeframe, index) => {
-    const previousTimeframe = index > 0 ? timeframes[index - 1] : undefined;
-    analysis[timeframe] = analyzeSingleTimeframe(data, timeframe, previousTimeframe);
-  });
-
-  return analysis;
+function mapScoreToEmotion(score: number): { emotion: string; confidence: number } {
+  if (score >= 0.8) {
+    return { emotion: 'happy', confidence: 0.9 };
+  } else if (score >= 0.6) {
+    return { emotion: 'surprised', confidence: 0.8 };
+  } else if (score >= 0.4) {
+    return { emotion: 'neutral', confidence: 0.7 };
+  } else if (score >= 0.3) {
+    return { emotion: 'sad', confidence: 0.8 };
+  } else if (score >= 0.2) {
+    return { emotion: 'fearful', confidence: 0.85 };
+  } else {
+    return { emotion: 'disgusted', confidence: 0.9 };
+  }
 }
