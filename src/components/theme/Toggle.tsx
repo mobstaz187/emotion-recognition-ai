@@ -12,7 +12,7 @@ export const Toggle: React.FC<ToggleProps> = ({ checked, onChange }) => {
       onClick={onChange}
       className={`
         relative w-12 h-7 rounded-full p-1 transition-colors duration-200
-        ${checked ? 'bg-primary' : 'bg-muted'}
+        ${checked ? 'bg-primary' : 'bg-[#FFD700]'}
       `}
       aria-label="Toggle theme"
     >

@@ -55,22 +55,35 @@ export const Header: React.FC = () => {
             {/* Profile Selector */}
             {currentProfile && (
               <div className="relative">
-                <button
+                <motion.button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors relative"
                   style={{ color: currentProfile.color }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <span className="text-2xl">{currentProfile.emoji}</span>
-                  <span className="font-medium">{currentProfile.name}</span>
+                  {/* Box outline */}
+                  <motion.div
+                    className="absolute inset-0 rounded-lg"
+                    style={{ 
+                      border: `1px solid ${currentProfile.color}40`,
+                      backgroundColor: `${currentProfile.color}10`
+                    }}
+                    layoutId="profileBox"
+                  />
+                  
+                  {/* Content */}
+                  <span className="relative z-10 text-2xl">{currentProfile.emoji}</span>
+                  <span className="relative z-10 font-medium">{currentProfile.name}</span>
                   <svg 
-                    className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+                    className={`relative z-10 w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} 
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
-                </button>
+                </motion.button>
 
                 <AnimatePresence>
                   {isDropdownOpen && (
@@ -88,18 +101,21 @@ export const Header: React.FC = () => {
                               setCurrentProfile(profile);
                               setIsDropdownOpen(false);
                             }}
-                            className="w-full px-4 py-3.5 text-left hover:bg-white/5 transition-colors flex items-center gap-2"
+                            className="w-full px-4 py-3.5 text-left hover:bg-white/5 transition-colors flex items-center gap-2 relative"
                             style={{ color: profile.color }}
                           >
-                            <span className="text-xl">{profile.emoji}</span>
-                            <span className="font-bold">{profile.name}</span>
                             {currentProfile.id === profile.id && (
-                              <motion.div 
-                                layoutId="activeIndicator"
-                                className="ml-auto w-1.5 h-1.5 rounded-full"
-                                style={{ backgroundColor: profile.color }}
+                              <motion.div
+                                className="absolute inset-0"
+                                style={{ 
+                                  backgroundColor: `${profile.color}10`,
+                                  borderLeft: `2px solid ${profile.color}`
+                                }}
+                                layoutId="activeProfileHighlight"
                               />
                             )}
+                            <span className="relative z-10 text-xl">{profile.emoji}</span>
+                            <span className="relative z-10 font-bold">{profile.name}</span>
                           </button>
                         ))}
                         
