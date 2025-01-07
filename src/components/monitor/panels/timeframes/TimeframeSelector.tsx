@@ -8,7 +8,6 @@ interface Props {
 
 export const TimeframeSelector: React.FC<Props> = ({ selected, onChange }) => {
   const timeframes: Array<{ value: TimeframeOption; label: string }> = [
-    { value: '1m', label: '1M' },
     { value: '15m', label: '15M' },
     { value: '30m', label: '30M' },
     { value: '1h', label: '1H' },
