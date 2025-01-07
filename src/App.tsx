@@ -1,3 +1,4 @@
+import React from 'react';
 import { Header } from './components/layout/Header';
 import { MainContent } from './components/layout/MainContent';
 import { ThemeProvider, createTheme } from '@mui/material';
@@ -24,13 +25,14 @@ const theme = createTheme({
 });
 
 const AppContent = () => {
-  const { currentProfile } = useProfile();
+  const { currentProfile, hasSeenSplash } = useProfile();
 
-  if (!currentProfile) {
+  // Show splash screen only for first-time visitors
+  if (!currentProfile && !hasSeenSplash) {
     return <ProfileSelection />;
   }
 
-  if (currentProfile.name === 'Analyze') {
+  if (currentProfile?.name === 'Analyze') {
     return <LandingPage />;
   }
 
@@ -41,7 +43,7 @@ const AppContent = () => {
     </>
   );
 
-  return currentProfile.name === 'Disgusted' ? (
+  return currentProfile?.name === 'Disgusted' ? (
     <DisgustedLayout>{content}</DisgustedLayout>
   ) : (
     <div className="min-h-screen bg-background text-foreground">
