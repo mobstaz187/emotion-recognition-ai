@@ -7,14 +7,14 @@ interface Props {
 }
 
 export const TimeframeSelector: React.FC<Props> = ({ selected, onChange }) => {
-  const timeframes = [
+  const timeframes: Array<{ value: TimeframeOption; label: string }> = [
     { value: '1m', label: '1M' },
     { value: '15m', label: '15M' },
     { value: '30m', label: '30M' },
     { value: '1h', label: '1H' },
     { value: '4h', label: '4H' },
     { value: '24h', label: '24H' }
-  ] as const;
+  ];
 
   return (
     <div className="flex bg-background/50 rounded-lg p-1 border border-border">
