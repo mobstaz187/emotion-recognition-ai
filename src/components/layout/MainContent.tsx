@@ -14,7 +14,6 @@ import { LandingPage } from '../landing/LandingPage';
 
 export const MainContent: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const { activeTab, setActiveTab } = useTab();
 
   const renderContent = () => {
@@ -40,7 +39,6 @@ export const MainContent: React.FC = () => {
               <WebcamSection 
                 isActive={isActive}
                 onToggle={() => setIsActive(!isActive)}
-                isProcessing={isProcessing}
               />
             </div>
             <div className="lg:col-span-1">

@@ -12,9 +12,9 @@ interface Props {
 }
 
 export const WebcamSection: React.FC<Props> = ({ 
-  isActive, 
+  isActive,
   onToggle,
-  isProcessing 
+  isProcessing
 }) => {
   const webcamRef = React.useRef<Webcam>(null);
   const { setDetections } = useEmotionContext();
@@ -29,7 +29,7 @@ export const WebcamSection: React.FC<Props> = ({
           <WebcamControls 
             isAnalyzing={isActive}
             onToggleAnalysis={onToggle}
-            isProcessing={isProcessing}
+            isProcessing={isLoading}
           />
         </div>
       </div>

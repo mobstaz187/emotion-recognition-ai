@@ -9,15 +9,11 @@ interface Props {
   address: string;
 }
 
-export type TimeframeOption = '1m' | '15m' | '30m' | '1h' | '4h' | '24h';
+type TimeframeOption = '1m' | '15m' | '30m' | '1h' | '4h' | '24h';
 
 export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('15m');
   const { analysis, isLoading } = useTimeframeAnalysis(address);
-
-  const handleTimeframeChange = (timeframe: string) => {
-    setSelectedTimeframe(timeframe as TimeframeOption);
-  };
 
   if (isLoading) {
     return (
@@ -30,12 +26,12 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
   }
 
   const timeframeData = {
-    '1m': analysis?.m1 || { change: 0, volume: 0, trades: 0, signals: [] },
+    '1m': analysis?.m15 || { change: 0, volume: 0, trades: 0, signals: [] },
     '15m': analysis?.m15 || { change: 0, volume: 0, trades: 0, signals: [] },
     '30m': analysis?.m30 || { change: 0, volume: 0, trades: 0, signals: [] },
     '1h': analysis?.h1 || { change: 0, volume: 0, trades: 0, signals: [] },
-    '4h': analysis?.h4 || { change: 0, volume: 0, trades: 0, signals: [] },
-    '24h': analysis?.h24 || { change: 0, volume: 0, trades: 0, signals: [] }
+    '4h': analysis?.h1 || { change: 0, volume: 0, trades: 0, signals: [] },
+    '24h': analysis?.h1 || { change: 0, volume: 0, trades: 0, signals: [] }
   };
 
   const currentData = timeframeData[selectedTimeframe];
@@ -47,7 +43,7 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
         <h3 className="text-xl font-semibold text-foreground">Market Analysis</h3>
         <TimeframeSelector 
           selected={selectedTimeframe}
-          onChange={handleTimeframeChange}
+          onChange={setSelectedTimeframe}
         />
       </div>
       

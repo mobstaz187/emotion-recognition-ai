@@ -6,6 +6,7 @@ import { TokenAnalysisPanel } from './TokenAnalysisPanel';
 import { useTokenData } from '../../hooks/useTokenData';
 import { useProfile } from '../../contexts/ProfileContext';
 import { motion } from 'framer-motion';
+import { TimeframeAnalysis } from './panels/timeframes/TimeframeAnalysis';
 
 export const TokenMonitor: React.FC = () => {
   const [address, setAddress] = useState('');
@@ -55,10 +56,15 @@ export const TokenMonitor: React.FC = () => {
             animate={{ opacity: 1 }}
             className="space-y-6"
           >
+            {/* Token Info Box */}
             <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
               <TokenSocials data={tokenData} profileColor={profileColor} />
               <TokenInfo data={tokenData} address={address} />
             </div>
+
+            {/* Timeframe Analysis */}
+
+            {/* Analysis Panel */}
             <TokenAnalysisPanel data={tokenData} address={address} />
           </motion.div>
         )}

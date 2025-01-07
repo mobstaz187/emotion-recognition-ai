@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   selected: string;
-  onChange: (timeframe: string) => void;
+  onChange: (timeframe: any) => void;
 }
 
 export const TimeframeSelector: React.FC<Props> = ({ selected, onChange }) => {
