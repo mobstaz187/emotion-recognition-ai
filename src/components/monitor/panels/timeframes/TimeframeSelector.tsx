@@ -1,5 +1,6 @@
 import React from 'react';
-import { TimeframeOption } from '../TimeframeAnalysis';
+
+type TimeframeOption = '1m' | '15m' | '30m' | '1h' | '4h' | '24h';
 
 interface Props {
   selected: TimeframeOption;
@@ -16,16 +17,12 @@ export const TimeframeSelector: React.FC<Props> = ({ selected, onChange }) => {
     { value: '24h', label: '24H' }
   ];
 
-  const handleChange = (value: TimeframeOption) => {
-    onChange(value);
-  };
-
   return (
     <div className="flex bg-background/50 rounded-lg p-1 border border-border">
       {timeframes.map(({ value, label }) => (
         <button
           key={value}
-          onClick={() => handleChange(value)}
+          onClick={() => onChange(value)}
           className={`
             px-3 py-1.5 rounded-md text-sm font-medium transition-colors
             ${selected === value 
