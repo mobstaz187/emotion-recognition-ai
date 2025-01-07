@@ -1,5 +1,3 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Header } from './components/layout/Header';
 import { MainContent } from './components/layout/MainContent';
 import { ThemeProvider, createTheme } from '@mui/material';
@@ -12,6 +10,7 @@ import { ProfileSelection } from './components/profile/ProfileSelection';
 import { LandingPage } from './components/landing/LandingPage';
 import { useProfile } from './contexts/ProfileContext';
 import { DisgustedLayout } from './components/layout/DisgustedLayout';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const theme = createTheme({
   palette: {
