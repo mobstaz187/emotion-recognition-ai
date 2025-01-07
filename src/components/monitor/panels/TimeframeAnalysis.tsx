@@ -15,10 +15,6 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('1m');
   const { analysis, isLoading } = useTimeframeAnalysis(address);
 
-  const handleTimeframeChange = (timeframe: TimeframeOption) => {
-    setSelectedTimeframe(timeframe);
-  };
-
   if (isLoading) {
     return (
       <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
@@ -47,7 +43,7 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
         <h3 className="text-xl font-semibold text-foreground">Market Analysis</h3>
         <TimeframeSelector 
           selected={selectedTimeframe}
-          onChange={handleTimeframeChange}
+          onChange={setSelectedTimeframe}
         />
       </div>
       
