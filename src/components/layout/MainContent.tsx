@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { WebcamSection } from '../sections/WebcamSection';
 import { ResultsPanel } from '../sections/ResultsPanel';
 import { ImageUploadSection } from '../upload/ImageUploadSection';
@@ -16,6 +16,10 @@ export const MainContent: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const { activeTab, setActiveTab } = useTab();
+
+  const handleProcessingChange = useCallback((processing: boolean) => {
+    setIsProcessing(processing);
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -41,6 +45,7 @@ export const MainContent: React.FC = () => {
                 isActive={isActive}
                 onToggle={() => setIsActive(!isActive)}
                 isProcessing={isProcessing}
+                onProcessingChange={handleProcessingChange}
               />
             </div>
             <div className="lg:col-span-1">

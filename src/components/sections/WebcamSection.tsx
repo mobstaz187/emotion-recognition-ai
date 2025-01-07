@@ -9,17 +9,23 @@ interface Props {
   isActive: boolean;
   onToggle: () => void;
   isProcessing: boolean;
+  onProcessingChange: (processing: boolean) => void;
 }
 
 export const WebcamSection: React.FC<Props> = ({ 
   isActive, 
   onToggle,
-  isProcessing 
+  isProcessing,
+  onProcessingChange
 }) => {
   const webcamRef = React.useRef<Webcam>(null);
   const { setDetections } = useEmotionContext();
   const { isWebcamOn } = useWebcam();
   const { isLoading, error } = useEmotionDetection(webcamRef, isActive && isWebcamOn, setDetections);
+
+  React.useEffect(() => {
+    onProcessingChange(isLoading);
+  }, [isLoading, onProcessingChange]);
 
   return (
     <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-2xl border border-border overflow-hidden">
