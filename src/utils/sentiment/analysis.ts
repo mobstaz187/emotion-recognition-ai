@@ -13,9 +13,6 @@ interface SentimentResult {
   emotion: EmotionType;
   confidence: number;
   reason: string;
-  prediction: {
-    direction: 'up' | 'down' | 'sideways';
-  };
   signals: {
     bullish: string[];
     bearish: string[];
@@ -68,35 +65,31 @@ export function analyzeSentiment(data: TokenData): SentimentResult {
   // Calculate weighted score (0-100)
   const score = Math.min(100, Math.max(0, (bullishScore - bearishScore) / totalSignals + 50));
 
-  // Determine direction based on score and signals
-  let direction: 'up' | 'down' | 'sideways';
-  if (score >= 60 && signals.bullish.length > signals.bearish.length) {
-    direction = 'up';
-  } else if (score <= 40 && signals.bearish.length > signals.bullish.length) {
-    direction = 'down';
-  } else {
-    direction = 'sideways';
-  }
-
-  // Determine emotion and confidence
+  // Determine emotion and confidence based on score and market conditions
   let emotion: EmotionType;
   let confidence: number;
 
-  if (score >= 70) {
+  if (score >= 80) {
     emotion = 'happy';
-    confidence = 0.8 + (score - 70) / 100;
-  } else if (score >= 55) {
+    confidence = 0.9;
+  } else if (score >= 65) {
     emotion = 'surprised';
-    confidence = 0.7 + (score - 55) / 50;
+    confidence = 0.8;
   } else if (score >= 45) {
     emotion = 'neutral';
-    confidence = 0.6 + Math.abs(50 - score) / 50;
-  } else if (score >= 30) {
+    confidence = 0.7;
+  } else if (score >= 35) {
     emotion = 'sad';
-    confidence = 0.7 + (45 - score) / 50;
-  } else {
+    confidence = 0.8;
+  } else if (score >= 25) {
     emotion = 'fearful';
-    confidence = 0.8 + (30 - score) / 100;
+    confidence = 0.85;
+  } else if (score >= 15) {
+    emotion = 'angry';
+    confidence = 0.9;
+  } else {
+    emotion = 'disgusted';
+    confidence = 0.95;
   }
 
   // Generate summary reason
@@ -106,9 +99,8 @@ export function analyzeSentiment(data: TokenData): SentimentResult {
 
   return {
     emotion,
-    confidence: Math.min(confidence, 0.95),
+    confidence,
     reason,
-    prediction: { direction },
     signals
   };
 }

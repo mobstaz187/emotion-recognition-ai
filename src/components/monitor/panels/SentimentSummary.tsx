@@ -28,8 +28,11 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
   const color = getEmotionColor(analysis.emotion as any);
 
   return (
-    <div className="bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
+    <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
       <div className="flex flex-col space-y-6">
+        <h3 className="text-lg font-semibold text-foreground">Technical Score</h3>
+        
+        {/* Emotion Summary */}
         <div className="flex items-center gap-4">
           <SentimentIcon emotion={analysis.emotion as any} className="w-8 h-8" color={color} />
           <div>
@@ -42,16 +45,17 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
           </div>
         </div>
 
+        {/* Score Grid */}
         <div className="grid grid-cols-3 gap-4">
           {Object.entries(sentiment).map(([key, value]) => (
             <motion.div
               key={key}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-card rounded-lg p-4 text-center border border-border"
+              className="bg-background rounded-lg p-4 text-center border border-border"
             >
               <div className="text-sm text-muted-foreground mb-2 capitalize">
-                {key} Score
+                {key === 'technical' ? 'Technical Analysis' : `${key} Score`}
               </div>
               <div className={`text-2xl font-bold ${
                 value >= 80 ? 'text-green-400' :
@@ -65,6 +69,7 @@ export const SentimentSummary: React.FC<Props> = ({ sentiment, analysis }) => {
           ))}
         </div>
 
+        {/* Signals Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {analysis.signals.bearish.length > 0 && (
             <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">

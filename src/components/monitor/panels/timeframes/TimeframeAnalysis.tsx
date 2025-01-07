@@ -17,7 +17,7 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
 
   if (isLoading) {
     return (
-      <div className="bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
+      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
         <div className="h-[140px] flex items-center justify-center">
           <div className="text-primary animate-pulse">Loading timeframe analysis...</div>
         </div>
@@ -35,7 +35,7 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
   const minutes = parseInt(selectedTimeframe);
 
   return (
-    <div className="bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
+    <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-foreground">Market Analysis</h3>
         <TimeframeSelector 

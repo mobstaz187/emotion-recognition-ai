@@ -25,8 +25,11 @@ export const TokenSearch: React.FC<Props> = ({ onSearch }) => {
         onChange={(e) => setInput(e.target.value)}
         placeholder="Paste the Contract Address"
         className="flex-1 px-4 py-2 bg-card border border-border rounded-lg 
-          focus:outline-none focus:ring-2 focus:ring-primary/40 
-          text-foreground placeholder:text-muted-foreground"
+          focus:outline-none focus:ring-2 text-foreground placeholder:text-muted-foreground"
+        style={{ 
+          '--tw-ring-color': `${buttonColor}40`,
+          '--tw-ring-opacity': 0.4
+        } as React.CSSProperties}
       />
       <button
         type="submit"

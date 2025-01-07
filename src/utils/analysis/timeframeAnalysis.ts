@@ -1,54 +1,82 @@
 import { TimeframeData, TimeframeSignal } from '../../types/timeframe';
 
-interface TimeframeAnalysisResult {
+export function analyzeTimeframe(data: TimeframeData, timeframe: string): {
   sentiment: 'bullish' | 'bearish' | 'neutral';
   signals: TimeframeSignal[];
-}
-
-export function analyzeTimeframe(
-  data: TimeframeData,
-  timeframe: string
-): TimeframeAnalysisResult {
+} {
   const signals: TimeframeSignal[] = [];
-  let bullishCount = 0;
-  let bearishCount = 0;
 
-  // Price Change Analysis
+  // Price change analysis
   if (Math.abs(data.change) > 0) {
-    if (data.change > 0) {
+    if (data.change > 3) {
       signals.push({
         type: 'bullish',
-        message: `Price increased by ${data.change.toFixed(3)}% in last ${timeframe}`
+        message: `Strong upward movement of ${data.change.toFixed(2)}% in ${timeframe}`
       });
-      bullishCount++;
-    } else {
+    } else if (data.change > 1) {
+      signals.push({
+        type: 'bullish',
+        message: `Positive price action of ${data.change.toFixed(2)}% in ${timeframe}`
+      });
+    } else if (data.change < -3) {
       signals.push({
         type: 'bearish',
-        message: `Price decreased by ${Math.abs(data.change).toFixed(3)}% in last ${timeframe}`
+        message: `Sharp decline of ${Math.abs(data.change).toFixed(2)}% in ${timeframe}`
       });
-      bearishCount++;
+    } else if (data.change < -1) {
+      signals.push({
+        type: 'bearish',
+        message: `Negative price action of ${Math.abs(data.change).toFixed(2)}% in ${timeframe}`
+      });
+    } else {
+      signals.push({
+        type: 'neutral',
+        message: `Sideways movement with ${Math.abs(data.change).toFixed(2)}% change`
+      });
     }
   }
 
-  // Volume Analysis
-  if (data.volume > 0) {
-    const volumePerTrade = data.volume / (data.trades || 1);
-    if (volumePerTrade > 1000) {
-      signals.push({
-        type: 'bullish',
-        message: `High volume per trade: $${formatNumber(volumePerTrade)}`
-      });
-      bullishCount++;
-    } else if (volumePerTrade < 100) {
-      signals.push({
-        type: 'bearish',
-        message: `Low volume per trade: $${formatNumber(volumePerTrade)}`
-      });
-      bearishCount++;
-    }
+  // Volume analysis
+  if (data.volume > 100000) {
+    signals.push({
+      type: 'bullish',
+      message: `High trading volume of $${formatNumber(data.volume)}`
+    });
+  } else if (data.volume > 50000) {
+    signals.push({
+      type: 'neutral',
+      message: `Moderate volume of $${formatNumber(data.volume)}`
+    });
+  } else {
+    signals.push({
+      type: 'bearish',
+      message: `Low trading volume of $${formatNumber(data.volume)}`
+    });
+  }
+
+  // Trade frequency analysis
+  const tradesPerMinute = data.trades / parseInt(timeframe);
+  if (tradesPerMinute > 5) {
+    signals.push({
+      type: 'bullish',
+      message: `High trading activity with ${tradesPerMinute.toFixed(1)} trades/min`
+    });
+  } else if (tradesPerMinute > 2) {
+    signals.push({
+      type: 'neutral',
+      message: `Normal trading activity with ${tradesPerMinute.toFixed(1)} trades/min`
+    });
+  } else {
+    signals.push({
+      type: 'bearish',
+      message: `Low trading activity with ${tradesPerMinute.toFixed(1)} trades/min`
+    });
   }
 
   // Determine overall sentiment
+  const bullishCount = signals.filter(s => s.type === 'bullish').length;
+  const bearishCount = signals.filter(s => s.type === 'bearish').length;
+  
   let sentiment: 'bullish' | 'bearish' | 'neutral';
   if (bullishCount > bearishCount) {
     sentiment = 'bullish';
@@ -62,7 +90,7 @@ export function analyzeTimeframe(
 }
 
 function formatNumber(num: number): string {
-  if (num >= 1e6) return (num / 1e6).toFixed(3) + 'M';
-  if (num >= 1e3) return (num / 1e3).toFixed(3) + 'K';
-  return num.toFixed(3);
+  if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+  if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+  return num.toFixed(2);
 }

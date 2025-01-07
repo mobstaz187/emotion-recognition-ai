@@ -1,31 +1,20 @@
 import React from 'react';
 import { TokenData } from '../../types/token';
-import { motion } from 'framer-motion';
+import { TokenHeader } from './TokenHeader';
 
 interface Props {
   data: TokenData;
+  profileColor: string;
 }
 
-export const TokenSocials: React.FC<Props> = ({ data }) => {
+export const TokenSocials: React.FC<Props> = ({ data, profileColor }) => {
   return (
     <div className="flex flex-col gap-3">
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col"
-      >
-        <h1 className="text-4xl font-bold font-display bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-2">
-          {data.name}
-        </h1>
-        <div className="flex items-center gap-3">
-          <span className="text-lg bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">
-            ${data.symbol}
-          </span>
-          <span className="text-sm text-muted-foreground">
-            Contract Token
-          </span>
-        </div>
-      </motion.div>
+      <TokenHeader 
+        name={data.name}
+        symbol={data.symbol}
+        profileColor={profileColor}
+      />
 
       <div className="flex gap-4 mt-1">
         {data.twitter && (

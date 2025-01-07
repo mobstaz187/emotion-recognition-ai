@@ -8,19 +8,24 @@ import { WebcamControls } from '../WebcamControls';
 interface Props {
   isActive: boolean;
   onToggle: () => void;
+  isProcessing: boolean;
 }
 
-export const WebcamSection: React.FC<Props> = ({ isActive, onToggle }) => {
+export const WebcamSection: React.FC<Props> = ({ 
+  isActive,
+  onToggle,
+  isProcessing
+}) => {
   const webcamRef = React.useRef<Webcam>(null);
   const { setDetections } = useEmotionContext();
   const { isWebcamOn } = useWebcam();
   const { isLoading, error } = useEmotionDetection(webcamRef, isActive && isWebcamOn, setDetections);
 
   return (
-    <div className="bg-black/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)]">
-      <div className="p-4 border-b border-white/10">
+    <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-2xl border border-border overflow-hidden">
+      <div className="p-4 border-b border-border">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-gray-200">Live Analysis</h2>
+          <h2 className="text-lg font-semibold text-foreground">Live Analysis</h2>
           <WebcamControls 
             isAnalyzing={isActive}
             onToggleAnalysis={onToggle}
@@ -42,12 +47,12 @@ export const WebcamSection: React.FC<Props> = ({ isActive, onToggle }) => {
               }}
             />
             {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-                <div className="text-blue-400 text-lg animate-pulse">Initializing AI Models...</div>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div className="text-primary animate-pulse">Initializing AI Models...</div>
               </div>
             )}
             {error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
                 <div className="text-red-400 bg-red-500/20 p-4 rounded-xl border border-red-500/30">
                   {error}
                 </div>

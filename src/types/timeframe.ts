@@ -1,17 +1,15 @@
-export interface TimeframeSignal {
-  type: 'bullish' | 'bearish' | 'neutral';
-  message: string;
+// Add new types for time-based sentiment
+export interface TimeBasedSentiment {
+  emotion: string;
+  confidence: number;
+  timeframe: string;
 }
 
-export interface TimeframeData {
-  change: number;
-  volume: number;
-  trades: number;
-  signals: TimeframeSignal[];
-}
-
-export interface TimeframeAnalysis {
-  h1: TimeframeData;
-  m30: TimeframeData;
-  m15: TimeframeData;
+export interface TimeSentimentAnalysis {
+  '1m': TimeBasedSentiment;
+  '15m': TimeBasedSentiment;
+  '30m': TimeBasedSentiment;
+  '1h': TimeBasedSentiment;
+  '4h': TimeBasedSentiment;
+  '24h': TimeBasedSentiment;
 }

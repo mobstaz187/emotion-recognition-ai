@@ -2,12 +2,15 @@ import React, { useRef, useState } from 'react';
 import { DetectedFace } from '../../types/emotion';
 import { EmotionResults } from '../EmotionResults';
 import { detectEmotions } from '../../utils/emotionDetection';
+import { useProfile } from '../../contexts/ProfileContext';
 
 export const ImageUploadSection: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [detections, setDetections] = useState<DetectedFace[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { currentProfile } = useProfile();
+  const buttonColor = currentProfile?.color || '#3B82F6';
 
   const handleImageUpload = async (file: File) => {
     setIsLoading(true);
@@ -48,8 +51,9 @@ export const ImageUploadSection: React.FC = () => {
             
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl 
+              className="inline-flex items-center gap-2 px-8 py-3 text-white rounded-xl 
                 transition-all duration-200 text-lg font-medium hover:opacity-90"
+              style={{ backgroundColor: buttonColor }}
               disabled={isLoading}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,7 +78,9 @@ export const ImageUploadSection: React.FC = () => {
                 />
                 {isLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="text-primary animate-pulse">Analyzing image...</div>
+                    <div className="animate-pulse" style={{ color: buttonColor }}>
+                      Analyzing image...
+                    </div>
                   </div>
                 )}
               </div>
