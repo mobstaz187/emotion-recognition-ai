@@ -12,8 +12,12 @@ interface Props {
 export type TimeframeOption = '1m' | '15m' | '30m' | '1h' | '4h' | '24h';
 
 export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('15m');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('1m');
   const { analysis, isLoading } = useTimeframeAnalysis(address);
+
+  const handleTimeframeChange = (timeframe: TimeframeOption) => {
+    setSelectedTimeframe(timeframe);
+  };
 
   if (isLoading) {
     return (
@@ -43,7 +47,7 @@ export const TimeframeAnalysis: React.FC<Props> = ({ address }) => {
         <h3 className="text-xl font-semibold text-foreground">Market Analysis</h3>
         <TimeframeSelector 
           selected={selectedTimeframe}
-          onChange={setSelectedTimeframe}
+          onChange={handleTimeframeChange}
         />
       </div>
       

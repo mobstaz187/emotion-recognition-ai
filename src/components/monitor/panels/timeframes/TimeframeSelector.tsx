@@ -16,12 +16,16 @@ export const TimeframeSelector: React.FC<Props> = ({ selected, onChange }) => {
     { value: '24h', label: '24H' }
   ];
 
+  const handleChange = (value: TimeframeOption) => {
+    onChange(value);
+  };
+
   return (
     <div className="flex bg-background/50 rounded-lg p-1 border border-border">
       {timeframes.map(({ value, label }) => (
         <button
           key={value}
-          onClick={() => onChange(value)}
+          onClick={() => handleChange(value)}
           className={`
             px-3 py-1.5 rounded-md text-sm font-medium transition-colors
             ${selected === value 
