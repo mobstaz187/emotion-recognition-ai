@@ -9,6 +9,16 @@ const EMPTY_TIMEFRAME: TimeframeData = {
   signals: []
 };
 
+type TimeframeKey = keyof TimeframeAnalysis;
+
+interface TimeframeMetrics {
+  [key: string]: {
+    change: number;
+    volume: number;
+    trades: number;
+  };
+}
+
 export function useTimeframeAnalysis(address: string) {
   const [analysis, setAnalysis] = useState<TimeframeAnalysis>({
     m1: EMPTY_TIMEFRAME,
@@ -41,7 +51,7 @@ export function useTimeframeAnalysis(address: string) {
       }
 
       // Calculate metrics for each timeframe
-      const timeframes = {
+      const timeframes: TimeframeMetrics = {
         m1: {
           change: (pair.priceChange?.m5 || 0) / 5,
           volume: (pair.volume?.h1 || 0) / 60,
@@ -75,11 +85,12 @@ export function useTimeframeAnalysis(address: string) {
       };
 
       // Add random variance to make results more interesting
-      Object.keys(timeframes).forEach(key => {
+      Object.keys(timeframes).forEach((key) => {
         const variance = 0.2; // 20% variance
-        timeframes[key].change *= (1 + (Math.random() * variance * 2 - variance));
-        timeframes[key].volume *= (1 + (Math.random() * variance * 2 - variance));
-        timeframes[key].trades = Math.round(timeframes[key].trades * (1 + (Math.random() * variance * 2 - variance)));
+        const tf = timeframes[key];
+        tf.change *= (1 + (Math.random() * variance * 2 - variance));
+        tf.volume *= (1 + (Math.random() * variance * 2 - variance));
+        tf.trades = Math.round(tf.trades * (1 + (Math.random() * variance * 2 - variance)));
       });
 
       // Analyze each timeframe
@@ -87,7 +98,10 @@ export function useTimeframeAnalysis(address: string) {
         ...acc,
         [key]: {
           ...data,
-          signals: analyzeTimeframe(data as TimeframeData, key).signals
+          signals: analyzeTimeframe({
+            ...data,
+            signals: []
+          }, key).signals
         }
       }), {} as TimeframeAnalysis);
 
@@ -107,7 +121,6 @@ export function useTimeframeAnalysis(address: string) {
     }
   }, [address]);
 
-  // Initial data fetch
   useEffect(() => {
     fetchData();
   }, [fetchData]);

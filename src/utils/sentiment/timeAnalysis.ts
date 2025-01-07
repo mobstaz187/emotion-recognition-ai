@@ -1,7 +1,15 @@
 import { TokenData } from '../../types/token';
 import { TimeSentimentAnalysis, TimeBasedSentiment } from '../../types/timeframe';
 
-const TECHNICAL_WEIGHTS = {
+type TimeframeKey = '1m' | '15m' | '30m' | '1h' | '4h' | '24h';
+
+interface TechnicalWeights {
+  rsi: Record<TimeframeKey, number>;
+  macd: Record<TimeframeKey, number>;
+  bollinger: Record<TimeframeKey, number>;
+}
+
+const TECHNICAL_WEIGHTS: TechnicalWeights = {
   rsi: {
     '1m': 0.2, '15m': 0.25, '30m': 0.3,
     '1h': 0.35, '4h': 0.4, '24h': 0.45
@@ -16,8 +24,13 @@ const TECHNICAL_WEIGHTS = {
   }
 };
 
+const TIMEFRAME_MULTIPLIERS: Record<TimeframeKey, number> = {
+  '1m': 0.2, '15m': 0.4, '30m': 0.6,
+  '1h': 0.8, '4h': 0.9, '24h': 1.0
+};
+
 export function analyzeAllTimeframes(data: TokenData): TimeSentimentAnalysis {
-  const timeframes = ['1m', '15m', '30m', '1h', '4h', '24h'] as const;
+  const timeframes: TimeframeKey[] = ['1m', '15m', '30m', '1h', '4h', '24h'];
   
   return timeframes.reduce((acc, timeframe) => ({
     ...acc,
@@ -25,7 +38,7 @@ export function analyzeAllTimeframes(data: TokenData): TimeSentimentAnalysis {
   }), {} as TimeSentimentAnalysis);
 }
 
-function analyzeTimeframeSentiment(data: TokenData, timeframe: string): TimeBasedSentiment {
+function analyzeTimeframeSentiment(data: TokenData, timeframe: TimeframeKey): TimeBasedSentiment {
   const technicalScore = calculateTechnicalScore(data, timeframe);
   const priceChangeImpact = calculatePriceChangeImpact(data, timeframe);
   const totalScore = (technicalScore * 0.7 + priceChangeImpact * 0.3) * 100;
@@ -56,7 +69,7 @@ function analyzeTimeframeSentiment(data: TokenData, timeframe: string): TimeBase
   return { emotion, confidence, timeframe };
 }
 
-function calculateTechnicalScore(data: TokenData, timeframe: string): number {
+function calculateTechnicalScore(data: TokenData, timeframe: TimeframeKey): number {
   let score = 0;
   let totalWeight = 0;
 
@@ -88,12 +101,8 @@ function calculateTechnicalScore(data: TokenData, timeframe: string): number {
   return score / totalWeight;
 }
 
-function calculatePriceChangeImpact(data: TokenData, timeframe: string): number {
+function calculatePriceChangeImpact(data: TokenData, timeframe: TimeframeKey): number {
   const change = data.priceChange24h;
-  const timeframeMultiplier = {
-    '1m': 0.2, '15m': 0.4, '30m': 0.6,
-    '1h': 0.8, '4h': 0.9, '24h': 1.0
-  }[timeframe] || 1;
-
+  const timeframeMultiplier = TIMEFRAME_MULTIPLIERS[timeframe];
   return Math.tanh(change * timeframeMultiplier * 0.1);
 }
