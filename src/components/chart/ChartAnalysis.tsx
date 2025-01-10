@@ -3,36 +3,42 @@ import { ChartUpload } from './ChartUpload';
 import { ChartDisplay } from './ChartDisplay';
 import { AnalysisResults } from './AnalysisResults';
 import { ThresholdControls } from './controls/ThresholdControls';
-import { ScenarioSelector, type Scenario } from './ScenarioSelector';
+import { ScenarioSelector } from './ScenarioSelector';
 import { useChartAnalysis } from '../../hooks/useChartAnalysis';
 import { getScenarioLevels } from '../../utils/chart/scenarios';
-import type { ColorThresholds } from '../../types/chart';
+import { useToken } from '../../contexts/TokenContext';
 
 export const ChartAnalysis: React.FC = () => {
-  const [image, setImage] = useState<string | null>(null);
-  const [scenario, setScenario] = useState<Scenario>('neutral');
-  const [thresholds, setThresholds] = useState<ColorThresholds>({
-    red: 110,
-    green: 95
-  });
+  const { 
+    chartImage, 
+    setChartImage,
+    chartLevels,
+    setChartLevels,
+    chartScenario,
+    setChartScenario,
+    chartThresholds,
+    setChartThresholds
+  } = useToken();
+  
+  const { isAnalyzing, analyze, reset } = useChartAnalysis();
+  const scenarioLevels = getScenarioLevels(chartLevels, chartScenario);
 
-  const { levels, isAnalyzing, analyze, reset } = useChartAnalysis();
-  const scenarioLevels = getScenarioLevels(levels, scenario);
-
-  const handleThresholdChange = (newThresholds: ColorThresholds) => {
-    setThresholds(newThresholds);
-    if (image) {
-      analyze(image, newThresholds);
+  const handleThresholdChange = async (newThresholds: ColorThresholds) => {
+    setChartThresholds(newThresholds);
+    if (chartImage) {
+      const newLevels = await analyze(chartImage, newThresholds);
+      setChartLevels(newLevels);
     }
   };
 
   const handleImageSelect = async (imageUrl: string) => {
     reset();
-    setImage(null);
-    setScenario('neutral');
-    await new Promise(resolve => setTimeout(resolve, 50));
-    setImage(imageUrl);
-    analyze(imageUrl, thresholds);
+    setChartImage(imageUrl);
+    setChartLevels([]);
+    setChartScenario('neutral');
+    
+    const newLevels = await analyze(imageUrl, chartThresholds);
+    setChartLevels(newLevels);
   };
 
   return (
@@ -47,7 +53,7 @@ export const ChartAnalysis: React.FC = () => {
           <ChartUpload onImageSelect={handleImageSelect} />
         </div>
 
-        {image ? (
+        {chartImage ? (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Left Sidebar - Controls */}
             <div className="lg:col-span-1 space-y-8">
@@ -57,13 +63,14 @@ export const ChartAnalysis: React.FC = () => {
                   <div>
                     <h4 className="text-base font-medium text-foreground mb-3">Scenario</h4>
                     <ScenarioSelector 
-                      scenario={scenario} 
-                      onScenarioChange={setScenario} 
+                      scenario={chartScenario} 
+                      onScenarioChange={setChartScenario} 
                     />
                   </div>
                   <ThresholdControls 
-                    thresholds={thresholds}
+                    thresholds={chartThresholds}
                     onChange={handleThresholdChange}
+                    isAnalyzing={isAnalyzing}
                   />
                 </div>
               </div>
@@ -72,14 +79,14 @@ export const ChartAnalysis: React.FC = () => {
             {/* Main Content - Chart and Results */}
             <div className="lg:col-span-3 space-y-6">
               <ChartDisplay 
-                key={image}
-                image={image} 
+                image={chartImage} 
                 levels={scenarioLevels}
                 isAnalyzing={isAnalyzing}
+                isInitialAnalysis={chartLevels.length === 0}
               />
               <AnalysisResults 
                 levels={scenarioLevels} 
-                scenario={scenario}
+                scenario={chartScenario}
               />
             </div>
           </div>

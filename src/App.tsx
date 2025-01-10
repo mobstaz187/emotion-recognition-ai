@@ -1,11 +1,13 @@
+import React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material';
 import { Header } from './components/layout/Header';
 import { MainContent } from './components/layout/MainContent';
-import { ThemeProvider, createTheme } from '@mui/material';
 import { EmotionProvider } from './contexts/EmotionContext';
 import { WebcamProvider } from './contexts/WebcamContext';
 import { ProfileProvider } from './contexts/ProfileContext';
 import { TabProvider } from './contexts/TabContext';
 import { ThemeProvider as CustomThemeProvider } from './contexts/ThemeContext';
+import { TokenProvider } from './contexts/TokenContext';
 import { ProfileSelection } from './components/profile/ProfileSelection';
 import { LandingPage } from './components/landing/LandingPage';
 import { useProfile } from './contexts/ProfileContext';
@@ -84,13 +86,15 @@ export default function App() {
       <CustomThemeProvider>
         <ProfileProvider>
           <TabProvider>
-            <WebcamProvider>
-              <EmotionProvider>
-                <AnimatePresence mode="wait">
-                  <AppContent />
-                </AnimatePresence>
-              </EmotionProvider>
-            </WebcamProvider>
+            <TokenProvider>
+              <WebcamProvider>
+                <EmotionProvider>
+                  <AnimatePresence mode="wait">
+                    <AppContent />
+                  </AnimatePresence>
+                </EmotionProvider>
+              </WebcamProvider>
+            </TokenProvider>
           </TabProvider>
         </ProfileProvider>
       </CustomThemeProvider>

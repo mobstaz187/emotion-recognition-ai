@@ -29,9 +29,12 @@ export const FloatingTabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }
               {index > 0 && (
                 <div className="w-px h-8 my-auto bg-border" />
               )}
-              <button
+              <motion.button
                 onClick={() => onTabChange(tab.id)}
                 className="relative group"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
               >
                 {activeTab === tab.id && (
                   <motion.div
@@ -44,23 +47,42 @@ export const FloatingTabBar: React.FC<Props> = ({ tabs, activeTab, onTabChange }
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <div className={`
-                  relative z-10 px-4 py-2 rounded-xl flex items-center gap-2
-                  transition-colors duration-200
-                  ${activeTab === tab.id 
-                    ? 'text-primary' 
-                    : 'text-muted-foreground hover:text-foreground'
-                  }
-                `}
-                style={activeTab === tab.id ? { color: activeColor } : undefined}>
+                <div 
+                  className={`
+                    relative z-10 px-4 py-2 rounded-xl flex items-center gap-2
+                    transition-colors duration-200
+                    ${activeTab === tab.id 
+                      ? 'text-primary' 
+                      : 'text-muted-foreground hover:text-foreground'
+                    }
+                  `}
+                  style={activeTab === tab.id ? { color: activeColor } : undefined}
+                >
                   {typeof tab.icon === 'string' ? (
-                    <span className="text-lg">{tab.icon}</span>
+                    <motion.span 
+                      className="text-lg"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {tab.icon}
+                    </motion.span>
                   ) : (
-                    <tab.icon className="w-5 h-5" />
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <tab.icon className="w-5 h-5" />
+                    </motion.div>
                   )}
-                  <span className="text-sm font-medium whitespace-nowrap">{tab.label}</span>
+                  <motion.span 
+                    className="text-sm font-medium whitespace-nowrap"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {tab.label}
+                  </motion.span>
                 </div>
-              </button>
+              </motion.button>
             </React.Fragment>
           ))}
         </div>

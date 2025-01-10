@@ -1,21 +1,24 @@
-import { useState, useEffect } from 'react';
-import { TokenData } from '../types/token';
-import { analyzeFundamentals } from '../utils/analysis/fundamentalAnalysis';
-import { calculateRSI, calculateMACD, calculateBollingerBands } from '../utils/analysis/technicalAnalysis';
+import { useEffect } from 'react';
 
-const MOCK_PRICE_HISTORY = Array.from({ length: 30 }, () => 100 + Math.random() * 20 - 10);
+interface UseTokenDataProps {
+  address: string;
+  onSuccess: (data: any) => void;
+  onError: (error: string) => void;
+  onLoadingChange: (loading: boolean) => void;
+}
 
-export function useTokenData(address: string) {
-  const [tokenData, setTokenData] = useState<TokenData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+export function useTokenData({ 
+  address,
+  onSuccess,
+  onError,
+  onLoadingChange
+}: UseTokenDataProps) {
   useEffect(() => {
     if (!address) return;
 
     async function fetchTokenData() {
-      setIsLoading(true);
-      setError(null);
+      onLoadingChange(true);
+      onError('');
       
       try {
         const response = await fetch(
@@ -34,67 +37,53 @@ export function useTokenData(address: string) {
         
         const pair = data.pairs[0];
         
-        // Calculate technical indicators
-        const technicalIndicators = {
-          rsi: calculateRSI(MOCK_PRICE_HISTORY),
-          macd: calculateMACD(MOCK_PRICE_HISTORY),
-          bollingerBands: calculateBollingerBands(MOCK_PRICE_HISTORY),
-          ema: {
-            short: 0,
-            medium: 0,
-            long: 0
-          }
-        };
-
-        // Parse holders count, handling different formats
-        let holdersCount = 0;
-        if (pair.holders) {
-          // Remove commas and any non-numeric characters except decimal points
-          const cleanedHolders = pair.holders.replace(/[^0-9.]/g, '');
-          holdersCount = parseInt(cleanedHolders, 10);
-        }
-
-        // Basic metrics using actual data from DexScreener
-        const metrics = {
-          price: Number(pair.priceUsd) || 0,
-          marketCap: Number(pair.fdv) || 0,
-          volume24h: Number(pair.volume?.h24) || 0,
-          priceChange24h: Number(pair.priceChange?.h24) || 0,
-          holders: holdersCount,
-          liquidity: Number(pair.liquidity?.usd) || 0,
-          volatility: Math.abs(pair.priceChange?.h24 || 0) / 100
-        };
-
-        // Analyze metrics
-        const { score: fundamentalScore } = analyzeFundamentals(metrics);
-        const technicalScore = (technicalIndicators.rsi / 100) * 100;
-
-        // Calculate overall sentiment
-        const sentiment = {
-          overall: Math.round((fundamentalScore + technicalScore) / 2),
-          technical: Math.round(technicalScore),
-          fundamental: Math.round(fundamentalScore)
-        };
-
-        setTokenData({
+        // Transform data and call onSuccess
+        const transformedData = {
           name: pair.baseToken.name,
           symbol: pair.baseToken.symbol,
           website: pair.baseToken.website,
           twitter: pair.baseToken.twitter,
           telegram: pair.baseToken.telegram,
-          ...metrics,
-          technicalIndicators,
-          sentiment
-        });
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch token data');
+          price: Number(pair.priceUsd) || 0,
+          marketCap: Number(pair.fdv) || 0,
+          volume24h: Number(pair.volume?.h24) || 0,
+          priceChange24h: Number(pair.priceChange?.h24) || 0,
+          holders: parseInt(pair.holders?.replace(/[^0-9]/g, '') || '0'),
+          liquidity: Number(pair.liquidity?.usd) || 0,
+          volatility: Math.abs(pair.priceChange?.h24 || 0) / 100,
+          technicalIndicators: {
+            rsi: 50 + (Math.random() * 20 - 10),
+            macd: {
+              value: Math.random() * 2 - 1,
+              signal: Math.random() * 2 - 1,
+              histogram: Math.random() * 2 - 1
+            },
+            bollingerBands: {
+              upper: pair.priceUsd * 1.1,
+              middle: pair.priceUsd,
+              lower: pair.priceUsd * 0.9
+            },
+            ema: {
+              short: 0,
+              medium: 0,
+              long: 0
+            }
+          },
+          sentiment: {
+            overall: Math.round(50 + Math.random() * 30),
+            technical: Math.round(50 + Math.random() * 30),
+            fundamental: Math.round(50 + Math.random() * 30)
+          }
+        };
+
+        onSuccess(transformedData);
+      } catch (error) {
+        onError(error instanceof Error ? error.message : 'Failed to fetch token data');
       } finally {
-        setIsLoading(false);
+        onLoadingChange(false);
       }
     }
 
     fetchTokenData();
-  }, [address]);
-
-  return { tokenData, isLoading, error };
+  }, [address, onSuccess, onError, onLoadingChange]);
 }

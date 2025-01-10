@@ -1,29 +1,36 @@
 import React, { useRef, useEffect } from 'react';
 import { Level } from '../../types/chart';
 import { drawLevels } from '../../utils/chart/drawing';
+import { useProfile } from '../../contexts/ProfileContext';
 
 interface Props {
   image: string;
   levels: Level[];
   isAnalyzing: boolean;
+  isInitialAnalysis?: boolean;
 }
 
-export const ChartDisplay: React.FC<Props> = ({ image, levels, isAnalyzing }) => {
+export const ChartDisplay: React.FC<Props> = ({ 
+  image, 
+  levels, 
+  isAnalyzing,
+  isInitialAnalysis = false
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { currentProfile } = useProfile();
+  const profileColor = currentProfile?.color || '#3B82F6';
 
   useEffect(() => {
     if (canvasRef.current && containerRef.current && image && levels.length > 0) {
       const img = new Image();
       img.src = image;
       img.onload = () => {
-        // Calculate aspect ratio
         const aspectRatio = img.width / img.height;
         const maxWidth = containerRef.current!.offsetWidth;
         const width = Math.min(maxWidth, img.width);
         const height = width / aspectRatio;
 
-        // Set canvas dimensions
         const canvas = canvasRef.current!;
         canvas.width = width;
         canvas.height = height;
@@ -43,8 +50,16 @@ export const ChartDisplay: React.FC<Props> = ({ image, levels, isAnalyzing }) =>
         className="w-full rounded-lg border border-white/10"
       />
       {isAnalyzing && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-lg">
-          <div className="text-primary animate-pulse">Analyzing chart...</div>
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-lg">
+          <div className="flex flex-col items-center gap-3">
+            <div 
+              className="w-8 h-8 border-3 border-t-transparent rounded-full animate-spin"
+              style={{ borderColor: profileColor }}
+            />
+            <div className="text-sm" style={{ color: profileColor }}>
+              {isInitialAnalysis ? 'Analyzing chart...' : 'Adjusting analysis...'}
+            </div>
+          </div>
         </div>
       )}
     </div>

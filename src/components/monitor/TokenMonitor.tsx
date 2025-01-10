@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TokenSearch } from './TokenSearch';
 import { TokenSocials } from './TokenSocials';
 import { TokenInfo } from './TokenInfo';
 import { TokenAnalysisPanel } from './TokenAnalysisPanel';
-import { useTokenData } from '../../hooks/useTokenData';
 import { useProfile } from '../../contexts/ProfileContext';
+import { useToken } from '../../contexts/TokenContext';
 import { motion } from 'framer-motion';
+import { useTokenData } from '../../hooks/useTokenData';
 
 export const TokenMonitor: React.FC = () => {
-  const [address, setAddress] = useState('');
-  const { tokenData, isLoading, error } = useTokenData(address);
   const { currentProfile } = useProfile();
+  const { 
+    address, 
+    setAddress,
+    tokenData,
+    setTokenData,
+    isLoading,
+    setIsLoading,
+    error,
+    setError
+  } = useToken();
   const profileColor = currentProfile?.color || '#3B82F6';
+
+  // Use the hook to fetch data when address changes
+  useTokenData({
+    address,
+    onSuccess: setTokenData,
+    onError: setError,
+    onLoadingChange: setIsLoading
+  });
 
   return (
     <div className="max-w-6xl mx-auto">

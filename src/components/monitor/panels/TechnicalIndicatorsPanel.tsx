@@ -41,15 +41,21 @@ export const TechnicalIndicatorsPanel: React.FC<Props> = ({ indicators }) => {
           <div className="grid grid-cols-3 gap-4">
             <div>
               <div className="text-xs text-muted-foreground">Upper</div>
-              <div className="text-sm font-medium text-foreground">{indicators.bollingerBands.upper.toFixed(4)}</div>
+              <div className="text-sm font-medium text-foreground">
+                {Number(indicators.bollingerBands.upper).toFixed(4)}
+              </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground">Middle</div>
-              <div className="text-sm font-medium text-foreground">{indicators.bollingerBands.middle.toFixed(4)}</div>
+              <div className="text-sm font-medium text-foreground">
+                {Number(indicators.bollingerBands.middle).toFixed(4)}
+              </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground">Lower</div>
-              <div className="text-sm font-medium text-foreground">{indicators.bollingerBands.lower.toFixed(4)}</div>
+              <div className="text-sm font-medium text-foreground">
+                {Number(indicators.bollingerBands.lower).toFixed(4)}
+              </div>
             </div>
           </div>
         </div>
