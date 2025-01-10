@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChartUpload } from './ChartUpload';
 import { ChartDisplay } from './ChartDisplay';
 import { AnalysisResults } from './AnalysisResults';
@@ -7,6 +7,7 @@ import { ScenarioSelector } from './ScenarioSelector';
 import { useChartAnalysis } from '../../hooks/useChartAnalysis';
 import { getScenarioLevels } from '../../utils/chart/scenarios';
 import { useToken } from '../../contexts/TokenContext';
+import type { ColorThresholds } from '../../types/chart';
 
 export const ChartAnalysis: React.FC = () => {
   const { 
