@@ -53,15 +53,15 @@ export const ProfileSelection: React.FC = () => {
       </motion.div>
       
       <motion.div 
-        className="flex items-center gap-8 mb-12"
+        className="flex items-center gap-4 mb-12 -ml-12"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
         <motion.img 
-          src="/emotion-recognition-ai/gmgn-frog.png" 
-          alt="GMGN Logo" 
-          className="w-16 h-16 object-contain"
+          src="/Untitled-1.png" 
+          alt="Pelios Logo" 
+          className="w-32 h-32 object-contain"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ 
@@ -81,7 +81,7 @@ export const ProfileSelection: React.FC = () => {
             PELIOS
           </motion.h1>
           <motion.div 
-            className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent my-3"
+            className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent my-2"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.5 }}
@@ -152,7 +152,19 @@ export const ProfileSelection: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2 }}
       >
-        <SocialLinks />
+        <a
+          href="https://x.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-10 h-10 flex items-center justify-center rounded-full 
+            bg-black/30 backdrop-blur-xl border border-white/10 
+            hover:bg-black/50 transition-colors"
+          aria-label="X (Twitter)"
+        >
+          <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
       </motion.div>
     </motion.div>
   );

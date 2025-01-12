@@ -1,4 +1,4 @@
-import { LiveIcon, UploadIcon, AnalysisIcon, DocsIcon, ChartIcon } from '../../icons/TabIcons';
+import { LiveIcon, UploadIcon, AnalysisIcon, ChartIcon } from '../../icons/TabIcons';
 
 export const features = [
   {
@@ -24,11 +24,5 @@ export const features = [
     description: 'Detect support and resistance levels with our intelligent chart pattern recognition.',
     icon: ChartIcon,
     color: '#EC4899'
-  },
-  {
-    title: 'Documentation',
-    description: 'Access detailed documentation about our emotion recognition algorithms and implementation.',
-    icon: DocsIcon,
-    color: '#F59E0B'
   }
 ];

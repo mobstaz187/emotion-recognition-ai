@@ -27,10 +27,56 @@ export const FeatureSection = () => {
                 className="flex-1 p-8 rounded-2xl"
                 style={{ backgroundColor: `${feature.color}10` }}
               >
-                <div className="aspect-video rounded-xl bg-card border border-border 
-                  flex items-center justify-center">
-                  <feature.icon className="w-16 h-16 text-muted-foreground" />
-                </div>
+                {feature.title === 'Real-time Analysis' ? (
+                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                    <img 
+                      src="/LiveAnalysis.gif" 
+                      alt="Live Analysis"
+                      className="w-full h-full object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                ) : feature.title === 'Token Sentiment' ? (
+                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                    <img 
+                      src="/Token-Sentiment.gif" 
+                      alt="Token Sentiment Analysis"
+                      className="w-[115%] h-[115%] object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                ) : feature.title === 'Chart Analysis' ? (
+                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                    <img 
+                      src="/Chart-Analysis.gif" 
+                      alt="Chart Analysis"
+                      className="w-full h-full object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                ) : feature.title === 'Image Upload' ? (
+                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                    <img 
+                      src="/Sad-Analysis.png" 
+                      alt="Sad Analysis"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video rounded-xl bg-card border border-border 
+                    flex items-center justify-center">
+                    <feature.icon className="w-16 h-16 text-muted-foreground" />
+                  </div>
+                )}
               </div>
             </div>
           ))}

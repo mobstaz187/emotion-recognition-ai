@@ -4,7 +4,7 @@ import { CopyButton } from '../common/CopyButton';
 import { ThemeToggle } from '../theme/ThemeToggle';
 import { useProfile } from '../../contexts/ProfileContext';
 
-const PROFILES = [
+const EMOTIONS = [
   { id: '1', name: 'Happy', color: '#D97706', emoji: '😊' },
   { id: '2', name: 'Sad', color: '#3B82F6', emoji: '😢' },
   { id: '3', name: 'Angry', color: '#EF4444', emoji: '😠' },
@@ -22,20 +22,27 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
-          <div className="relative">
-            <h1 className="text-4xl font-black tracking-normal bg-gradient-to-r from-[#4F46E5] to-[#7C3AED] bg-clip-text text-transparent font-display">
-              PELIOS
-              <span className="absolute -top-1 -right-8 text-xs font-medium text-blue-400">
-                Beta
-              </span>
-            </h1>
+          <div className="flex items-center gap-0">
+            <img 
+              src="/Untitled-1.png" 
+              alt="Pelios Logo" 
+              className="w-14 h-14 object-contain"
+            />
+            <div className="flex items-end -ml-2">
+              <h1 className="text-4xl font-black tracking-normal bg-gradient-to-r from-[#4F46E5] to-[#7C3AED] bg-clip-text text-transparent font-display">
+                PELIOS
+                <span className="text-xs font-medium text-blue-400 ml-1 mb-1">
+                  Beta
+                </span>
+              </h1>
+            </div>
           </div>
 
           {/* Right Section */}
           <div className="flex items-center space-x-6">
             <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground font-medium">Contract:</span>
-              <CopyButton text="ASDASDASDA" />
+              <CopyButton text="Updating..." />
               <div className="border border-border rounded-lg">
                 <a
                   href="https://x.com"
@@ -94,50 +101,40 @@ export const Header: React.FC = () => {
                       className="absolute right-0 mt-2 w-56 bg-white/80 dark:bg-card/80 backdrop-blur-xl border border-border rounded-lg shadow-lg overflow-hidden"
                     >
                       <div className="py-2">
-                        {PROFILES.map((profile) => (
-                          <button
-                            key={profile.id}
+                        {EMOTIONS.map((emotion) => (
+                          <motion.button
+                            key={emotion.id}
                             onClick={() => {
-                              setCurrentProfile(profile);
+                              setCurrentProfile(emotion);
                               setIsDropdownOpen(false);
                             }}
-                            className="w-full px-4 py-3.5 text-left hover:bg-white/5 transition-colors flex items-center gap-2 relative"
-                            style={{ color: profile.color }}
+                            className="w-full px-4 py-2 flex items-center gap-3 hover:bg-white/5 transition-colors"
+                            whileHover={{ x: 4 }}
                           >
-                            {currentProfile.id === profile.id && (
-                              <motion.div
-                                className="absolute inset-0"
-                                style={{ 
-                                  backgroundColor: `${profile.color}10`,
-                                  borderLeft: `2px solid ${profile.color}`
-                                }}
-                                layoutId="activeProfileHighlight"
-                              />
-                            )}
-                            <span className="relative z-10 text-xl">{profile.emoji}</span>
-                            <span className="relative z-10 font-bold">{profile.name}</span>
-                          </button>
+                            <span className="text-2xl">{emotion.emoji}</span>
+                            <span 
+                              className="font-medium"
+                              style={{ color: emotion.color }}
+                            >
+                              {emotion.name}
+                            </span>
+                          </motion.button>
                         ))}
-                        
-                        <div className="h-px bg-border mx-2 my-2" />
-                        
-                        <button
+                        <div className="h-px bg-border my-2" />
+                        <motion.button
                           onClick={() => {
                             setCurrentProfile(null);
                             setIsDropdownOpen(false);
                           }}
-                          className="w-full px-4 py-3.5 text-left text-foreground hover:bg-white/5 transition-colors font-bold flex items-center gap-2"
+                          className="w-full px-4 py-2 flex items-center gap-3 hover:bg-white/5 transition-colors text-red-400"
+                          whileHover={{ x: 4 }}
                         >
-                          <svg 
-                            className="w-4 h-4" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                           </svg>
-                          <span>Splashscreen</span>
-                        </button>
+                          <span className="font-medium">Reset Profile</span>
+                        </motion.button>
                       </div>
                     </motion.div>
                   )}
