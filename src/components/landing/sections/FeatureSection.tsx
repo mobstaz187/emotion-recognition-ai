@@ -30,7 +30,7 @@ export const FeatureSection = () => {
                 {feature.title === 'Real-time Analysis' ? (
                   <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
                     <img 
-                      src="/LiveAnalysis.gif" 
+                      src="./LiveAnalysis.gif" 
                       alt="Live Analysis"
                       className="w-full h-full object-contain"
                     />
@@ -38,7 +38,7 @@ export const FeatureSection = () => {
                 ) : feature.title === 'Token Sentiment' ? (
                   <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
                     <img 
-                      src="/Token-Sentiment.gif" 
+                      src="./Token-Sentiment.gif" 
                       alt="Token Sentiment Analysis"
                       className="w-[115%] h-[115%] object-contain"
                     />
@@ -46,7 +46,7 @@ export const FeatureSection = () => {
                 ) : feature.title === 'Chart Analysis' ? (
                   <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
                     <img 
-                      src="/Chart-Analysis.gif" 
+                      src="./Chart-Analysis.gif" 
                       alt="Chart Analysis"
                       className="w-full h-full object-contain"
                     />
@@ -54,7 +54,7 @@ export const FeatureSection = () => {
                 ) : feature.title === 'Image Upload' ? (
                   <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
                     <img 
-                      src="/Sad-Analysis.png" 
+                      src="./Sad-Analysis.png" 
                       alt="Sad Analysis"
                       className="w-full h-full object-contain"
                     />

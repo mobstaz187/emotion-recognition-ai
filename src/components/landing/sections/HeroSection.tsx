@@ -16,7 +16,7 @@ export const HeroSection = () => {
         <div className="flex items-center justify-center gap-8 mb-12">
           <div className="flex items-center gap-4">
             <motion.img 
-              src="/Untitled-1.png"
+              src="./Untitled-1.png"
               alt="Pelios Logo"
               className="w-32 h-32 object-contain"
               initial={{ scale: 0 }}

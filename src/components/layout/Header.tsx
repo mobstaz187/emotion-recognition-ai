@@ -24,7 +24,7 @@ export const Header: React.FC = () => {
           {/* Logo Section */}
           <div className="flex items-center gap-0">
             <img 
-              src="/Untitled-1.png" 
+              src="./Untitled-1.png" 
               alt="Pelios Logo" 
               className="w-14 h-14 object-contain"
             />
