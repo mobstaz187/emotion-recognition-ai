@@ -59,8 +59,8 @@ export const ProfileSelection: React.FC = () => {
         transition={{ delay: 0.3 }}
       >
         <motion.img 
-          src="/pill-icon.png" 
-          alt="Pill Icon" 
+          src="/emotion-recognition-ai/gmgn-frog.png" 
+          alt="GMGN Logo" 
           className="w-16 h-16 object-contain"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
