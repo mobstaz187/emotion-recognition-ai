@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { ProfileAvatar } from './ProfileAvatar';
 import { useProfile } from '../../contexts/ProfileContext';
 import { ThemeToggle } from '../theme/ThemeToggle';
-import { SocialLinks } from '../common/SocialLinks';
 import { SplashTransition } from '../splash/SplashTransition';
 import type { Profile } from '../../contexts/ProfileContext';
 

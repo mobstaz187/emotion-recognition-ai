@@ -33,10 +33,6 @@ export const FeatureSection = () => {
                       src="/LiveAnalysis.gif" 
                       alt="Live Analysis"
                       className="w-full h-full object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
                     />
                   </div>
                 ) : feature.title === 'Token Sentiment' ? (
@@ -45,10 +41,6 @@ export const FeatureSection = () => {
                       src="/Token-Sentiment.gif" 
                       alt="Token Sentiment Analysis"
                       className="w-[115%] h-[115%] object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
                     />
                   </div>
                 ) : feature.title === 'Chart Analysis' ? (
@@ -57,10 +49,6 @@ export const FeatureSection = () => {
                       src="/Chart-Analysis.gif" 
                       alt="Chart Analysis"
                       className="w-full h-full object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
                     />
                   </div>
                 ) : feature.title === 'Image Upload' ? (
