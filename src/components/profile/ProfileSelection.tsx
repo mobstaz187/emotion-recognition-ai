@@ -58,7 +58,7 @@ export const ProfileSelection: React.FC = () => {
         transition={{ delay: 0.3 }}
       >
         <motion.img 
-          src="/Untitled-1.png" 
+          src="./Untitled-1.png" 
           alt="Pelios Logo" 
           className="w-32 h-32 object-contain"
           initial={{ scale: 0 }}
