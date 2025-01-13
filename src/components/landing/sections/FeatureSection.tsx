@@ -3,7 +3,7 @@ import { features } from '../data/features';
 export const FeatureSection = () => {
   return (
     <section className="py-32">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="space-y-24">
           {features.map((feature, index) => (
             <div 
@@ -24,11 +24,11 @@ export const FeatureSection = () => {
                 </p>
               </div>
               <div 
-                className="flex-1 p-8 rounded-2xl"
+                className="flex-[1.5] rounded-xl p-1"
                 style={{ backgroundColor: `${feature.color}10` }}
               >
                 {feature.title === 'Real-time Analysis' ? (
-                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                  <div className="aspect-[16/9] rounded-xl bg-card border border-border overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-transform duration-300 hover:scale-[1.02]">
                     <img 
                       src="./LiveAnalysis.gif" 
                       alt="Live Analysis"
@@ -36,15 +36,15 @@ export const FeatureSection = () => {
                     />
                   </div>
                 ) : feature.title === 'Token Sentiment' ? (
-                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                  <div className="aspect-[16/9] rounded-xl bg-card border border-border overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-transform duration-300 hover:scale-[1.02]">
                     <img 
                       src="./Token-Sentiment.gif" 
                       alt="Token Sentiment Analysis"
-                      className="w-[115%] h-[115%] object-contain"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                 ) : feature.title === 'Chart Analysis' ? (
-                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                  <div className="aspect-[16/9] rounded-xl bg-card border border-border overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-transform duration-300 hover:scale-[1.02]">
                     <img 
                       src="./Chart-Analysis.gif" 
                       alt="Chart Analysis"
@@ -52,7 +52,7 @@ export const FeatureSection = () => {
                     />
                   </div>
                 ) : feature.title === 'Image Upload' ? (
-                  <div className="aspect-video rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center">
+                  <div className="aspect-[16/9] rounded-xl bg-card border border-border overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-transform duration-300 hover:scale-[1.02]">
                     <img 
                       src="./Sad-Analysis.png" 
                       alt="Sad Analysis"
@@ -60,8 +60,8 @@ export const FeatureSection = () => {
                     />
                   </div>
                 ) : (
-                  <div className="aspect-video rounded-xl bg-card border border-border 
-                    flex items-center justify-center">
+                  <div className="aspect-[16/9] rounded-xl bg-card border border-border shadow-[0_8px_32px_rgba(0,0,0,0.4)]
+                    flex items-center justify-center transition-transform duration-300 hover:scale-[1.02]">
                     <feature.icon className="w-16 h-16 text-muted-foreground" />
                   </div>
                 )}
