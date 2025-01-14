@@ -22,7 +22,6 @@ export const TokenMonitor: React.FC = () => {
   } = useToken();
   const profileColor = currentProfile?.color || '#3B82F6';
 
-  // Use the hook to fetch data when address changes
   useTokenData({
     address,
     onSuccess: setTokenData,
@@ -32,11 +31,11 @@ export const TokenMonitor: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="glass-panel p-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-foreground">Token Sentiment Analysis</h2>
+      <div className="glass-panel p-4 md:p-6 space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">Token Sentiment Analysis</h2>
           <div 
-            className="px-4 py-1.5 rounded-full"
+            className="px-4 py-1.5 rounded-full text-sm whitespace-nowrap"
             style={{
               backgroundColor: `${profileColor}20`,
               borderColor: `${profileColor}30`,
@@ -44,7 +43,7 @@ export const TokenMonitor: React.FC = () => {
               color: profileColor
             }}
           >
-            <span className="text-sm">Solana Tokens Only</span>
+            Solana Tokens Only (For tokens that made it to Raydium)
           </div>
         </div>
         
@@ -72,13 +71,11 @@ export const TokenMonitor: React.FC = () => {
             animate={{ opacity: 1 }}
             className="space-y-6"
           >
-            {/* Token Info Box */}
-            <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-6">
+            <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-xl border border-border p-4 md:p-6">
               <TokenSocials data={tokenData} profileColor={profileColor} />
               <TokenInfo data={tokenData} address={address} />
             </div>
 
-            {/* Analysis Panel */}
             <TokenAnalysisPanel data={tokenData} address={address} />
           </motion.div>
         )}

@@ -13,12 +13,12 @@ export const SplashTransition: React.FC<Props> = ({ onComplete }) => {
 
   return (
     <div className="fixed inset-0 bg-background flex items-center justify-center z-50 overflow-hidden">
-      <div className="relative flex flex-col items-center">
+      <div className="relative flex flex-col items-center w-full max-w-[90vw] md:max-w-none">
         {/* Loading Animation */}
-        <div className="relative w-[80px] h-[80px] mb-8">
+        <div className="relative w-[60px] h-[60px] md:w-[80px] md:h-[80px] mb-6 md:mb-8">
           {/* Static Circle Container */}
           <div className="absolute inset-0">
-            <svg width="80" height="80" viewBox="0 0 80 80">
+            <svg width="100%" height="100%" viewBox="0 0 80 80">
               {/* Rotating Gradient Stroke */}
               <defs>
                 <linearGradient id="spinnerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -73,7 +73,7 @@ export const SplashTransition: React.FC<Props> = ({ onComplete }) => {
           className="relative flex flex-col items-center"
         >
           <h1 
-            className="text-[40px] bg-gradient-to-r from-[#4F46E5] to-[#7C3AED] bg-clip-text text-transparent"
+            className="text-[32px] md:text-[40px] bg-gradient-to-r from-[#4F46E5] to-[#7C3AED] bg-clip-text text-transparent"
             style={{ 
               fontFamily: "'Orbitron', sans-serif",
               letterSpacing: '0.1em',

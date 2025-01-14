@@ -10,15 +10,15 @@ export const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="max-w-6xl mx-auto"
+        className="max-w-6xl mx-auto w-full"
       >
         {/* Header with Separator */}
-        <div className="flex items-center justify-center gap-8 mb-12">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-8 mb-12">
+          <div className="flex flex-col md:flex-row items-center gap-4">
             <motion.img 
               src="./Untitled-1.png"
               alt="Pelios Logo"
-              className="w-32 h-32 object-contain"
+              className="w-24 h-24 md:w-32 md:h-32 object-contain"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ 
@@ -28,8 +28,8 @@ export const HeroSection = () => {
                 delay: 0.5
               }}
             />
-            <div className="text-left">
-              <h1 className="text-6xl font-bold font-display mb-2">
+            <div className="text-center md:text-left">
+              <h1 className="text-4xl md:text-6xl font-bold font-display mb-2">
                 <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
                   PELIOS
                 </span>
@@ -38,15 +38,17 @@ export const HeroSection = () => {
             </div>
           </div>
           
-          <div className="h-16 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
+          <div className="hidden md:block h-16 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
           
-          <div className="text-left">
-            <h2 className="text-4xl font-bold font-display mb-2">
+          <div className="text-center md:text-left max-w-sm md:max-w-none">
+            <h2 className="text-3xl md:text-4xl font-bold font-display mb-2">
               <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
                 AI-Powered Analysis
               </span>
             </h2>
-            <p className="text-muted-foreground">Advanced emotion detection & market sentiment analysis.</p>
+            <p className="text-muted-foreground">
+              Advanced emotion detection & market sentiment analysis.
+            </p>
           </div>
         </div>
 

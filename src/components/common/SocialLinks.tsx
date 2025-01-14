@@ -1,10 +1,8 @@
-import React from 'react';
-
 export const SocialLinks: React.FC = () => {
   return (
     <div className="fixed bottom-6 right-6">
       <a
-        href="https://x.com"
+        href="https://x.com/peliosgg"
         target="_blank"
         rel="noopener noreferrer"
         className="w-10 h-10 flex items-center justify-center rounded-full 

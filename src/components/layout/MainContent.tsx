@@ -85,7 +85,7 @@ export const MainContent: React.FC = () => {
 
   return (
     <>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 relative overflow-x-hidden">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 md:pb-8 relative overflow-x-hidden">
         <AnimatePresence
           mode="wait"
           custom={getDirection(activeTab, previousTab)}
@@ -99,8 +99,8 @@ export const MainContent: React.FC = () => {
             animate="center"
             exit="exit"
             transition={{
-              duration: 0.15, // Reduced from 0.3
-              ease: "easeOut" // Changed from easeInOut for snappier feel
+              duration: 0.15,
+              ease: "easeOut"
             }}
             className="w-full"
           >
