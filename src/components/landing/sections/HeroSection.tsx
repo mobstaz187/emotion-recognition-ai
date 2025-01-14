@@ -46,7 +46,7 @@ export const HeroSection = () => {
                 AI-Powered Analysis
               </span>
             </h2>
-            <p className="text-muted-foreground">Advanced emotion detection & market sentiment</p>
+            <p className="text-muted-foreground">Advanced emotion detection & market sentiment analysis.</p>
           </div>
         </div>
 
