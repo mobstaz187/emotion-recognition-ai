@@ -7,7 +7,11 @@ interface Props {
   isAnalyzing?: boolean;
 }
 
-export const ThresholdControls: React.FC<Props> = ({ thresholds, onChange, isAnalyzing }) => {
+export const ThresholdControls: React.FC<Props> = ({ 
+  thresholds, 
+  onChange, 
+  isAnalyzing 
+}) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
@@ -57,11 +61,7 @@ export const ThresholdControls: React.FC<Props> = ({ thresholds, onChange, isAna
                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
                 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-500
                 [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background
-                [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(239,68,68,0.3)]
-                [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4
-                [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-red-500
-                [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background
-                [&::-moz-range-thumb]:shadow-[0_0_10px_rgba(239,68,68,0.3)]"
+                [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(239,68,68,0.3)]"
             />
           </div>
         </div>
@@ -86,11 +86,7 @@ export const ThresholdControls: React.FC<Props> = ({ thresholds, onChange, isAna
                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
                 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-green-500
                 [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background
-                [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(34,197,94,0.3)]
-                [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4
-                [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-green-500
-                [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background
-                [&::-moz-range-thumb]:shadow-[0_0_10px_rgba(34,197,94,0.3)]"
+                [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(34,197,94,0.3)]"
             />
           </div>
         </div>

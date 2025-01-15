@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { TokenData } from '../types/token';
-import { Level, ColorThresholds } from '../types/chart';
+import { Level, ColorThresholds, WeightSettings } from '../types/chart';
 
 interface TokenContextType {
   tokenData: TokenData | null;
@@ -20,6 +20,8 @@ interface TokenContextType {
   setChartScenario: (scenario: 'bullish' | 'bearish' | 'neutral') => void;
   chartThresholds: ColorThresholds;
   setChartThresholds: (thresholds: ColorThresholds) => void;
+  weightSettings: WeightSettings;
+  setWeightSettings: (settings: WeightSettings) => void;
 }
 
 const TokenContext = createContext<TokenContextType | undefined>(undefined);
@@ -37,6 +39,10 @@ export const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [chartThresholds, setChartThresholds] = useState<ColorThresholds>({
     red: 110,
     green: 95
+  });
+  const [weightSettings, setWeightSettings] = useState<WeightSettings>({
+    bounce: 0.3,
+    stability: 0.4
   });
 
   return (
@@ -56,7 +62,9 @@ export const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       chartScenario,
       setChartScenario,
       chartThresholds,
-      setChartThresholds
+      setChartThresholds,
+      weightSettings,
+      setWeightSettings
     }}>
       {children}
     </TokenContext.Provider>

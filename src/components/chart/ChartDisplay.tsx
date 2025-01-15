@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Level } from '../../types/chart';
 import { drawLevels } from '../../utils/chart/drawing';
 import { useProfile } from '../../contexts/ProfileContext';
+import { useToken } from '../../contexts/TokenContext';
 
 interface Props {
   image: string;
@@ -19,6 +20,7 @@ export const ChartDisplay: React.FC<Props> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { currentProfile } = useProfile();
+  const { setChartLevels } = useToken();
   const profileColor = currentProfile?.color || '#3B82F6';
 
   // Check if image is a URL for an iframe
@@ -34,12 +36,24 @@ export const ChartDisplay: React.FC<Props> = ({
       canvas.height = container.offsetHeight;
 
       if (isIframeUrl) {
-        // For iframe, create a placeholder image with the same dimensions
-        const placeholderImg = new Image();
-        placeholderImg.width = canvas.width;
-        placeholderImg.height = canvas.height;
-        drawLevels(canvas, placeholderImg, levels);
-      } else if (image) {
+        // For iframes, just draw the levels
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          levels.forEach(level => {
+            const y = canvas.height - (level.price * canvas.height / 100);
+            
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            
+            ctx.strokeStyle = level.type === 'support' ? '#10B981' : '#EF4444';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.stroke();
+          });
+        }
+      } else {
         // For regular images
         const img = new Image();
         img.src = image;

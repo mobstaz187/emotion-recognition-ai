@@ -28,7 +28,6 @@ export const ChartAnalysis: React.FC<Props> = ({ setShowChartInstructions }) => 
   const { isAnalyzing, analyze, reset } = useChartAnalysis();
   const scenarioLevels = getScenarioLevels(chartLevels, chartScenario);
 
-  // Show instructions automatically for first-time users
   useEffect(() => {
     const hasSeenInstructions = localStorage.getItem('hasSeenChartInstructions');
     if (!hasSeenInstructions) {

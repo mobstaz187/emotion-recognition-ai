@@ -8,14 +8,33 @@ export async function analyzeChart(
   imageUrl: string, 
   thresholds: ColorThresholds
 ): Promise<Level[]> {
-  // Check if URL is an iframe source
+  // For iframe analysis, return simulated levels based on time
   if (imageUrl.includes('birdeye.so')) {
-    // For iframes, return some default levels for visualization
+    const now = Date.now();
+    const phase = (now % 10000) / 10000; // 10 second cycle
+    
+    // Generate dynamic levels based on time
     return [
-      { type: 'support', price: 30, strength: 0.7 },
-      { type: 'support', price: 20, strength: 0.8 },
-      { type: 'resistance', price: 70, strength: 0.6 },
-      { type: 'resistance', price: 80, strength: 0.7 }
+      { 
+        type: 'support', 
+        price: 30 + Math.sin(phase * Math.PI * 2) * 5,
+        strength: 0.7 + Math.sin(phase * Math.PI * 4) * 0.1
+      },
+      { 
+        type: 'support', 
+        price: 20 + Math.cos(phase * Math.PI * 2) * 3,
+        strength: 0.8 + Math.cos(phase * Math.PI * 4) * 0.1
+      },
+      { 
+        type: 'resistance', 
+        price: 70 + Math.sin(phase * Math.PI * 2) * 4,
+        strength: 0.6 + Math.sin(phase * Math.PI * 4) * 0.1
+      },
+      { 
+        type: 'resistance', 
+        price: 80 + Math.cos(phase * Math.PI * 2) * 6,
+        strength: 0.7 + Math.cos(phase * Math.PI * 4) * 0.1
+      }
     ];
   }
 
@@ -38,7 +57,7 @@ export async function analyzeChart(
 
       // Create color detection matrix
       const colorMatrix: ColorCounts[][] = Array(height).fill(0).map(() => 
-        Array(width).fill(0).map(() => ({ red: 0, green: 0 }))
+        Array(width).fill(0).map(() => ({ red: 0, green: 0, wick: 0 }))
       );
       
       for (let y = 0; y < height; y++) {

@@ -3,6 +3,7 @@ import { ColorThresholds } from '../../../types/chart';
 export interface ColorCounts {
   red: number;
   green: number;
+  wick: number;  // Add wick detection
 }
 
 export function detectColors(
@@ -17,7 +18,8 @@ export function detectColors(
 
   return {
     red: isRedCandle(r, g, b, brightness, thresholds.red) ? 1 : 0,
-    green: isGreenCandle(r, g, b, brightness, thresholds.green) ? 1 : 0
+    green: isGreenCandle(r, g, b, brightness, thresholds.green) ? 1 : 0,
+    wick: isWick(r, g, b, brightness) ? 1 : 0  // Add wick detection
   };
 }
 
@@ -47,4 +49,17 @@ function isGreenCandle(
     (brightness < 100 && greenDominance > 1.3) ||
     (brightness >= 100 && g > threshold && r < threshold - 15 && b < threshold - 15)
   );
+}
+
+// Add wick detection function
+function isWick(
+  r: number,
+  g: number,
+  b: number,
+  brightness: number
+): boolean {
+  // Detect thin dark lines that could be wicks
+  const isDark = brightness < 80;
+  const isBalanced = Math.abs(r - g) < 30 && Math.abs(r - b) < 30 && Math.abs(g - b) < 30;
+  return isDark && isBalanced;
 }
