@@ -43,7 +43,7 @@ export const Header: React.FC = () => {
             {/* Contract Info - Desktop Only */}
             <div className="hidden md:flex items-center gap-4">
               <span className="text-sm text-muted-foreground font-medium">Contract:</span>
-              <CopyButton text="Updating..." />
+              <CopyButton text="FtfmPqo3DRB8XEJNQsHvPTgQkD4mYv8m2gkEisHCpump" />
             </div>
 
             {/* X Button - Show on both mobile and desktop */}
