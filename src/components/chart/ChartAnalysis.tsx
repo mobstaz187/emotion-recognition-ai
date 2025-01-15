@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ChartUpload } from './ChartUpload';
 import { ChartDisplay } from './ChartDisplay';
 import { AnalysisResults } from './AnalysisResults';
@@ -27,6 +27,15 @@ export const ChartAnalysis: React.FC<Props> = ({ setShowChartInstructions }) => 
   
   const { isAnalyzing, analyze, reset } = useChartAnalysis();
   const scenarioLevels = getScenarioLevels(chartLevels, chartScenario);
+
+  // Show instructions automatically for first-time users
+  useEffect(() => {
+    const hasSeenInstructions = localStorage.getItem('hasSeenChartInstructions');
+    if (!hasSeenInstructions) {
+      setShowChartInstructions(true);
+      localStorage.setItem('hasSeenChartInstructions', 'true');
+    }
+  }, [setShowChartInstructions]);
 
   const handleThresholdChange = async (newThresholds: ColorThresholds) => {
     setChartThresholds(newThresholds);

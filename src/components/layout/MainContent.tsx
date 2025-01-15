@@ -21,7 +21,9 @@ interface Props {
 }
 
 export const MainContent: React.FC<Props> = ({ 
+  showChartInstructions, 
   setShowChartInstructions,
+  showTokenInstructions,
   setShowTokenInstructions
 }) => {
   const [isActive, setIsActive] = useState(false);
@@ -96,11 +98,7 @@ export const MainContent: React.FC<Props> = ({
   return (
     <>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 md:pb-8 relative overflow-x-hidden">
-        <AnimatePresence
-          mode="wait"
-          custom={getDirection(activeTab, previousTab)}
-          initial={false}
-        >
+        <AnimatePresence mode="wait" custom={getDirection(activeTab, previousTab)}>
           <motion.div
             key={activeTab}
             custom={getDirection(activeTab, previousTab)}
@@ -118,11 +116,69 @@ export const MainContent: React.FC<Props> = ({
           </motion.div>
         </AnimatePresence>
       </main>
+
       <FloatingTabBar
         tabs={BASE_TABS}
         activeTab={activeTab}
         onTabChange={handleTabChange}
       />
+
+      <AnimatePresence>
+        {showChartInstructions && (
+          <motion.div
+            key="chart-instructions"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-card rounded-xl border border-border p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            >
+              <div className="space-y-6">
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold text-foreground mb-4">Welcome</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Our advanced AI detects support and resistance levels in your charts, helping you identify key price levels and potential trading opportunities.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="text-xl font-semibold text-foreground mb-4">How to Use:</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <div className="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                        <p className="text-sm text-foreground">
+                          For more clear and precise analysis, we recommend users to upload a 1600x600 and up resolution images. Make sure that only the chart is visible and other indicators like volume, RSI, MACD are not present in the image. See image for reference.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
+                      <img 
+                        src="/BTC-Sample.png" 
+                        alt="Chart Analysis Demo" 
+                        className="w-full h-full object-contain bg-black/20"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-center mt-8">
+                  <button
+                    onClick={() => setShowChartInstructions(false)}
+                    className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    Got it!
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

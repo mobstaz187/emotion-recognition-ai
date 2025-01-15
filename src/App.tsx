@@ -104,10 +104,24 @@ const AppContent = () => {
           >
             <div className="space-y-6">
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-foreground mb-4">Welcome to Chart Analysis</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Welcome</h3>
                 <p className="text-muted-foreground mb-6">
                   Our advanced AI detects support and resistance levels in your charts, helping you identify key price levels and potential trading opportunities.
                 </p>
+              </div>
+
+              <div className="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                <p className="text-sm text-foreground">
+                  For more clear and precise analysis, we recommend users to upload a 1600x600 and up resolution images. Make sure that only the chart is visible and other indicators like volume, RSI, MACD are not present in the image. See image for reference.
+                </p>
+              </div>
+
+              <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
+                <img 
+                  src="/BTC-Sample.png" 
+                  alt="Sample Chart" 
+                  className="object-contain"
+                />
               </div>
 
               <div>
@@ -123,7 +137,7 @@ const AppContent = () => {
                   </div>
                   <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
                     <img 
-                      src="/Chart-Analysis.gif" 
+                      src="./Chart-Analysis.gif" 
                       alt="Chart Analysis Demo" 
                       className="w-full h-full object-cover"
                     />
@@ -136,7 +150,7 @@ const AppContent = () => {
                   onClick={() => setShowChartInstructions(false)}
                   className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity"
                 >
-                  Try Me!
+                  Got it!
                 </button>
               </div>
             </div>
@@ -180,7 +194,7 @@ const AppContent = () => {
                   </div>
                   <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
                     <img 
-                      src="/Token-Sentiment.gif" 
+                      src="./Token-Sentiment.gif" 
                       alt="Token Analysis Demo" 
                       className="w-full h-full object-cover"
                     />
@@ -193,7 +207,7 @@ const AppContent = () => {
                   onClick={() => setShowTokenInstructions(false)}
                   className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity"
                 >
-                  Try Me!
+                  Got it!
                 </button>
               </div>
             </div>

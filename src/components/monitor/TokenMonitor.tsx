@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TokenSearch } from './TokenSearch';
 import { TokenSocials } from './TokenSocials';
 import { TokenInfo } from './TokenInfo';
@@ -25,6 +25,15 @@ export const TokenMonitor: React.FC<Props> = ({ setShowTokenInstructions }) => {
     setError
   } = useToken();
   const profileColor = currentProfile?.color || '#3B82F6';
+
+  // Show instructions automatically for first-time users
+  useEffect(() => {
+    const hasSeenInstructions = localStorage.getItem('hasSeenTokenInstructions');
+    if (!hasSeenInstructions) {
+      setShowTokenInstructions(true);
+      localStorage.setItem('hasSeenTokenInstructions', 'true');
+    }
+  }, [setShowTokenInstructions]);
 
   useTokenData({
     address,
