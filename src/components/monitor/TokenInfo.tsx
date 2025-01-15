@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { TokenData } from '../../types/token';
 import { formatNumber } from '../../utils/formatNumber';
 import { TradingButtons } from './TradingButtons';
 import { motion } from 'framer-motion';
+import { useTab } from '../../contexts/TabContext';
+import { useToken } from '../../contexts/TokenContext';
+import html2canvas from 'html2canvas';
 
 interface Props {
   data: TokenData;
@@ -10,9 +13,26 @@ interface Props {
 }
 
 export const TokenInfo: React.FC<Props> = ({ data, address }) => {
+  const { setActiveTab } = useTab();
+  const { setChartImage } = useToken();
+  const chartRef = useRef<HTMLIFrameElement>(null);
   const formattedPrice = data.price < 0.0001 
     ? data.price.toFixed(12)
     : formatNumber(data.price);
+
+  const handleAnalyzeChart = async () => {
+    if (chartRef.current) {
+      try {
+        const iframe = chartRef.current;
+        const canvas = await html2canvas(iframe);
+        const imageUrl = canvas.toDataURL('image/png');
+        setChartImage(imageUrl);
+        setActiveTab('chart');
+      } catch (error) {
+        console.error('Failed to capture chart:', error);
+      }
+    }
+  };
 
   return (
     <div className="mt-4 space-y-4">
@@ -53,14 +73,29 @@ export const TokenInfo: React.FC<Props> = ({ data, address }) => {
       </motion.div>
 
       {/* Birdeye Chart */}
-      <div className="w-full aspect-[16/9] rounded-lg border border-border overflow-hidden">
-        <iframe
-          width="100%"
-          height="100%"
-          src={`https://birdeye.so/tv-widget/${address}?chain=solana&viewMode=pair&chartInterval=1D&chartType=CANDLE&chartTimezone=Asia%2FSingapore&chartLeftToolbar=show&theme=dark`}
-          frameBorder="0"
-          allowFullScreen
-        />
+      <div className="space-y-4">
+        <div className="w-full aspect-[16/9] rounded-lg border border-border overflow-hidden">
+          <iframe
+            ref={chartRef}
+            width="100%"
+            height="100%"
+            src={`https://birdeye.so/tv-widget/${address}?chain=solana&viewMode=pair&chartInterval=1D&chartType=CANDLE&chartTimezone=Asia%2FSingapore&chartLeftToolbar=show&theme=dark`}
+            frameBorder="0"
+            allowFullScreen
+          />
+        </div>
+        <div className="flex justify-center">
+          <button
+            onClick={handleAnalyzeChart}
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            Analyze Chart
+          </button>
+        </div>
       </div>
 
       <motion.div 
