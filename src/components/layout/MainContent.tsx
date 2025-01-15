@@ -21,9 +21,7 @@ interface Props {
 }
 
 export const MainContent: React.FC<Props> = ({ 
-  showChartInstructions, 
   setShowChartInstructions,
-  showTokenInstructions,
   setShowTokenInstructions
 }) => {
   const [isActive, setIsActive] = useState(false);
