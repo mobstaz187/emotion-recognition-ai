@@ -8,6 +8,18 @@ export async function analyzeChart(
   imageUrl: string, 
   thresholds: ColorThresholds
 ): Promise<Level[]> {
+  // Check if URL is an iframe source
+  if (imageUrl.includes('birdeye.so')) {
+    // For iframes, return some default levels for visualization
+    return [
+      { type: 'support', price: 30, strength: 0.7 },
+      { type: 'support', price: 20, strength: 0.8 },
+      { type: 'resistance', price: 70, strength: 0.6 },
+      { type: 'resistance', price: 80, strength: 0.7 }
+    ];
+  }
+
+  // Regular image analysis
   const img = new Image();
   img.src = imageUrl;
   
