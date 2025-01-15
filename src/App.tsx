@@ -137,7 +137,7 @@ const AppContent = () => {
   width="100%"
   height="600"
   src="https://birdeye.so/tv-widget/DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263?chain=solana&viewMode=pair&chartInterval=1D&chartType=CANDLE&chartTimezone=Asia%2FSingapore&chartLeftToolbar=show&theme=dark"
-  frameborder="0"
+  frameBorder="0"
   allowfullscreen
 ></iframe>
                     </ol>
