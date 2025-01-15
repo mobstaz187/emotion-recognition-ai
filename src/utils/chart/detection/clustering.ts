@@ -5,11 +5,12 @@ export interface PriceCluster {
   density: number;
   touches: number;
   bounces: number;
-  stability: number;  // Track price stability
+  stability: number;
+  wickLength: number;
 }
 
 export function findPriceClusters(
-  points: { price: number; bounceCount: number; stabilityCount: number }[],
+  points: { price: number; bounceCount: number; stabilityCount: number; wickLength: number }[],
   height: number,
   clusterSize = DETECTION_CONFIG.CLUSTER_SIZE
 ): PriceCluster[] {
@@ -18,6 +19,7 @@ export function findPriceClusters(
     touches: number; 
     bounces: number;
     stability: number;
+    wickLength: number;
   }> = new Map();
   
   points.forEach(point => {
@@ -26,7 +28,8 @@ export function findPriceClusters(
       count: 0, 
       touches: 0, 
       bounces: 0,
-      stability: 0 
+      stability: 0,
+      wickLength: 0
     };
     
     existing.count++;
@@ -35,6 +38,7 @@ export function findPriceClusters(
     }
     existing.bounces += point.bounceCount;
     existing.stability += point.stabilityCount;
+    existing.wickLength += point.wickLength;
     
     clusters.set(clusterPrice, existing);
   });
@@ -45,7 +49,8 @@ export function findPriceClusters(
       density: data.count,
       touches: data.touches,
       bounces: data.bounces,
-      stability: data.stability
+      stability: data.stability,
+      wickLength: data.wickLength
     }))
     .filter(cluster => 
       cluster.touches >= DETECTION_CONFIG.MIN_TOUCHES ||

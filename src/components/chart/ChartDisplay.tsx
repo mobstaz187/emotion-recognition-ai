@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from 'react';
 import { Level } from '../../types/chart';
 import { drawLevels } from '../../utils/chart/drawing';
 import { useProfile } from '../../contexts/ProfileContext';
-import { useToken } from '../../contexts/TokenContext';
 
 interface Props {
   image: string;
@@ -20,7 +19,6 @@ export const ChartDisplay: React.FC<Props> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { currentProfile } = useProfile();
-  const { setChartLevels } = useToken();
   const profileColor = currentProfile?.color || '#3B82F6';
 
   // Check if image is a URL for an iframe

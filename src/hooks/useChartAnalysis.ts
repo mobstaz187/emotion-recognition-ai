@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Level, ColorThresholds, WeightSettings } from '../types/chart';
+import { Level, ColorThresholds } from '../types/chart';
 import { analyzeChart } from '../utils/chart/analysis';
 
 export function useChartAnalysis() {
@@ -11,12 +11,11 @@ export function useChartAnalysis() {
 
   const analyze = async (
     imageUrl: string, 
-    thresholds: ColorThresholds,
-    weightSettings?: WeightSettings
+    thresholds: ColorThresholds
   ): Promise<Level[]> => {
     setIsAnalyzing(true);
     try {
-      const result = await analyzeChart(imageUrl, thresholds, weightSettings);
+      const result = await analyzeChart(imageUrl, thresholds);
       return result;
     } catch (error) {
       console.error('Chart analysis failed:', error);
