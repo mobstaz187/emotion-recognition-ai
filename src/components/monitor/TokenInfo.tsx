@@ -1,11 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { TokenData } from '../../types/token';
 import { formatNumber } from '../../utils/formatNumber';
 import { TradingButtons } from './TradingButtons';
 import { motion } from 'framer-motion';
 import { useTab } from '../../contexts/TabContext';
 import { useToken } from '../../contexts/TokenContext';
-import html2canvas from 'html2canvas';
 
 interface Props {
   data: TokenData;
@@ -15,51 +14,15 @@ interface Props {
 export const TokenInfo: React.FC<Props> = ({ data, address }) => {
   const { setActiveTab } = useTab();
   const { setChartImage } = useToken();
-  const chartRef = useRef<HTMLIFrameElement>(null);
-  const [isIframeLoaded, setIsIframeLoaded] = useState(false);
   const formattedPrice = data.price < 0.0001 
     ? data.price.toFixed(12)
     : formatNumber(data.price);
 
-  useEffect(() => {
-    if (chartRef.current) {
-      chartRef.current.onload = () => setIsIframeLoaded(true);
-    }
-  }, []);
-
-  const handleAnalyzeChart = async () => {
-    if (chartRef.current && isIframeLoaded) {
-      try {
-        // Wait for any animations to complete
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // Capture the iframe content
-        const screenshot = await html2canvas(chartRef.current, {
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#000000',
-          scale: 2, // Increase quality
-          logging: false,
-          width: chartRef.current.clientWidth,
-          height: chartRef.current.clientHeight
-        });
-
-        // Create a new image from the canvas
-        const img = new Image();
-        img.src = screenshot.toDataURL('image/png');
-        
-        // Wait for image to load
-        await new Promise((resolve, reject) => {
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-
-        setChartImage(img.src);
-        setActiveTab('chart');
-      } catch (error) {
-        console.error('Failed to capture chart:', error);
-      }
-    }
+  const handleAnalyzeChart = () => {
+    // Just pass the iframe URL instead of trying to capture the image
+    const chartUrl = `https://birdeye.so/tv-widget/${address}?chain=solana&viewMode=pair&chartInterval=1D&chartType=CANDLE&chartTimezone=Asia%2FSingapore&chartLeftToolbar=show&theme=dark`;
+    setChartImage(chartUrl);
+    setActiveTab('chart');
   };
 
   return (
@@ -104,7 +67,6 @@ export const TokenInfo: React.FC<Props> = ({ data, address }) => {
       <div className="space-y-4">
         <div className="w-full aspect-[16/9] rounded-lg border border-border overflow-hidden">
           <iframe
-            ref={chartRef}
             width="100%"
             height="100%"
             src={`https://birdeye.so/tv-widget/${address}?chain=solana&viewMode=pair&chartInterval=1D&chartType=CANDLE&chartTimezone=Asia%2FSingapore&chartLeftToolbar=show&theme=dark`}
@@ -115,14 +77,13 @@ export const TokenInfo: React.FC<Props> = ({ data, address }) => {
         <div className="flex justify-center">
           <button
             onClick={handleAnalyzeChart}
-            disabled={!isIframeLoaded}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            {isIframeLoaded ? 'Analyze Chart' : 'Loading chart...'}
+            Analyze Chart
           </button>
         </div>
       </div>

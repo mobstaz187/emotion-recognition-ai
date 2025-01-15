@@ -21,34 +21,63 @@ export const ChartDisplay: React.FC<Props> = ({
   const { currentProfile } = useProfile();
   const profileColor = currentProfile?.color || '#3B82F6';
 
-  useEffect(() => {
-    if (canvasRef.current && containerRef.current && image && levels.length > 0) {
-      const img = new Image();
-      img.src = image;
-      img.onload = () => {
-        const aspectRatio = img.width / img.height;
-        const maxWidth = containerRef.current!.offsetWidth;
-        const width = Math.min(maxWidth, img.width);
-        const height = width / aspectRatio;
+  // Check if image is a URL for an iframe
+  const isIframeUrl = image?.includes('birdeye.so');
 
-        const canvas = canvasRef.current!;
-        canvas.width = width;
-        canvas.height = height;
-        
-        drawLevels(canvas, img, levels);
-      };
+  useEffect(() => {
+    if (canvasRef.current && containerRef.current) {
+      const container = containerRef.current;
+      const canvas = canvasRef.current;
+
+      // Set canvas dimensions to match container
+      canvas.width = container.offsetWidth;
+      canvas.height = container.offsetHeight;
+
+      if (isIframeUrl) {
+        // For iframe, create a placeholder image with the same dimensions
+        const placeholderImg = new Image();
+        placeholderImg.width = canvas.width;
+        placeholderImg.height = canvas.height;
+        drawLevels(canvas, placeholderImg, levels);
+      } else if (image) {
+        // For regular images
+        const img = new Image();
+        img.src = image;
+        img.onload = () => {
+          const aspectRatio = img.width / img.height;
+          canvas.width = container.offsetWidth;
+          canvas.height = container.offsetWidth / aspectRatio;
+          drawLevels(canvas, img, levels);
+        };
+      }
     }
-  }, [image, levels]);
+  }, [image, levels, isIframeUrl]);
 
   return (
     <div 
       ref={containerRef}
       className="relative flex justify-center items-center bg-black/20 rounded-lg p-4"
     >
-      <canvas
-        ref={canvasRef}
-        className="w-full rounded-lg border border-white/10"
-      />
+      {isIframeUrl ? (
+        <div className="relative w-full aspect-[16/9]">
+          <iframe
+            src={image}
+            className="absolute inset-0 w-full h-full rounded-lg border border-white/10"
+            frameBorder="0"
+            allowFullScreen
+          />
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full pointer-events-none"
+          />
+        </div>
+      ) : (
+        <canvas
+          ref={canvasRef}
+          className="w-full rounded-lg border border-white/10"
+        />
+      )}
+      
       {isAnalyzing && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-lg">
           <div className="flex flex-col items-center gap-3">
