@@ -123,6 +123,7 @@ export const MainContent: React.FC<Props> = ({
         onTabChange={handleTabChange}
       />
 
+      {/* Chart Instructions Overlay */}
       <AnimatePresence>
         {showChartInstructions && (
           <motion.div
@@ -147,20 +148,35 @@ export const MainContent: React.FC<Props> = ({
                 </div>
 
                 <div>
-                  <h4 className="text-xl font-semibold text-foreground mb-4">How to Use:</h4>
+                  <div className="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                    <p className="text-sm text-foreground">
+                      For more clear and precise analysis, we recommend users to upload a 1600x600 and up resolution images. Make sure that only the chart is visible and other indicators like volume, RSI, MACD are not present in the image. See image for reference.
+                    </p>
+                  </div>
+
+                  <div className="relative aspect-video rounded-lg border border-border overflow-hidden mt-4">
+                    <img 
+                      src="/BTC-Sample.png" 
+                      alt="Sample Chart" 
+                      className="w-full h-full object-contain bg-black/20"
+                    />
+                  </div>
+
+                  <h4 className="text-xl font-semibold text-foreground mb-4 mt-8">How to Use:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                      <div className="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
-                        <p className="text-sm text-foreground">
-                          For more clear and precise analysis, we recommend users to upload a 1600x600 and up resolution images. Make sure that only the chart is visible and other indicators like volume, RSI, MACD are not present in the image. See image for reference.
-                        </p>
-                      </div>
+                      <ol className="list-decimal list-inside space-y-3 text-foreground">
+                        <li>Upload your chart image</li>
+                        <li>Adjust color detection settings if needed</li>
+                        <li>Select market scenario (bullish/bearish/neutral)</li>
+                        <li>View detected support and resistance levels</li>
+                      </ol>
                     </div>
                     <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
                       <img 
-                        src="/BTC-Sample.png" 
+                        src="./Chart-Analysis.gif" 
                         alt="Chart Analysis Demo" 
-                        className="w-full h-full object-contain bg-black/20"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                   </div>
@@ -169,6 +185,65 @@ export const MainContent: React.FC<Props> = ({
                 <div className="flex justify-center mt-8">
                   <button
                     onClick={() => setShowChartInstructions(false)}
+                    className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    Got it!
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Token Sentiment Instructions Overlay */}
+      <AnimatePresence>
+        {showTokenInstructions && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-card rounded-xl border border-border p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            >
+              <div className="space-y-6">
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold text-foreground mb-4">Welcome to Token Sentiment Analysis</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Our advanced AI analyzes token sentiment across multiple timeframes, providing comprehensive market insights 
+                    and technical analysis to help you make informed trading decisions.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="text-xl font-semibold text-foreground mb-4">How to Use:</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <ol className="list-decimal list-inside space-y-3 text-foreground">
+                        <li>Paste the token contract address.</li>
+                        <li>Click Analyze to start sentiment analysis.</li>
+                        <li>View technical indicators and market metrics.</li>
+                        <li>Check timeframe analysis for different periods.</li>
+                      </ol>
+                    </div>
+                    <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
+                      <img 
+                        src="./Token-Sentiment.gif" 
+                        alt="Token Analysis Demo" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-center mt-8">
+                  <button
+                    onClick={() => setShowTokenInstructions(false)}
                     className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity"
                   >
                     Got it!
