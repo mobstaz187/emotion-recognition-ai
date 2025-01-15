@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { TokenData } from '../../types/token';
 import { formatNumber } from '../../utils/formatNumber';
 import { TradingButtons } from './TradingButtons';
@@ -16,17 +16,45 @@ export const TokenInfo: React.FC<Props> = ({ data, address }) => {
   const { setActiveTab } = useTab();
   const { setChartImage } = useToken();
   const chartRef = useRef<HTMLIFrameElement>(null);
+  const [isIframeLoaded, setIsIframeLoaded] = useState(false);
   const formattedPrice = data.price < 0.0001 
     ? data.price.toFixed(12)
     : formatNumber(data.price);
 
-  const handleAnalyzeChart = async () => {
+  useEffect(() => {
     if (chartRef.current) {
+      chartRef.current.onload = () => setIsIframeLoaded(true);
+    }
+  }, []);
+
+  const handleAnalyzeChart = async () => {
+    if (chartRef.current && isIframeLoaded) {
       try {
-        const iframe = chartRef.current;
-        const canvas = await html2canvas(iframe);
-        const imageUrl = canvas.toDataURL('image/png');
-        setChartImage(imageUrl);
+        // Wait for any animations to complete
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Capture the iframe content
+        const screenshot = await html2canvas(chartRef.current, {
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#000000',
+          scale: 2, // Increase quality
+          logging: false,
+          width: chartRef.current.clientWidth,
+          height: chartRef.current.clientHeight
+        });
+
+        // Create a new image from the canvas
+        const img = new Image();
+        img.src = screenshot.toDataURL('image/png');
+        
+        // Wait for image to load
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+
+        setChartImage(img.src);
         setActiveTab('chart');
       } catch (error) {
         console.error('Failed to capture chart:', error);
@@ -87,13 +115,14 @@ export const TokenInfo: React.FC<Props> = ({ data, address }) => {
         <div className="flex justify-center">
           <button
             onClick={handleAnalyzeChart}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
+            disabled={!isIframeLoaded}
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            Analyze Chart
+            {isIframeLoaded ? 'Analyze Chart' : 'Loading chart...'}
           </button>
         </div>
       </div>
