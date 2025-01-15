@@ -9,7 +9,11 @@ import { getScenarioLevels } from '../../utils/chart/scenarios';
 import { useToken } from '../../contexts/TokenContext';
 import type { ColorThresholds } from '../../types/chart';
 
-export const ChartAnalysis: React.FC = () => {
+interface Props {
+  setShowChartInstructions: (show: boolean) => void;
+}
+
+export const ChartAnalysis: React.FC<Props> = ({ setShowChartInstructions }) => {
   const { 
     chartImage, 
     setChartImage,
@@ -46,9 +50,21 @@ export const ChartAnalysis: React.FC = () => {
     <div className="max-w-7xl mx-auto">
       <div className="glass-panel p-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">Chart Analysis</h2>
+            <div className="flex items-center mb-1">
+              <h2 className="text-2xl font-bold text-foreground">Chart Analysis</h2>
+              <button
+                onClick={() => setShowChartInstructions(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium rounded-lg transition-colors ml-2"
+              >
+                See Tutorial
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+            </div>
             <p className="text-muted-foreground">Upload a chart to detect support and resistance levels</p>
           </div>
           <ChartUpload onImageSelect={handleImageSelect} />

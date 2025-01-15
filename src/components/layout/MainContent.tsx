@@ -13,7 +13,19 @@ import { FloatingTabBar } from '../tabs/FloatingTabBar';
 import { BASE_TABS } from '../../constants/tabs';
 import { LandingPage } from '../landing/LandingPage';
 
-export const MainContent: React.FC = () => {
+interface Props {
+  showChartInstructions: boolean;
+  setShowChartInstructions: (show: boolean) => void;
+  showTokenInstructions: boolean;
+  setShowTokenInstructions: (show: boolean) => void;
+}
+
+export const MainContent: React.FC<Props> = ({ 
+  showChartInstructions, 
+  setShowChartInstructions,
+  showTokenInstructions,
+  setShowTokenInstructions
+}) => {
   const [isActive, setIsActive] = useState(false);
   const [isProcessing] = useState(false);
   const { activeTab, setActiveTab } = useTab();
@@ -73,9 +85,9 @@ export const MainContent: React.FC = () => {
       case 'tickers':
         return <TwitterTickers />;
       case 'monitor':
-        return <TokenMonitor />;
+        return <TokenMonitor setShowTokenInstructions={setShowTokenInstructions} />;
       case 'chart':
-        return <ChartAnalysis />;
+        return <ChartAnalysis setShowChartInstructions={setShowChartInstructions} />;
       case 'surprised-chat':
         return <SurprisedChat />;
       default:
