@@ -90,6 +90,20 @@ export const ChartDisplay: React.FC<Props> = ({
         />
       )}
       
+      {/* Legend */}
+      <div className="absolute top-6 right-6 bg-black/50 backdrop-blur-sm rounded-lg p-3 border border-white/10">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-0.5 bg-[#10B981]" />
+            <span className="text-sm text-white/90">Support</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-0.5 bg-[#EF4444]" />
+            <span className="text-sm text-white/90">Resistance</span>
+          </div>
+        </div>
+      </div>
+      
       {isAnalyzing && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-lg">
           <div className="flex flex-col items-center gap-3">

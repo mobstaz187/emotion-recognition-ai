@@ -48,7 +48,7 @@ export const ChartAnalysis: React.FC<Props> = ({ setShowChartInstructions }) => 
     reset();
     setChartImage(imageUrl);
     setChartLevels([]);
-    setChartScenario('neutral');
+    setChartScenario('bullish'); // Set to bullish by default when loading a new chart
     
     const newLevels = await analyze(imageUrl, chartThresholds);
     setChartLevels(newLevels);

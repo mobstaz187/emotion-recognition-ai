@@ -120,7 +120,7 @@ const AppContent = () => {
                 <img 
                   src="./BTC-Sample.png" 
                   alt="Sample Chart" 
-                  className="object-contain"
+                  className="w-full h-full object-contain"
                 />
               </div>
 
