@@ -118,7 +118,7 @@ const AppContent = () => {
 
               <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
                 <img 
-                  src="/BTC-Sample.png" 
+                  src="./BTC-Sample.png" 
                   alt="Sample Chart" 
                   className="object-contain"
                 />

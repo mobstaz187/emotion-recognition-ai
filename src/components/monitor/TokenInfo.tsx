@@ -52,6 +52,17 @@ export const TokenInfo: React.FC<Props> = ({ data, address }) => {
         </div>
       </motion.div>
 
+      {/* Birdeye Chart */}
+      <div className="w-full aspect-[16/9] rounded-lg border border-border overflow-hidden">
+        <iframe
+          width="100%"
+          height="100%"
+          src={`https://birdeye.so/tv-widget/${address}?chain=solana&viewMode=pair&chartInterval=1D&chartType=CANDLE&chartTimezone=Asia%2FSingapore&chartLeftToolbar=show&theme=dark`}
+          frameBorder="0"
+          allowFullScreen
+        />
+      </div>
+
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
