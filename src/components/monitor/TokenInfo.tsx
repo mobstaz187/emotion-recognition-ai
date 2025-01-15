@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { TokenData } from '../../types/token';
 import { formatNumber } from '../../utils/formatNumber';
 import { TradingButtons } from './TradingButtons';
